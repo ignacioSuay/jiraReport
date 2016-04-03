@@ -1,0 +1,26 @@
+{
+  "generator-jhipster": {
+    "jhipsterVersion": "3.0.0",
+    "baseName": "jiraReport",
+    "packageName": "com.suay.jirareport",
+    "packageFolder": "com/suay/jirareport",
+    "serverPort": "8080",
+    "authenticationType": "session",
+    "hibernateCache": "no",
+    "clusteredHttpSession": "no",
+    "websocket": "no",
+    "databaseType": "mongodb",
+    "devDatabaseType": "mongodb",
+    "prodDatabaseType": "mongodb",
+    "searchEngine": "no",
+    "buildTool": "maven",
+    "enableSocialSignIn": true,
+    "rememberMeKey": "7fd6217f208ce4b1aef7d9ad491d31955e2bd3ee",
+    "useSass": true,
+    "applicationType": "monolith",
+    "testFrameworks": [
+      "protractor"
+    ],
+    "enableTranslation": false
+  }
+}
