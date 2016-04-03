@@ -2,7 +2,6 @@ package com.suay.jirareport.config;
 
 import com.suay.jirareport.domain.util.JSR310DateConverters.*;
 import com.mongodb.Mongo;
-import org.mongeez.Mongeez;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
@@ -69,16 +68,5 @@ public class DatabaseConfiguration extends AbstractMongoConfiguration {
         converters.add(DateToLocalDateTimeConverter.INSTANCE);
         converters.add(LocalDateTimeToDateConverter.INSTANCE);
         return new CustomConversions(converters);
-    }
-
-    @Bean
-    public Mongeez mongeez() {
-        log.debug("Configuring Mongeez");
-        Mongeez mongeez = new Mongeez();
-        mongeez.setFile(new ClassPathResource("/config/mongeez/master.xml"));
-        mongeez.setMongo(mongo);
-        mongeez.setDbName(mongoProperties.getDatabase());
-        mongeez.process();
-        return mongeez;
     }
 }
