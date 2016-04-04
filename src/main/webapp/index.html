@@ -15,6 +15,7 @@
     <!-- endbuild -->
     <!-- build:css content/css/main.css -->
     <link rel="stylesheet" href="content/css/main.css">
+    <link rel="stylesheet" href="content/css/main_custom.css">
     <!-- endbuild -->
 </head>
 <body ng-app="jiraReportApp">
@@ -23,8 +24,8 @@
     <![endif]-->
     <div ng-show="{{ENV === 'dev'}}" class="development" ng-cloak></div>
     <div ui-view="navbar" ng-cloak></div>
-    <div class="container">
-        <div class="well" ui-view="content"></div>
+    <div>
+        <div  ui-view="content"></div>
 
         <div class="footer" ng-cloak>
             <p>This is your footer</p>
@@ -58,6 +59,8 @@
     <script src="bower_components/json3/lib/json3.js"></script>
     <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
     <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
+    <script src="bower_components/jquery.easing/js/jquery.easing.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -152,6 +155,11 @@
     <script src="app/account/password/password-strength-bar.directive.js"></script>
     <script src="app/account/activate/activate.state.js"></script>
     <script src="app/account/activate/activate.controller.js"></script>
+    <script src="app/lib/wow.min.js"></script>
+    <script src="app/lib/jquery.fittext.js"></script>
+    <script src="app/lib/jiraReport.js"></script>
+    <script src="app/lib/classie.js"></script>
+    <script src="app/lib/cbpAnimatedHeader.js"></script>
     <script src="app/home/home.state.js"></script>
     <script src="app/home/home.controller.js"></script>
     <script src="app/entities/entity.state.js"></script>
@@ -161,6 +169,8 @@
     <script src="app/app.constants.js"></script>
     <!-- endinject -->
     <!-- endbuild -->
+
+
 
 </body>
 </html>

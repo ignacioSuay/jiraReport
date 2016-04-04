@@ -27,6 +27,8 @@ module.exports = function (config) {
             'src/main/webapp/bower_components/json3/lib/json3.js',
             'src/main/webapp/bower_components/ng-file-upload/ng-file-upload.js',
             'src/main/webapp/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
+            'src/main/webapp/bower_components/jquery.easing/js/jquery.easing.js',
+            'src/main/webapp/bower_components/angular-animate/angular-animate.js',
             'src/main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'src/main/webapp/app/app.module.js',
