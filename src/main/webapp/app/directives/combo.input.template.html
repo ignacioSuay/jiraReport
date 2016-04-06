@@ -1,0 +1,15 @@
+<div class="input-group">
+    <div class="input-group-btn">
+        <button type="button" class="btn btn-default " data-toggle="dropdown" aria-expanded="false">{{searchField.text}} <span class="caret"></span></button>
+        <ul class="dropdown-menu" role="menu">
+            <li ng-repeat="elem in listElements track by $index" ng-click="clickList(elem)"><a>{{elem.text}}</a></li>
+            </ul>
+        </div>
+    <input type="text" class="form-control" ww-enter="clickEnter()" ng-model="searchText" ng-show="searchField.type==='text'" />
+    <div class="input-group-btn" ng-show="searchField.type==='drop'">
+        <button type="button" class="btn btn-default " data-toggle="dropdown" aria-expanded="false">{{searchText}} <span class="caret"></span></button>
+        <ul class="dropdown-menu" role="menu">
+        <li ng-repeat="item in searchField.items track by $index" ng-click="clickDropDownList(item)"><a>{{item}}</a></li>
+        </ul>
+    </div>
+</div>
