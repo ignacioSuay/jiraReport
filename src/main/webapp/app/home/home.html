@@ -42,8 +42,29 @@
             <br>
             <h3>Select the tables you would like to add:</h3>
 
-            <is-combo-input  list-elements="tables" click-fn="search()" search-field="filter.field" ></is-combo-input>
-
+            <!--<is-combo-input  list-elements="tables" click-fn="search()" search-field="filter.field" ></is-combo-input>-->
+            <div class="btn-group" dropdown>
+                <button type="button" class="btn btn-danger" ng-click="submit()" uib-dropdown-toggle>{{selectedAction.name}}</button>
+                <button type="button" class="btn btn-danger dropdown-toggle">
+                    <span class="caret"></span>
+                    <span class="sr-only">Split button!</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="action in actions">
+                        <a href="#" ng-click="setAction(action)">{{action.name}}</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="btn-group" uib-dropdown is-open="status.isopen">
+                <button id="single-button" type="button" class="btn btn-success btn-lg" uib-dropdown-toggle>
+                    {{selectedAction.name}} <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                    <li ng-repeat="action in actions">
+                        <a ng-click="setAction(action)">{{action.name}}</a>
+                    </li>
+                </ul>
+            </div>
 
 
 

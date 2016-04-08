@@ -25,5 +25,19 @@
                 vm.isAuthenticated = Principal.isAuthenticated;
             });
         }
+
+        $scope.actions = [
+            {id: 't1', name: 'Action 1'},
+            {id: 't2', name: 'Action 2'},
+            {id: 't3', name: 'Action 3'}
+        ];
+        $scope.selectedAction = $scope.actions[0];
+        $scope.setAction = function(action) {
+            $scope.selectedAction = action;
+            $scope.submit();
+        };
+        $scope.submit = function() {
+            console.log($scope.selectedAction.id);
+        };
     }
 })();
