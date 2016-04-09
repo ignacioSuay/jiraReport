@@ -5941,3 +5941,6 @@ header .header-content .header-content-inner p {
   .navbar-default.affix .nav > li > a:hover,
   .navbar-default.affix .nav > li > a:focus:hover {
     color: #499BEA; } }
+
+.active {
+  color: #499BEA !important; }
