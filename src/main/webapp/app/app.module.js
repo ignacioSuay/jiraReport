@@ -19,6 +19,9 @@
         ])
         .run(run);
 
+    //Add an offset of 20 pixels for the angular-scroll
+    angular.module('jiraReportApp').value('duScrollOffset', 30);
+
     run.$inject = ['stateHandler'];
 
     function run(stateHandler) {
