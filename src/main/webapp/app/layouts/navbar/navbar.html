@@ -12,7 +12,7 @@
         <div class="collapse navbar-collapse" id="navbar-collapse" uib-collapse="vm.navCollapsed" ng-switch="vm.isAuthenticated()">
             <ul class="nav navbar-nav navbar-right">
                 <li ui-sref-active="active">
-                    <a ui-sref="home" ng-click="vm.navCollapsed = true">
+                    <a  href="#home"  du-smooth-scroll du-scrollspy>
                         <span class="glyphicon glyphicon-home"></span>
                         <span class="hidden-sm">Home</span>
                     </a>
@@ -30,7 +30,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#about" du-smooth-scroll du-scrollspy>
+                    <a href="#author" du-smooth-scroll du-scrollspy>
                         <span class="glyphicon glyphicon-user"></span>
                         <span class="hidden-sm">About the Author</span>
                     </a>
