@@ -1,7 +1,5 @@
 package com.suay.jirareport.domain;
 
-import org.wwarn.jira.report.JiraNode;
-
 import java.util.Date;
 import java.util.List;
 
