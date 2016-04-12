@@ -11,3 +11,7 @@ type=Epic or (sprint=7 and status=Done)
 or
 
 type=Epic or  resolved >= -2w
+
+or
+
+type=Epic or type=Story or  resolved >= -2w
