@@ -40,7 +40,7 @@ public class ReportServiceTest {
 
 
     private List<Issue> getListIssues() throws Exception {
-        File file = new File("/home/suay/ignacioSuay/jiraReport/src/test/resources/sprint8.xml");
+        File file = new File("/home/suay/ignacioSuay/jiraReport/src/test/resources/last2weeks.xml");
         FileInputStream f = new FileInputStream(file);
         List<Issue> issueList = issueService.jiraToIssueDTO(f);
         return issueList;
