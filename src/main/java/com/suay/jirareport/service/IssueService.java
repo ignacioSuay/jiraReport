@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -104,4 +105,13 @@ public class IssueService {
     public Map<String, List<Issue>> groupIssuesBy(List<Issue>issues, JiraNode jiraNodeName){
         return issues.stream().collect(Collectors.groupingBy(i -> i.getValueByNode(jiraNodeName)));
     }
+
+    public Set<Issue> getEpics(List<Issue> issues){
+        return issues.stream().filter(i -> "Epic".equals(i.getType())).collect(Collectors.toSet());
+    }
+
+    public Set<Issue> getStories(List<Issue> issues){
+        return issues.stream().filter(i -> "Story".equals(i.getType())).collect(Collectors.toSet());
+    }
+
 }

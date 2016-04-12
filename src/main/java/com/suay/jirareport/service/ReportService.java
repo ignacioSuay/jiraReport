@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -25,7 +26,12 @@ public class ReportService {
     @Autowired
     IssueService issueService;
 
+    Set<Issue> epics;
+
+    Set<Issue> stories;
+
     public void createWordDocument(List<Issue> issues, String template) throws IOException {
+        loadData(issues);
         Resource resource = new ClassPathResource(template);
         XWPFDocument doc = new XWPFDocument(resource.getInputStream());
 
@@ -45,6 +51,11 @@ public class ReportService {
         doc.write(out);
         out.close();
 
+    }
+
+    private void loadData(List<Issue> issues) {
+        epics = issueService.getEpics(issues);
+        stories = issueService.getStories(issues);
     }
 
     private void changeTitle(XWPFDocument doc, String title) {
@@ -149,7 +160,7 @@ public class ReportService {
         if("not found".equals(key))
             return "unassigned";
 
-        return issues.stream().filter(i -> "Epic".equals(i.getType()))
+        return epics.stream()
                 .filter(i -> i.getKey().equals(key))
                 .map(Issue::getTitleName)
                 .findFirst()
@@ -182,6 +193,8 @@ public class ReportService {
         XWPFRun r1 = p.createRun();
         r1.setText(title);
     }
+
+
 
 
 
