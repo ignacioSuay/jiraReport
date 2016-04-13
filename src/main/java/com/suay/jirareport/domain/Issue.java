@@ -230,6 +230,10 @@ public class Issue {
         return "Epic".equals(type);
     }
 
+    public boolean isStory(){
+        return "Story".equals(type);
+    }
+
     public String getCustomFieldValue(String field){
         return customFields.stream()
                 .filter(cf -> field.equals(cf.getName()))
