@@ -40,6 +40,9 @@ public class ReportService {
         addSection(doc, "Epic Summary");
         createSummaryTable(issues,doc);
 
+        addSection(doc, "Tasks completed by Epic");
+        createEpicTables(issues, doc);
+
         addSection(doc, "Tasks completed by Assignee");
         createAssigneeTable(issues, doc);
 
@@ -104,7 +107,7 @@ public class ReportService {
 
     public void createSummaryTable(List<Issue> issues, XWPFDocument doc){
 
-        Map<String, Integer> collect = issues.stream().filter(i-> !i.isEpic()).collect(Collectors.groupingBy(i -> i.getValueByNode(JiraNode.EPIC_LINK),
+        Map<String, Integer> collect = issues.stream().filter(i-> !i.isEpic() && !i.isStory()).collect(Collectors.groupingBy(i -> i.getValueByNode(JiraNode.EPIC_LINK),
                 Collectors.summingInt(Issue::getTimeEstimateInSeconds)));
 
         XWPFTable table = doc.createTable(collect.keySet().size()+1, 2);
@@ -126,7 +129,7 @@ public class ReportService {
 
     public void createAssigneeTable(List<Issue> issues, XWPFDocument doc) {
         Map<String, List<Issue>> collect = issues.stream()
-                .filter(i -> !i.isEpic())
+                .filter(i -> !i.isEpic() && !i.isStory())
                 .collect(Collectors.groupingBy(i -> i.getValueByNode(JiraNode.ASSIGNEE)));
 
 
@@ -153,6 +156,37 @@ public class ReportService {
             Integer totalTime = issuesPerAssignee.stream().collect(Collectors.summingInt(Issue::getTimeEstimateInSeconds));
             table.getRow(row).getCell(2).setText(secondsToDDHH(totalTime));
 
+        }
+    }
+
+    public void createEpicTables(List<Issue> issues, XWPFDocument doc){
+        Map<String, List<Issue>> collect = issues.stream()
+            .filter(i -> !i.isEpic() && !i.isStory())
+            .collect(Collectors.groupingBy(i -> i.getValueByNode(JiraNode.EPIC_LINK)));
+
+        for(String epic: collect.keySet()){
+            String epicTitle = getEpicTitle(issues, epic);
+
+            addSubSection(doc, epicTitle + " tasks");
+            XWPFTable table = doc.createTable(collect.get(epic).size()+2, 3);
+            table.getCTTbl().getTblPr().unsetTblBorders();
+            table.setStyleID("LightShading-Accent1");
+
+            table.getRow(0).getCell(0).setText("Epic");
+            table.getRow(0).getCell(1).setText("Task");
+            table.getRow(0).getCell(2).setText("Estimated Time");
+            int row = 1;
+            List<Issue> issuesPerEpic = collect.get(epic);
+            for(Issue issue: issuesPerEpic){
+                table.getRow(row).getCell(0).setText(issue.getKey());
+                table.getRow(row).getCell(1).setText(issue.getTitleName());
+                table.getRow(row).getCell(2).setText(issue.getTimeOriginalEstimate());
+                row++;
+            }
+            table.getRow(row).getCell(0).setText("Total");
+            table.getRow(row).getCell(1).setText("");
+            Integer totalTime = issuesPerEpic.stream().collect(Collectors.summingInt(Issue::getTimeEstimateInSeconds));
+            table.getRow(row).getCell(2).setText(secondsToDDHH(totalTime));
         }
     }
 
