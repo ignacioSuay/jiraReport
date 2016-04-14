@@ -1,11 +1,10 @@
 package com.suay.jirareport.service;
 
-import com.suay.jirareport.domain.Issue;
-import com.suay.jirareport.domain.JiraNode;
+import com.suay.jirareport.domain.jira.Issue;
+import com.suay.jirareport.domain.jira.JiraNode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
@@ -44,5 +43,11 @@ public class IssueServiceTest {
         FileInputStream f = new FileInputStream(file);
         List<Issue> issueList = issueService.jiraToIssueDTO(f);
         return issueList;
+    }
+
+    @Test
+    public void getDomainModel throws Exception{
+        File file = new File("/home/suay/ignacioSuay/jiraReport/src/test/resources/last2weeks.xml");
+
     }
 }

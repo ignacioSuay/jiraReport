@@ -1,7 +1,7 @@
 package com.suay.jirareport.service;
 
-import com.suay.jirareport.domain.Issue;
-import com.suay.jirareport.domain.JiraNode;
+import com.suay.jirareport.domain.jira.Issue;
+import com.suay.jirareport.domain.jira.JiraNode;
 import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -107,7 +107,7 @@ public class ReportService {
 
     public void createSummaryTable(List<Issue> issues, XWPFDocument doc){
 
-        Map<String, Integer> collect = issues.stream().filter(i-> !i.isEpic() && !i.isStory()).collect(Collectors.groupingBy(i -> i.getValueByNode(JiraNode.EPIC_LINK),
+        Map<String, Integer> collect = issues.stream().filter(i-> !i.isEpic() && !i.isStoryUnresolved()).collect(Collectors.groupingBy(i -> i.getValueByNode(JiraNode.EPIC_LINK),
                 Collectors.summingInt(Issue::getTimeEstimateInSeconds)));
 
         XWPFTable table = doc.createTable(collect.keySet().size()+1, 2);
@@ -129,7 +129,7 @@ public class ReportService {
 
     public void createAssigneeTable(List<Issue> issues, XWPFDocument doc) {
         Map<String, List<Issue>> collect = issues.stream()
-                .filter(i -> !i.isEpic() && !i.isStory())
+                .filter(i -> !i.isEpic() && !i.isStoryUnresolved())
                 .collect(Collectors.groupingBy(i -> i.getValueByNode(JiraNode.ASSIGNEE)));
 
 

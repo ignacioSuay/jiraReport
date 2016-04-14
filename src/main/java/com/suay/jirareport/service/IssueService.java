@@ -1,8 +1,6 @@
 package com.suay.jirareport.service;
 
-import com.suay.jirareport.domain.CustomField;
-import com.suay.jirareport.domain.Issue;
-import com.suay.jirareport.domain.JiraNode;
+import com.suay.jirareport.domain.jira.*;
 import com.sun.org.apache.xerces.internal.parsers.DOMParser;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
@@ -16,10 +14,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -60,6 +55,7 @@ public class IssueService {
         issue.setReporter(getNodeValue(item, JiraNode.REPORTER.getName()).trim());
         issue.setTimeEstimate(getNodeValue(item, JiraNode.TIME_ESTIMATE.getName()).trim());
         issue.setTimeOriginalEstimate(getNodeValue(item, JiraNode.TIME_ORIGINAL_ESTIMATE.getName()).trim());
+        issue.setParent(getNodeValue(item, JiraNode.PARENT.getName()).trim());
         String estimateInSec = getAttributeValue(item, JiraNode.TIME_ORIGINAL_ESTIMATE.getName(), JiraNode.SECONDS.getName());
         if(!estimateInSec.isEmpty()) issue.setTimeEstimateInSeconds(Integer.parseInt(estimateInSec));
 
@@ -114,4 +110,36 @@ public class IssueService {
         return issues.stream().filter(i -> "Story".equals(i.getType())).collect(Collectors.toSet());
     }
 
+    /**
+     * structure the list of issues into Epics and Stories
+     * @param issues
+     * @return
+     */
+    public Set<Epic> getDataModel(List<Issue> issues){
+        Set<Epic> epics = new HashSet<>();
+        Set<Issue> allEpics = getEpics(issues);
+        Map<String, List<Issue>> epicIssues = issues.stream()
+            .filter(i -> !i.isEpic())
+            .collect(Collectors.groupingBy(i -> i.getValueByNode(JiraNode.EPIC_LINK)));
+
+        for(String epicLink : epicIssues.keySet()){
+            Optional<Issue> epicIssue = allEpics.stream().filter(e -> e.getKey().equals(epicLink)).findAny();
+            if(epicIssue.isPresent()){
+                Epic epic = new Epic();
+                epic.setEpicIssue(epicIssue.get());
+                List<Issue> issuesPerEpic = epicIssues.get(epicLink);
+                epic.setSubIsues(issuesPerEpic);
+                Set<Issue> stories = getStories(issuesPerEpic);
+                for(Issue story : stories){
+                    Story newStory = new Story();
+                    newStory.setEpic(epicIssue.get());
+                    newStory.setStoryIssue(story);
+                    newStory.setSubTasks(issuesPerEpic.stream().filter(i -> "Sub-task".equals(i.getType()) && story.getKey().equals(i.getParent())).collect(Collectors.toList()));
+                    epic.getStories().add(newStory);
+                }
+                epics.add(epic);
+            }
+        }
+        return epics;
+    }
 }

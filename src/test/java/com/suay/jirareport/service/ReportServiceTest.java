@@ -1,13 +1,12 @@
 package com.suay.jirareport.service;
 
 import com.suay.jirareport.JiraReportApp;
-import com.suay.jirareport.domain.Issue;
+import com.suay.jirareport.domain.jira.Issue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
