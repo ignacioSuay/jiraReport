@@ -1,4 +1,4 @@
-package com.suay.jirareport.domain;
+package com.suay.jirareport.domain.jira;
 
 /**
  * Created by suay on 1/15/16.

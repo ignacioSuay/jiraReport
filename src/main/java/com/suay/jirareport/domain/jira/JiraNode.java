@@ -1,4 +1,4 @@
-package com.suay.jirareport.domain;
+package com.suay.jirareport.domain.jira;
 
 /**
  * Created by suay on 1/13/16.
@@ -26,7 +26,8 @@ public enum JiraNode {
     CUSTOM_FIELD_VALUE("customfieldvalue"),
     SPRINT("Sprint"),
     EPIC_LINK("Epic Link"),
-    SECONDS("seconds");
+    SECONDS("seconds"),
+    PARENT("parent");
 
 
     private String name;

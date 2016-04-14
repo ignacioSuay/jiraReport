@@ -1,4 +1,4 @@
-package com.suay.jirareport.domain;
+package com.suay.jirareport.domain.jira;
 
 import java.util.Date;
 import java.util.List;
@@ -40,6 +40,8 @@ public class Issue {
     String timeOriginalEstimate;
 
     int timeEstimateInSeconds;
+
+    String parent;
 
     List<CustomField> customFields;
 
@@ -179,6 +181,14 @@ public class Issue {
         this.timeOriginalEstimate = timeOriginalEstimate;
     }
 
+    public String getParent() {
+        return parent;
+    }
+
+    public void setParent(String parent) {
+        this.parent = parent;
+    }
+
     public String getValueByNode(JiraNode node){
         String res = null;
 
@@ -217,6 +227,8 @@ public class Issue {
                 res = getCustomFieldValue(JiraNode.EPIC_LINK.getName());break;
             case SECONDS:
                 res = Integer.toString(getTimeEstimateInSeconds());break;
+            case PARENT:
+                res = getParent();break;
         }
 
         return res;
@@ -232,6 +244,10 @@ public class Issue {
 
     public boolean isStory(){
         return "Story".equals(type);
+    }
+
+    public boolean isStoryUnresolved(){
+        return "Story".equals(type) && !"Done".equals(resolution);
     }
 
     public String getCustomFieldValue(String field){
