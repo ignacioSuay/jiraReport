@@ -26,18 +26,13 @@
             });
         }
 
-        $scope.actions = [
-            {id: 't1', name: 'Action 1'},
-            {id: 't2', name: 'Action 2'},
-            {id: 't3', name: 'Action 3'}
+        $scope.reportTables= [
+            {id: '1', name: 'All the issues'},
+            {id: '2', name: 'Epic Summary'},
+            {id: '3', name: 'Story Summay'},
+            {id: '4', name: 'Bugs summary'},
+            {id: '5', name: 'Tasks Summary'},
+            {id: '6', name: 'Issues by owner'}
         ];
-        $scope.selectedAction = $scope.actions[0];
-        $scope.setAction = function(action) {
-            $scope.selectedAction = action;
-            $scope.submit();
-        };
-        $scope.submit = function() {
-            console.log($scope.selectedAction.id);
-        };
     }
 })();
