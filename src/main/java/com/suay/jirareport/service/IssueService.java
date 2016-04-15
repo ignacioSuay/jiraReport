@@ -134,7 +134,7 @@ public class IssueService {
                     Story newStory = new Story();
                     newStory.setEpic(epicIssue.get());
                     newStory.setStoryIssue(story);
-                    newStory.setSubTasks(issuesPerEpic.stream().filter(i -> "Sub-task".equals(i.getType()) && story.getKey().equals(i.getParent())).collect(Collectors.toList()));
+                    newStory.setSubTasks(issues.stream().filter(i -> "Sub-task".equals(i.getType()) && story.getKey().equals(i.getParent())).collect(Collectors.toList()));
                     epic.getStories().add(newStory);
                 }
                 epics.add(epic);
