@@ -1,5 +1,6 @@
 package com.suay.jirareport.service;
 
+import com.suay.jirareport.domain.jira.Epic;
 import com.suay.jirareport.domain.jira.Issue;
 import com.suay.jirareport.domain.jira.JiraNode;
 import org.junit.Test;
@@ -12,6 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertNotNull;
@@ -46,8 +48,11 @@ public class IssueServiceTest {
     }
 
     @Test
-    public void getDomainModel throws Exception{
-        File file = new File("/home/suay/ignacioSuay/jiraReport/src/test/resources/last2weeks.xml");
-
+    public void getDomainModel() throws Exception{
+        File file = new File("/home/natxo/dev/jiraReport/src/test/resources/last2weeks.xml");
+        FileInputStream f = new FileInputStream(file);
+        List<Issue> issueList = issueService.jiraToIssueDTO(f);
+        Set<Epic> dataModel = issueService.getDataModel(issueList);
+        assertNotNull(dataModel);
     }
 }
