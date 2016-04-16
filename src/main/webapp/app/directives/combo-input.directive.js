@@ -20,8 +20,7 @@ angular.module('jiraReportApp')
             scope:{
                 listElements:"=",
                 clickFn: "&",
-                searchField: "=?",
-                searchText: "=?"
+                selectedAction: "=ngModel"
             },
             templateUrl: 'app/directives/combo.input.template.html',
             link: function($scope){
