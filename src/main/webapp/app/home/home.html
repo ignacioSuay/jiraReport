@@ -30,50 +30,36 @@
             </div>
             <div class="form-group input-group input-group-lg">
                 <span class="input-group-addon">Title</span>
-                <input type="text" class="form-control" ng-model="vm.report.title" placeholder="e.g. Sprint 1 Report"/>
+                <input type="text" class="form-control" ng-model="title" placeholder="e.g. Sprint 1 Report"/>
             </div>
 
             <div class="form-group input-group input-group-lg">
-                <span class="input-group-addon">Author</span>
-                <input type="text" class="form-control" ng-model="vm.report.authors" placeholder="e.g. John Smith"/>
+                <span class="input-group-addon">Author(s)</span>
+                <input type="text" class="form-control" ng-model="authors" placeholder="e.g. John Smith"/>
             </div>
 
             <br>
+            <hr/>
+            <div class="well">
             <h3>Select the tables you would like to add:</h3>
 
-
-            <suay-combo-input list-elements="reportTables"/>
-
-
+            <div ng-repeat="section in sections" class="margin10">
+                <suay-combo-input list-elements="reportTables" ng-model="section.action"/>
+                <div class="margin10">
+                    Columns:
+                    <div ng-repeat="column in section.action.columns" style="display: inline-block">
+                        <input type="checkbox" class="margin10" ng-model="section.columns[column]"><span class="margin10">{{column}}</span>
+                    </div>
+                </div>
+                <button class="btn btn-danger" ng-click="removeSection($index)">remove section</button>01
+            </div>
+            <button class="btn btn-primary" ng-click="addSection()"><span class="glyphicon glyphicon-plus"/>add section</button>
+                <br/><br/>
+            <button class="btn btn-success btn-lg" ng-click="sendData()">Send data</button>
+            </div>
 
 
         </div>
-        <!--<div class="row text-center">-->
-            <!--<div class="col-md-4">-->
-                    <!--<span class="fa-stack fa-4x">-->
-                        <!--<i class="fa fa-circle fa-stack-2x text-primary"></i>-->
-                        <!--<i class="fa fa-shopping-cart fa-stack-1x fa-inverse"></i>-->
-                    <!--</span>-->
-                <!--<h4 class="service-heading">E-Commerce</h4>-->
-                <!--<p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>-->
-            <!--</div>-->
-            <!--<div class="col-md-4">-->
-                    <!--<span class="fa-stack fa-4x">-->
-                        <!--<i class="fa fa-circle fa-stack-2x text-primary"></i>-->
-                        <!--<i class="fa fa-laptop fa-stack-1x fa-inverse"></i>-->
-                    <!--</span>-->
-                <!--<h4 class="service-heading">Responsive Design</h4>-->
-                <!--<p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>-->
-            <!--</div>-->
-            <!--<div class="col-md-4">-->
-                    <!--<span class="fa-stack fa-4x">-->
-                        <!--<i class="fa fa-circle fa-stack-2x text-primary"></i>-->
-                        <!--<i class="fa fa-lock fa-stack-1x fa-inverse"></i>-->
-                    <!--</span>-->
-                <!--<h4 class="service-heading">Web Security</h4>-->
-                <!--<p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>-->
-            <!--</div>-->
-        <!--</div>-->
     </div>
     <br><br><br><br><br>
 </section>
