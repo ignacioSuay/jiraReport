@@ -1,6 +1,7 @@
 package com.suay.jirareport.service;
 
 import com.suay.jirareport.JiraReportApp;
+import com.suay.jirareport.UtilTest;
 import com.suay.jirareport.domain.jira.Issue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import javax.inject.Inject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
@@ -30,6 +32,9 @@ public class ReportServiceTest {
     @Autowired
     ReportService reportService;
 
+    @Inject
+    UtilTest utilTest;
+
 
     @Test
     public void testCreateWordDocument() throws Exception {
@@ -39,7 +44,7 @@ public class ReportServiceTest {
 
 
     private List<Issue> getListIssues() throws Exception {
-        File file = new File("/home/suay/ignacioSuay/jiraReport/src/test/resources/last2weeks.xml");
+        File file = utilTest.loadFileFromResources("last2weeks.xml");
         FileInputStream f = new FileInputStream(file);
         List<Issue> issueList = issueService.jiraToIssueDTO(f);
         return issueList;

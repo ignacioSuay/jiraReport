@@ -1,14 +1,19 @@
 package com.suay.jirareport.service;
 
+import com.suay.jirareport.JiraReportApp;
+import com.suay.jirareport.UtilTest;
 import com.suay.jirareport.domain.jira.Epic;
 import com.suay.jirareport.domain.jira.Issue;
 import com.suay.jirareport.domain.jira.JiraNode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 
+import javax.inject.Inject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
@@ -19,14 +24,19 @@ import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = JiraReportApp.class)
+@WebAppConfiguration
 public class IssueServiceTest {
 
     @Autowired
     IssueService issueService;
 
+    @Inject
+    UtilTest utilTest;
+
     @Test
     public void testJiraToIssueDTO() throws Exception {
-        File file = new File("/home/suay/dev/jiraReportGenerator/src/test/resources/sprint7.xml");
+        File file = utilTest.loadFileFromResources("sprint7.xml");
         FileInputStream f = new FileInputStream(file);
         List<Issue> issueList = issueService.jiraToIssueDTO(f);
         assertNotNull(issueList);
@@ -41,7 +51,7 @@ public class IssueServiceTest {
     }
 
     private List<Issue> getListIssues() throws Exception {
-        File file = new File("/home/suay/dev/jiraReportGenerator/src/test/resources/sprint7.xml");
+        File file = utilTest.loadFileFromResources("sprint7.xml");
         FileInputStream f = new FileInputStream(file);
         List<Issue> issueList = issueService.jiraToIssueDTO(f);
         return issueList;
@@ -49,10 +59,13 @@ public class IssueServiceTest {
 
     @Test
     public void getDomainModel() throws Exception{
-        File file = new File("/home/natxo/dev/jiraReport/src/test/resources/last2weeks.xml");
+        File file = utilTest.loadFileFromResources("last2weeks.xml");
         FileInputStream f = new FileInputStream(file);
         List<Issue> issueList = issueService.jiraToIssueDTO(f);
         Set<Epic> dataModel = issueService.getDataModel(issueList);
+
         assertNotNull(dataModel);
     }
+
+
 }
