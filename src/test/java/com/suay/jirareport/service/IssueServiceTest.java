@@ -22,6 +22,7 @@ import java.util.Set;
 
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertNotNull;
+import static org.assertj.core.api.Assertions.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = JiraReportApp.class)
@@ -63,8 +64,7 @@ public class IssueServiceTest {
         FileInputStream f = new FileInputStream(file);
         List<Issue> issueList = issueService.jiraToIssueDTO(f);
         Set<Epic> dataModel = issueService.getDataModel(issueList);
-
-        assertNotNull(dataModel);
+        assertThat(dataModel.size()).isGreaterThan(0);
     }
 
 
