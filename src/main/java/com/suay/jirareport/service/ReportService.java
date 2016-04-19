@@ -1,13 +1,14 @@
 package com.suay.jirareport.service;
 
-import com.suay.jirareport.domain.jira.Issue;
-import com.suay.jirareport.domain.jira.JiraNode;
+import com.suay.jirareport.domain.jira.*;
 import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
+import org.xml.sax.SAXException;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
@@ -29,6 +30,40 @@ public class ReportService {
     Set<Issue> epics;
 
     Set<Issue> stories;
+
+
+    public void createWordDocument(FileInputStream file, ReportDTO reportDTO, String template) throws IOException, SAXException {
+        List<Issue> issues = issueService.jiraToIssueDTO(file);
+
+        loadData(issues);
+        Resource resource = new ClassPathResource(template);
+        XWPFDocument doc = new XWPFDocument(resource.getInputStream());
+
+        changeTitle(doc, reportDTO.getTitle());
+        changeAuthors(doc, reportDTO.getAuthors());
+
+        for(Section section: reportDTO.getSections()){
+            if(SectionName.ALL_ISSUES == section.getName()){
+                addSection(doc, "List of all issues");
+                List<JiraNode> fields = Arrays.asList(JiraNode.TITLE, JiraNode.ASSIGNEE, JiraNode.CREATED, JiraNode.SPRINT, JiraNode.EPIC_LINK);
+                createTableByFields(issues, fields, doc);
+            }else if(SectionName.EPIC_SUMMARY == section.getName()){
+                addSection(doc, "Epic Summary");
+                createSummaryTable(issues,doc);
+            }else if(SectionName.TASKS_PER_EPIC == section.getName()){
+                addSection(doc, "Tasks completed by Epic");
+                createEpicTables(issues, doc);
+            }else if(SectionName.TASKS_BY_ASSIGNEE == section.getName()){
+                addSection(doc, "Tasks completed by Assignee");
+                createAssigneeTable(issues, doc);
+            }
+        }
+        FileOutputStream out = new FileOutputStream("simple.docx");
+        doc.write(out);
+        out.close();
+    }
+
+
 
     public void createWordDocument(List<Issue> issues, String template) throws IOException {
         loadData(issues);
@@ -65,6 +100,9 @@ public class ReportService {
         replaceText(doc, "templateTitle", title);
     }
 
+    private void changeAuthors(XWPFDocument doc, String authors) {
+        replaceText(doc, "templateAuthors", authors);
+    }
     private void replaceText(XWPFDocument doc, String textToFind, String textToReplace) {
         for (XWPFParagraph p : doc.getParagraphs()) {
             List<XWPFRun> runs = p.getRuns();
