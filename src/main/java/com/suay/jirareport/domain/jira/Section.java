@@ -8,15 +8,21 @@ import java.util.Map;
  */
 public class Section {
 
-    String name;
+    SectionName name;
 
     Map<String, Boolean> columns = new HashMap<>();
 
-    public String getName() {
+    public Section(){}
+
+    public Section(SectionName name) {
+        this.name = name;
+    }
+
+    public SectionName getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(SectionName name) {
         this.name = name;
     }
 
