@@ -14,6 +14,13 @@ public class ReportDTO {
 
     List<Section> sections = new ArrayList<>();
 
+    public ReportDTO(){}
+
+    public ReportDTO(String title, String authors) {
+        this.title = title;
+        this.authors = authors;
+    }
+
     public String getTitle() {
         return title;
     }
