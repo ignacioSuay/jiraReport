@@ -49,7 +49,7 @@ public class ReportService {
                 createTableByFields(issues, fields, doc);
             }else if(SectionName.EPIC_SUMMARY == section.getName()){
                 addSection(doc, "Epic Summary");
-                createSummaryTable(issues,doc);
+                createSummaryTable(issues,doc, section);
             }else if(SectionName.TASKS_PER_EPIC == section.getName()){
                 addSection(doc, "Tasks completed by Epic");
                 createEpicTables(issues, doc);
@@ -162,6 +162,42 @@ public class ReportService {
             int timeInSeconds = collect.get(key);
             table.getRow(row).getCell(1).setText(secondsToDDHH(timeInSeconds));
             row++;
+        }
+    }
+
+    public void createSummaryTable(List<Issue> issues, XWPFDocument doc, Section section){
+
+        Map<String, Integer> collect = issues.stream().filter(i-> !i.isEpic() && !i.isStoryUnresolved()).collect(Collectors.groupingBy(i -> i.getValueByNode(JiraNode.EPIC_LINK),
+            Collectors.summingInt(Issue::getTimeEstimateInSeconds)));
+
+        XWPFTable table = doc.createTable(collect.keySet().size()+1, section.getColumns().size());
+        table.setStyleID("LightShading-Accent1");
+        table.getCTTbl().getTblPr().unsetTblBorders();
+
+        addColumnsToTable(table, section.getColumns());
+
+        int row = 1;
+        for(String key: collect.keySet()){
+            int col = 0;
+            for(ColumnName column: section.getColumns()){
+                if(column.equals(ColumnName.EPIC)){
+                    String epicTitle = getEpicTitle(issues, key);
+                    table.getRow(row).getCell(col).setText(epicTitle);
+                }else if(column.equals(ColumnName.TIME_ESTIMATE)){
+                    int timeInSeconds = collect.get(key);
+                    table.getRow(row).getCell(col).setText(secondsToDDHH(timeInSeconds));
+                }
+                col++;
+            }
+            row++;
+        }
+    }
+
+    private void addColumnsToTable(XWPFTable table, List<ColumnName> columns){
+        int i = 0;
+        for(ColumnName column: columns){
+            table.getRow(0).getCell(i).setText(column.name());
+            i++;
         }
     }
 

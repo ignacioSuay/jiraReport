@@ -2,10 +2,7 @@ package com.suay.jirareport.service;
 
 import com.suay.jirareport.JiraReportApp;
 import com.suay.jirareport.UtilTest;
-import com.suay.jirareport.domain.jira.Issue;
-import com.suay.jirareport.domain.jira.ReportDTO;
-import com.suay.jirareport.domain.jira.Section;
-import com.suay.jirareport.domain.jira.SectionName;
+import com.suay.jirareport.domain.jira.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +15,7 @@ import javax.inject.Inject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -62,7 +60,9 @@ public class ReportServiceTest {
 
         ReportDTO reportDTO = new ReportDTO("Title test", "Ignacio Suay");
         List<Section> sections = new ArrayList<>();
-        sections.add(new Section(SectionName.EPIC_SUMMARY));
+        Section epicSection = new Section(SectionName.EPIC_SUMMARY);
+        epicSection.setColumns(Arrays.asList(ColumnName.EPIC, ColumnName.TIME_ESTIMATE));
+        sections.add(epicSection);
         sections.add(new Section(SectionName.TASKS_PER_EPIC));
         sections.add(new Section(SectionName.TASKS_BY_ASSIGNEE));
         sections.add(new Section(SectionName.ALL_ISSUES));
