@@ -45,7 +45,7 @@ public class ReportService {
         for(Section section: reportDTO.getSections()){
             if(SectionName.ALL_ISSUES == section.getName()){
                 addSection(doc, "List of all issues");
-                List<JiraNode> fields = Arrays.asList(JiraNode.TITLE, JiraNode.ASSIGNEE, JiraNode.CREATED, JiraNode.SPRINT, JiraNode.EPIC_LINK);
+                List<FieldName> fields = Arrays.asList(FieldName.TITLE, FieldName.ASSIGNEE, FieldName.CREATED, FieldName.SPRINT, FieldName.EPIC_LINK);
                 createTableByFields(issues, fields, doc);
             }else if(SectionName.EPIC_SUMMARY == section.getName()){
                 addSection(doc, "Epic Summary");
@@ -82,7 +82,7 @@ public class ReportService {
         createAssigneeTable(issues, doc);
 
         addSection(doc, "List of all issues");
-        List<JiraNode> fields = Arrays.asList(JiraNode.TITLE, JiraNode.ASSIGNEE, JiraNode.CREATED, JiraNode.SPRINT, JiraNode.EPIC_LINK);
+        List<FieldName> fields = Arrays.asList(FieldName.TITLE, FieldName.ASSIGNEE, FieldName.CREATED, FieldName.SPRINT, FieldName.EPIC_LINK);
         createTableByFields(issues, fields, doc);
 
         FileOutputStream out = new FileOutputStream("simple.docx");
@@ -120,7 +120,7 @@ public class ReportService {
 
 
 
-    public void createTableByFields(List<Issue> issues, List<JiraNode> fields, XWPFDocument doc) throws IOException {
+    public void createTableByFields(List<Issue> issues, List<FieldName> fields, XWPFDocument doc) throws IOException {
 
         XWPFTable table = doc.createTable(issues.size()+1, fields.size());
         table.setStyleID("LightShading-Accent1");
@@ -130,7 +130,7 @@ public class ReportService {
             XWPFParagraph p1 = table.getRow(0).getCell(cols).getParagraphs().get(0);
             XWPFRun r1 = p1.createRun();
             r1.setBold(true);
-            r1.setText(fields.get(cols).getName().toUpperCase());
+            r1.setText(fields.get(cols).getJiraName().toUpperCase());
             r1.setItalic(true);
         }
 
@@ -143,9 +143,10 @@ public class ReportService {
         }
     }
 
+
     public void createSummaryTable(List<Issue> issues, XWPFDocument doc){
 
-        Map<String, Integer> collect = issues.stream().filter(i-> !i.isEpic() && !i.isStoryUnresolved()).collect(Collectors.groupingBy(i -> i.getValueByNode(JiraNode.EPIC_LINK),
+        Map<String, Integer> collect = issues.stream().filter(i-> !i.isEpic() && !i.isStoryUnresolved()).collect(Collectors.groupingBy(i -> i.getValueByNode(FieldName.EPIC_LINK),
                 Collectors.summingInt(Issue::getTimeEstimateInSeconds)));
 
         XWPFTable table = doc.createTable(collect.keySet().size()+1, 2);
@@ -167,23 +168,23 @@ public class ReportService {
 
     public void createSummaryTable(List<Issue> issues, XWPFDocument doc, Section section){
 
-        Map<String, Integer> collect = issues.stream().filter(i-> !i.isEpic() && !i.isStoryUnresolved()).collect(Collectors.groupingBy(i -> i.getValueByNode(JiraNode.EPIC_LINK),
+        Map<String, Integer> collect = issues.stream().filter(i-> !i.isEpic() && !i.isStoryUnresolved()).collect(Collectors.groupingBy(i -> i.getValueByNode(FieldName.EPIC_LINK),
             Collectors.summingInt(Issue::getTimeEstimateInSeconds)));
 
-        XWPFTable table = doc.createTable(collect.keySet().size()+1, section.getColumns().size());
+        XWPFTable table = doc.createTable(collect.keySet().size()+1, section.getFieldNames().size());
         table.setStyleID("LightShading-Accent1");
         table.getCTTbl().getTblPr().unsetTblBorders();
 
-        addColumnsToTable(table, section.getColumns());
+        addColumnsToTable(table, section.getFieldNames());
 
         int row = 1;
         for(String key: collect.keySet()){
             int col = 0;
-            for(ColumnName column: section.getColumns()){
-                if(column.equals(ColumnName.EPIC)){
+            for(FieldName column: section.getFieldNames()){
+                if(column.equals(FieldName.EPIC_LINK)){
                     String epicTitle = getEpicTitle(issues, key);
                     table.getRow(row).getCell(col).setText(epicTitle);
-                }else if(column.equals(ColumnName.TIME_ESTIMATE)){
+                }else if(column.equals(FieldName.TIME_ESTIMATE)){
                     int timeInSeconds = collect.get(key);
                     table.getRow(row).getCell(col).setText(secondsToDDHH(timeInSeconds));
                 }
@@ -193,9 +194,9 @@ public class ReportService {
         }
     }
 
-    private void addColumnsToTable(XWPFTable table, List<ColumnName> columns){
+    private void addColumnsToTable(XWPFTable table, List<FieldName> columns){
         int i = 0;
-        for(ColumnName column: columns){
+        for(FieldName column: columns){
             table.getRow(0).getCell(i).setText(column.name());
             i++;
         }
@@ -204,7 +205,7 @@ public class ReportService {
     public void createAssigneeTable(List<Issue> issues, XWPFDocument doc) {
         Map<String, List<Issue>> collect = issues.stream()
                 .filter(i -> !i.isEpic() && !i.isStoryUnresolved())
-                .collect(Collectors.groupingBy(i -> i.getValueByNode(JiraNode.ASSIGNEE)));
+                .collect(Collectors.groupingBy(i -> i.getValueByNode(FieldName.ASSIGNEE)));
 
 
         for(String assignee: collect.keySet()){
@@ -219,7 +220,7 @@ public class ReportService {
             int row = 1;
             List<Issue> issuesPerAssignee = collect.get(assignee);
             for(Issue issue: issuesPerAssignee){
-                String epicTitle = getEpicTitle(issues, issue.getValueByNode(JiraNode.EPIC_LINK));
+                String epicTitle = getEpicTitle(issues, issue.getValueByNode(FieldName.EPIC_LINK));
                 table.getRow(row).getCell(0).setText(epicTitle);
                 table.getRow(row).getCell(1).setText(issue.getTitleName());
                 table.getRow(row).getCell(2).setText(issue.getTimeOriginalEstimate());
@@ -236,7 +237,7 @@ public class ReportService {
     public void createEpicTables(List<Issue> issues, XWPFDocument doc){
         Map<String, List<Issue>> collect = issues.stream()
             .filter(i -> !i.isEpic() && !i.isStory())
-            .collect(Collectors.groupingBy(i -> i.getValueByNode(JiraNode.EPIC_LINK)));
+            .collect(Collectors.groupingBy(i -> i.getValueByNode(FieldName.EPIC_LINK)));
 
         for(String epic: collect.keySet()){
             String epicTitle = getEpicTitle(issues, epic);
@@ -272,7 +273,7 @@ public class ReportService {
                 .filter(i -> i.getKey().equals(key))
                 .map(Issue::getTitleName)
                 .findFirst()
-                .orElse("unassigned");
+                .orElse(key);
     }
 
     private String secondsToDDHH(int seconds){

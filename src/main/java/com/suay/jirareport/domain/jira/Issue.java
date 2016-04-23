@@ -189,7 +189,7 @@ public class Issue {
         this.parent = parent;
     }
 
-    public String getValueByNode(JiraNode node){
+    public String getValueByNode(FieldName node){
         String res = null;
 
         switch (node){
@@ -222,9 +222,9 @@ public class Issue {
             case TIME_ESTIMATE:
                 res = getTimeEstimate();break;
             case SPRINT:
-                res = getCustomFieldValue(JiraNode.SPRINT.getName());break;
+                res = getCustomFieldValue(FieldName.SPRINT.getJiraName());break;
             case EPIC_LINK:
-                res = getCustomFieldValue(JiraNode.EPIC_LINK.getName());break;
+                res = getCustomFieldValue(FieldName.EPIC_LINK.getJiraName());break;
             case SECONDS:
                 res = Integer.toString(getTimeEstimateInSeconds());break;
             case PARENT:
