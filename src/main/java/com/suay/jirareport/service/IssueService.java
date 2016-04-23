@@ -31,7 +31,7 @@ public class IssueService {
         Document xmlDoc = parser.getDocument();
 
         final Element root= xmlDoc.getDocumentElement();
-        NodeList items = root.getElementsByTagName(JiraNode.ITEM.getName());
+        NodeList items = root.getElementsByTagName(FieldName.ITEM.getJiraName());
 
         for (int i = 0; i < items.getLength(); i++){
             Element item = (Element)items.item(i);
@@ -42,27 +42,27 @@ public class IssueService {
 
     private Issue XmlElementToIssue(Element item){
         Issue issue = new Issue();
-        issue.setTitle(getNodeValue(item, JiraNode.TITLE.getName()).trim());
-        issue.setLink(getNodeValue(item, JiraNode.LINK.getName()).trim());
-        issue.setProject(getNodeValue(item, JiraNode.PROJECT.getName()).trim());
-        issue.setSummary(getNodeValue(item, JiraNode.SUMMARY.getName()).trim());
-        issue.setKey(getNodeValue(item, JiraNode.KEY.getName()).trim());
-        issue.setType(getNodeValue(item, JiraNode.TYPE.getName()).trim());
-        issue.setPriority(getNodeValue(item, JiraNode.PRIORITY.getName()).trim());
-        issue.setStatus(getNodeValue(item, JiraNode.STATUS.getName()).trim());
-        issue.setResolution(getNodeValue(item, JiraNode.RESOLUTION.getName()).trim());
-        issue.setAssignee(getNodeValue(item, JiraNode.ASSIGNEE.getName()).trim());
-        issue.setReporter(getNodeValue(item, JiraNode.REPORTER.getName()).trim());
-        issue.setTimeEstimate(getNodeValue(item, JiraNode.TIME_ESTIMATE.getName()).trim());
-        issue.setTimeOriginalEstimate(getNodeValue(item, JiraNode.TIME_ORIGINAL_ESTIMATE.getName()).trim());
-        issue.setParent(getNodeValue(item, JiraNode.PARENT.getName()).trim());
-        String estimateInSec = getAttributeValue(item, JiraNode.TIME_ORIGINAL_ESTIMATE.getName(), JiraNode.SECONDS.getName());
+        issue.setTitle(getNodeValue(item, FieldName.TITLE.getJiraName()).trim());
+        issue.setLink(getNodeValue(item, FieldName.LINK.getJiraName()).trim());
+        issue.setProject(getNodeValue(item, FieldName.PROJECT.getJiraName()).trim());
+        issue.setSummary(getNodeValue(item, FieldName.SUMMARY.getJiraName()).trim());
+        issue.setKey(getNodeValue(item, FieldName.KEY.getJiraName()).trim());
+        issue.setType(getNodeValue(item, FieldName.TYPE.getJiraName()).trim());
+        issue.setPriority(getNodeValue(item, FieldName.PRIORITY.getJiraName()).trim());
+        issue.setStatus(getNodeValue(item, FieldName.STATUS.getJiraName()).trim());
+        issue.setResolution(getNodeValue(item, FieldName.RESOLUTION.getJiraName()).trim());
+        issue.setAssignee(getNodeValue(item, FieldName.ASSIGNEE.getJiraName()).trim());
+        issue.setReporter(getNodeValue(item, FieldName.REPORTER.getJiraName()).trim());
+        issue.setTimeEstimate(getNodeValue(item, FieldName.TIME_ESTIMATE.getJiraName()).trim());
+        issue.setTimeOriginalEstimate(getNodeValue(item, FieldName.TIME_ORIGINAL_ESTIMATE.getJiraName()).trim());
+        issue.setParent(getNodeValue(item, FieldName.PARENT.getJiraName()).trim());
+        String estimateInSec = getAttributeValue(item, FieldName.TIME_ORIGINAL_ESTIMATE.getJiraName(), FieldName.SECONDS.getJiraName());
         if(!estimateInSec.isEmpty()) issue.setTimeEstimateInSeconds(Integer.parseInt(estimateInSec));
 
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss ");
-            issue.setCreated(formatter.parse(getNodeValue(item, JiraNode.CREATED.getName())));
-            issue.setUpdated(formatter.parse(getNodeValue(item, JiraNode.UPDATED.getName())));
+            issue.setCreated(formatter.parse(getNodeValue(item, FieldName.CREATED.getJiraName())));
+            issue.setUpdated(formatter.parse(getNodeValue(item, FieldName.UPDATED.getJiraName())));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -72,13 +72,13 @@ public class IssueService {
     }
 
     private List<CustomField> getCustomFields(Element item){
-        NodeList customFieldsList = item.getElementsByTagName(JiraNode.CUSTOM_FIELD.getName());
+        NodeList customFieldsList = item.getElementsByTagName(FieldName.CUSTOM_FIELD.getJiraName());
         List<CustomField> customFields = new ArrayList<>();
         for (int i = 0; i < customFieldsList.getLength(); i++){
             Element cf = (Element)customFieldsList.item(i);
             CustomField customField = new CustomField();
-            customField.setName(getNodeValue(cf, JiraNode.CUSTOM_FIELD_NAME.getName()));
-            customField.setValue(getNodeValue(cf, JiraNode.CUSTOM_FIELD_VALUE.getName()));
+            customField.setName(getNodeValue(cf, FieldName.CUSTOM_FIELD_NAME.getJiraName()));
+            customField.setValue(getNodeValue(cf, FieldName.CUSTOM_FIELD_VALUE.getJiraName()));
             customFields.add(customField);
         }
         return customFields;
@@ -98,8 +98,8 @@ public class IssueService {
         return "";
     }
 
-    public Map<String, List<Issue>> groupIssuesBy(List<Issue>issues, JiraNode jiraNodeName){
-        return issues.stream().collect(Collectors.groupingBy(i -> i.getValueByNode(jiraNodeName)));
+    public Map<String, List<Issue>> groupIssuesBy(List<Issue>issues, FieldName fieldNameName){
+        return issues.stream().collect(Collectors.groupingBy(i -> i.getValueByNode(fieldNameName)));
     }
 
     public Set<Issue> getEpics(List<Issue> issues){
@@ -120,7 +120,7 @@ public class IssueService {
         Set<Issue> allEpics = getEpics(issues);
         Map<String, List<Issue>> epicIssues = issues.stream()
             .filter(i -> !i.isEpic())
-            .collect(Collectors.groupingBy(i -> i.getValueByNode(JiraNode.EPIC_LINK)));
+            .collect(Collectors.groupingBy(i -> i.getValueByNode(FieldName.EPIC_LINK)));
 
         for(String epicLink : epicIssues.keySet()){
             Optional<Issue> epicIssue = allEpics.stream().filter(e -> e.getKey().equals(epicLink)).findAny();
