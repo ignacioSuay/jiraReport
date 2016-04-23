@@ -3,7 +3,7 @@ package com.suay.jirareport.domain.jira;
 /**
  * Created by suay on 1/13/16.
  */
-public enum JiraNode {
+public enum FieldName {
     TITLE("title"),
     ITEM("item"),
     SUMMARY("summary"),
@@ -30,13 +30,13 @@ public enum JiraNode {
     PARENT("parent");
 
 
-    private String name;
+    private String jiraName;
 
-    JiraNode(String name) {
-        this.name = name;
+    FieldName(String jiraName) {
+        this.jiraName = jiraName;
     }
 
-    public String getName() {
-        return name;
+    public String getJiraName() {
+        return jiraName;
     }
 }

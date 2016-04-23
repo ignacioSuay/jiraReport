@@ -15,7 +15,7 @@ public class Section {
 
     SectionName name;
 
-    List<ColumnName> columns = new ArrayList<>();
+    List<FieldName> fieldNames = new ArrayList<>();
 
     public Section(){}
 
@@ -31,30 +31,32 @@ public class Section {
         this.name = name;
     }
 
-    public List<ColumnName> getColumns() {
-        return columns;
+    public List<FieldName> getFieldNames() {
+        return fieldNames;
     }
 
-    public void setColumns(List<ColumnName> columns) {
-        this.columns = columns;
+    public void setFieldNames(List<FieldName> fieldNames) {
+        this.fieldNames = fieldNames;
     }
 
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
-        if (!(o instanceof Section)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Section section = (Section) o;
 
+        if (fieldNames != null ? !fieldNames.equals(section.fieldNames) : section.fieldNames != null) return false;
         if (name != section.name) return false;
-        return columns != null ? columns.equals(section.columns) : section.columns == null;
 
+        return true;
     }
 
     @Override
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (columns != null ? columns.hashCode() : 0);
+        result = 31 * result + (fieldNames != null ? fieldNames.hashCode() : 0);
         return result;
     }
 
@@ -62,7 +64,7 @@ public class Section {
     public String toString() {
         return "Section{" +
             "name=" + name +
-            ", columns=" + columns +
+            ", fieldNames=" + fieldNames +
             '}';
     }
 }
