@@ -25,7 +25,6 @@ angular.module('jiraReportApp')
             templateUrl: 'app/directives/combo.input.template.html',
             link: function($scope){
                 $scope.actions = $scope.listElements;
-                $scope.selectedAction = $scope.actions[0];
                 $scope.setAction = function(action) {
                     $scope.selectedAction = action;
                     $scope.submit();
