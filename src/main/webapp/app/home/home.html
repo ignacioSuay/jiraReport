@@ -42,7 +42,7 @@
             <hr/>
             <div class="well">
             <h3>Select the tables you would like to add:</h3>
-
+            <button class="btn btn-primary" ng-click="defaultSections()">Default schema report</button>
             <div ng-repeat="section in sections" class="margin10">
                 <suay-combo-input list-elements="reportTables" ng-model="section.action"/>
                 <div class="margin10">
@@ -51,7 +51,13 @@
                         <input type="checkbox" class="margin10" ng-model="section.columns[column]"><span class="margin10">{{column}}</span>
                     </div>
                 </div>
-                <button class="btn btn-danger" ng-click="removeSection($index)">remove section</button>01
+                <div class="margin10" ng-show="section.action.groupBy">
+                    Summarize by:
+                    <div ng-repeat="sumarize in section.action.groupBy" style="display: inline-block">
+                        <input type="checkbox" class="margin10" ng-model="section.groupBy[sumarize]"><span class="margin10">{{sumarize}}</span>
+                    </div>
+                </div>
+                <button class="btn btn-danger" ng-click="removeSection($index)">remove section</button>
             </div>
             <button class="btn btn-primary" ng-click="addSection()"><span class="glyphicon glyphicon-plus"/>add section</button>
                 <br/><br/>
