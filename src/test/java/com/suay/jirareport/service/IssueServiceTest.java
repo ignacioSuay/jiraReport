@@ -3,8 +3,8 @@ package com.suay.jirareport.service;
 import com.suay.jirareport.JiraReportApp;
 import com.suay.jirareport.UtilTest;
 import com.suay.jirareport.domain.jira.Epic;
+import com.suay.jirareport.domain.jira.FieldName;
 import com.suay.jirareport.domain.jira.Issue;
-import com.suay.jirareport.domain.jira.JiraNode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +47,7 @@ public class IssueServiceTest {
     @Test
     public void testGroupIssuesBy() throws Exception {
         List<Issue> issueList = getListIssues();
-        Map<String, List<Issue>> stringListMap = issueService.groupIssuesBy(issueList, JiraNode.ASSIGNEE);
+        Map<String, List<Issue>> stringListMap = issueService.groupIssuesBy(issueList, FieldName.ASSIGNEE);
         assertNotNull(stringListMap);
     }
 
