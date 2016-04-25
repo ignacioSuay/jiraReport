@@ -1,11 +1,7 @@
 package com.suay.jirareport.domain.jira;
 
-import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 
 /**
@@ -15,7 +11,9 @@ public class Section {
 
     SectionName name;
 
-    List<FieldName> fieldNames = new ArrayList<>();
+    List<FieldName> columns = new ArrayList<>();
+
+    List<FieldName> groupsBy = new ArrayList<>();
 
     public Section(){}
 
@@ -31,12 +29,20 @@ public class Section {
         this.name = name;
     }
 
-    public List<FieldName> getFieldNames() {
-        return fieldNames;
+    public List<FieldName> getColumns() {
+        return columns;
     }
 
-    public void setFieldNames(List<FieldName> fieldNames) {
-        this.fieldNames = fieldNames;
+    public void setColumns(List<FieldName> columns) {
+        this.columns = columns;
+    }
+
+    public List<FieldName> getGroupsBy() {
+        return groupsBy;
+    }
+
+    public void setGroupsBy(List<FieldName> groupsBy) {
+        this.groupsBy = groupsBy;
     }
 
     @Override
@@ -47,7 +53,7 @@ public class Section {
 
         Section section = (Section) o;
 
-        if (fieldNames != null ? !fieldNames.equals(section.fieldNames) : section.fieldNames != null) return false;
+        if (columns != null ? !columns.equals(section.columns) : section.columns != null) return false;
         if (name != section.name) return false;
 
         return true;
@@ -56,7 +62,7 @@ public class Section {
     @Override
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (fieldNames != null ? fieldNames.hashCode() : 0);
+        result = 31 * result + (columns != null ? columns.hashCode() : 0);
         return result;
     }
 
@@ -64,7 +70,7 @@ public class Section {
     public String toString() {
         return "Section{" +
             "name=" + name +
-            ", fieldNames=" + fieldNames +
+            ", columns=" + columns +
             '}';
     }
 }
