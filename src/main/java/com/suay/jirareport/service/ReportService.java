@@ -11,10 +11,7 @@ import org.xml.sax.SAXException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -168,24 +165,25 @@ public class ReportService {
 
     public void createSummaryTable(List<Issue> issues, XWPFDocument doc, Section section){
 
-        Map<String, Integer> collect = issues.stream().filter(i-> !i.isEpic() && !i.isStoryUnresolved()).collect(Collectors.groupingBy(i -> i.getValueByNode(FieldName.EPIC_LINK),
+        Map<String, Integer> epicByTimeEstimate = issues.stream().filter(i-> !i.isEpic() && !i.isStoryUnresolved()).collect(Collectors.groupingBy(i -> i.getValueByNode(FieldName.EPIC_LINK),
             Collectors.summingInt(Issue::getTimeEstimateInSeconds)));
 
-        XWPFTable table = doc.createTable(collect.keySet().size()+1, section.getFieldNames().size());
+
+        XWPFTable table = doc.createTable(epicByTimeEstimate.keySet().size()+1, section.getColumns().size());
         table.setStyleID("LightShading-Accent1");
         table.getCTTbl().getTblPr().unsetTblBorders();
 
-        addColumnsToTable(table, section.getFieldNames());
+        addColumnsToTable(table, section);
 
         int row = 1;
-        for(String key: collect.keySet()){
+        for(String key: epicByTimeEstimate.keySet()){
             int col = 0;
-            for(FieldName column: section.getFieldNames()){
+            for(FieldName column: section.getColumns()){
                 if(column.equals(FieldName.EPIC_LINK)){
                     String epicTitle = getEpicTitle(issues, key);
                     table.getRow(row).getCell(col).setText(epicTitle);
                 }else if(column.equals(FieldName.TIME_ESTIMATE)){
-                    int timeInSeconds = collect.get(key);
+                    int timeInSeconds = epicByTimeEstimate.get(key);
                     table.getRow(row).getCell(col).setText(secondsToDDHH(timeInSeconds));
                 }
                 col++;
@@ -194,9 +192,14 @@ public class ReportService {
         }
     }
 
-    private void addColumnsToTable(XWPFTable table, List<FieldName> columns){
+    private void addColumnsToTable(XWPFTable table, Section section){
+
+        List<FieldName> allColumns = new ArrayList<>();
+        allColumns.addAll(section.getColumns());
+        allColumns.addAll(section.getGroupsBy());
+
         int i = 0;
-        for(FieldName column: columns){
+        for(FieldName column: allColumns){
             table.getRow(0).getCell(i).setText(column.name());
             i++;
         }
