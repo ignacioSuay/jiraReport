@@ -39,7 +39,7 @@ public class Issue {
 
     String timeOriginalEstimate;
 
-    int timeEstimateInSeconds;
+    int timeOriginalEstimateInSeconds;
 
     String parent;
 
@@ -165,12 +165,12 @@ public class Issue {
         this.customFields = customFields;
     }
 
-    public int getTimeEstimateInSeconds() {
-        return timeEstimateInSeconds;
+    public int getTimeOriginalEstimateInSeconds() {
+        return timeOriginalEstimateInSeconds;
     }
 
-    public void setTimeEstimateInSeconds(int timeEstimateInSeconds) {
-        this.timeEstimateInSeconds = timeEstimateInSeconds;
+    public void setTimeOriginalEstimateInSeconds(int timeOriginalEstimateInSeconds) {
+        this.timeOriginalEstimateInSeconds = timeOriginalEstimateInSeconds;
     }
 
     public String getTimeOriginalEstimate() {
@@ -226,7 +226,7 @@ public class Issue {
             case EPIC_LINK:
                 res = getCustomFieldValue(FieldName.EPIC_LINK.getJiraName());break;
             case SECONDS:
-                res = Integer.toString(getTimeEstimateInSeconds());break;
+                res = Integer.toString(getTimeOriginalEstimateInSeconds());break;
             case PARENT:
                 res = getParent();break;
         }

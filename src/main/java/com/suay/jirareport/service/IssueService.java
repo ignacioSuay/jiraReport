@@ -57,7 +57,7 @@ public class IssueService {
         issue.setTimeOriginalEstimate(getNodeValue(item, FieldName.TIME_ORIGINAL_ESTIMATE.getJiraName()).trim());
         issue.setParent(getNodeValue(item, FieldName.PARENT.getJiraName()).trim());
         String estimateInSec = getAttributeValue(item, FieldName.TIME_ORIGINAL_ESTIMATE.getJiraName(), FieldName.SECONDS.getJiraName());
-        if(!estimateInSec.isEmpty()) issue.setTimeEstimateInSeconds(Integer.parseInt(estimateInSec));
+        if(!estimateInSec.isEmpty()) issue.setTimeOriginalEstimateInSeconds(Integer.parseInt(estimateInSec));
 
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss ");

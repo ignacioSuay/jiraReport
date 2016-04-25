@@ -144,7 +144,7 @@ public class ReportService {
     public void createSummaryTable(List<Issue> issues, XWPFDocument doc){
 
         Map<String, Integer> collect = issues.stream().filter(i-> !i.isEpic() && !i.isStoryUnresolved()).collect(Collectors.groupingBy(i -> i.getValueByNode(FieldName.EPIC_LINK),
-                Collectors.summingInt(Issue::getTimeEstimateInSeconds)));
+                Collectors.summingInt(Issue::getTimeOriginalEstimateInSeconds)));
 
         XWPFTable table = doc.createTable(collect.keySet().size()+1, 2);
         table.setStyleID("LightShading-Accent1");
@@ -166,7 +166,7 @@ public class ReportService {
     public void createSummaryTable(List<Issue> issues, XWPFDocument doc, Section section){
 
         Map<String, Integer> epicByTimeEstimate = issues.stream().filter(i-> !i.isEpic() && !i.isStoryUnresolved()).collect(Collectors.groupingBy(i -> i.getValueByNode(FieldName.EPIC_LINK),
-            Collectors.summingInt(Issue::getTimeEstimateInSeconds)));
+            Collectors.summingInt(Issue::getTimeOriginalEstimateInSeconds)));
 
 
         XWPFTable table = doc.createTable(epicByTimeEstimate.keySet().size()+1, section.getColumns().size());
@@ -231,7 +231,7 @@ public class ReportService {
             }
             table.getRow(row).getCell(0).setText("Total");
             table.getRow(row).getCell(1).setText("");
-            Integer totalTime = issuesPerAssignee.stream().collect(Collectors.summingInt(Issue::getTimeEstimateInSeconds));
+            Integer totalTime = issuesPerAssignee.stream().collect(Collectors.summingInt(Issue::getTimeOriginalEstimateInSeconds));
             table.getRow(row).getCell(2).setText(secondsToDDHH(totalTime));
 
         }
@@ -263,7 +263,7 @@ public class ReportService {
             }
             table.getRow(row).getCell(0).setText("Total");
             table.getRow(row).getCell(1).setText("");
-            Integer totalTime = issuesPerEpic.stream().collect(Collectors.summingInt(Issue::getTimeEstimateInSeconds));
+            Integer totalTime = issuesPerEpic.stream().collect(Collectors.summingInt(Issue::getTimeOriginalEstimateInSeconds));
             table.getRow(row).getCell(2).setText(secondsToDDHH(totalTime));
         }
     }
