@@ -62,7 +62,7 @@ public class ReportServiceTest {
         List<Section> sections = new ArrayList<>();
         Section epicSection = new Section(SectionName.EPIC_SUMMARY);
         epicSection.setColumns(Arrays.asList(FieldName.EPIC_LINK, FieldName.STATUS));
-        epicSection.setGroupsBy(Arrays.asList(FieldName.TIME_ESTIMATE));
+        epicSection.setGroupsBy(Arrays.asList(FieldName.TIME_ORIGINAL_ESTIMATE, FieldName.NUMBER_ISSUES));
         sections.add(epicSection);
         sections.add(new Section(SectionName.TASKS_PER_EPIC));
         sections.add(new Section(SectionName.TASKS_BY_ASSIGNEE));

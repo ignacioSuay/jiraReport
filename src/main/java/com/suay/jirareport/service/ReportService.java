@@ -46,7 +46,7 @@ public class ReportService {
                 createTableByFields(issues, fields, doc);
             }else if(SectionName.EPIC_SUMMARY == section.getName()){
                 addSection(doc, "Epic Summary");
-                createSummaryTable(issues,doc, section);
+                createEpicSummaryTable(issues, doc, section);
             }else if(SectionName.TASKS_PER_EPIC == section.getName()){
                 addSection(doc, "Tasks completed by Epic");
                 createEpicTables(issues, doc);
@@ -163,43 +163,86 @@ public class ReportService {
         }
     }
 
-    public void createSummaryTable(List<Issue> issues, XWPFDocument doc, Section section){
+    public void createEpicSummaryTable(List<Issue> issues, XWPFDocument doc, Section section){
 
-        Map<String, Integer> epicByTimeEstimate = issues.stream().filter(i-> !i.isEpic() && !i.isStoryUnresolved()).collect(Collectors.groupingBy(i -> i.getValueByNode(FieldName.EPIC_LINK),
-            Collectors.summingInt(Issue::getTimeOriginalEstimateInSeconds)));
+        Set<Epic> epics = issueService.getDataModel(issues);
+        Map<String, Integer> epicByOriginalTimeEstimate = null;
+        Map<String, Integer> epicByTimeEstimate = null;
+        Map<String, Integer> epicByTimeSpent = null;
+
+        if(section.getGroupsBy().contains(FieldName.TIME_ORIGINAL_ESTIMATE)) {
+            epicByOriginalTimeEstimate = issues.stream().filter(i -> !i.isEpic() && !i.isStoryUnresolved()).collect(Collectors.groupingBy(i -> i.getValueByNode(FieldName.EPIC_LINK),
+                Collectors.summingInt(Issue::getTimeOriginalEstimateInSeconds)));
+        }
+
+        if(section.getGroupsBy().contains(FieldName.TIME_ESTIMATE)) {
+            epicByTimeEstimate = issues.stream().filter(i -> !i.isEpic() && !i.isStoryUnresolved()).collect(Collectors.groupingBy(i -> i.getValueByNode(FieldName.EPIC_LINK),
+                Collectors.summingInt(Issue::getTimeSpentInSeconds)));
+        }
+
+        if(section.getGroupsBy().contains(FieldName.TIME_SPENT)){
+            epicByTimeSpent = issues.stream().filter(i -> !i.isEpic() && !i.isStoryUnresolved()).collect(Collectors.groupingBy(i -> i.getValueByNode(FieldName.EPIC_LINK),
+                Collectors.summingInt(Issue::getTimeSpentInSeconds)));
+        }
 
 
-        XWPFTable table = doc.createTable(epicByTimeEstimate.keySet().size()+1, section.getColumns().size());
+        XWPFTable table = doc.createTable(epics.size()+1, section.getTotalNumColumns());
         table.setStyleID("LightShading-Accent1");
         table.getCTTbl().getTblPr().unsetTblBorders();
 
         addColumnsToTable(table, section);
 
         int row = 1;
-        for(String key: epicByTimeEstimate.keySet()){
+        for(Epic epic : epics) {
             int col = 0;
-            for(FieldName column: section.getColumns()){
-                if(column.equals(FieldName.EPIC_LINK)){
-                    String epicTitle = getEpicTitle(issues, key);
+            if (epic.getEpicIssue() == null) {
+                continue;
+            }
+            String epicKey = epic.getEpicIssue().getKey();
+            for (FieldName column : section.getTotalColumns()) {
+                if (column.equals(FieldName.EPIC_LINK)) {
+                    String epicTitle = getEpicTitle(issues, epicKey);
                     table.getRow(row).getCell(col).setText(epicTitle);
-                }else if(column.equals(FieldName.TIME_ESTIMATE)){
-                    int timeInSeconds = epicByTimeEstimate.get(key);
-                    table.getRow(row).getCell(col).setText(secondsToDDHH(timeInSeconds));
+                } else if (column.equals(FieldName.TIME_ORIGINAL_ESTIMATE)) {
+                    if(epicByOriginalTimeEstimate.get(epicKey) != null)
+                        table.getRow(row).getCell(col).setText(secondsToDDHH(epicByOriginalTimeEstimate.get(epicKey)));
+                    else
+                        table.getRow(row).getCell(col).setText("");
+                } else if (column.equals(FieldName.TIME_ESTIMATE)) {
+                    table.getRow(row).getCell(col).setText(secondsToDDHH(epicByTimeEstimate.get(epicKey)));
+                } else if (column.equals(FieldName.TIME_SPENT)) {
+                    table.getRow(row).getCell(col).setText(secondsToDDHH(epicByTimeSpent.get(epicKey)));
+                } else if (column.equals(FieldName.NUMBER_ISSUES)) {
+                    table.getRow(row).getCell(col).setText(Integer.toString(epic.getSubIsues().size()));
+                }else{
+                    String columnValue = epic.getEpicIssue().getValueByNode(column);
+                    table.getRow(row).getCell(col).setText(columnValue);
                 }
                 col++;
             }
             row++;
         }
+
+//        for(String key: epicByTimeEstimate.keySet()){
+//            int col = 0;
+//            for(FieldName column: section.getColumns()){
+//                if(column.equals(FieldName.EPIC_LINK)){
+//                    String epicTitle = getEpicTitle(issues, key);
+//                    table.getRow(row).getCell(col).setText(epicTitle);
+//                }else if(column.equals(FieldName.TIME_ESTIMATE)){
+//                    int timeInSeconds = epicByTimeEstimate.get(key);
+//                    table.getRow(row).getCell(col).setText(secondsToDDHH(timeInSeconds));
+//                }
+//                col++;
+//            }
+//            row++;
+//        }
     }
 
     private void addColumnsToTable(XWPFTable table, Section section){
 
-        List<FieldName> allColumns = new ArrayList<>();
-        allColumns.addAll(section.getColumns());
-        allColumns.addAll(section.getGroupsBy());
-
         int i = 0;
-        for(FieldName column: allColumns){
+        for(FieldName column: section.getTotalColumns()){
             table.getRow(0).getCell(i).setText(column.name());
             i++;
         }
@@ -305,11 +348,5 @@ public class ReportService {
         XWPFRun r1 = p.createRun();
         r1.setText(title);
     }
-
-
-
-
-
-
 
 }
