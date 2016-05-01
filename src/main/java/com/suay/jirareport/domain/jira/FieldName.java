@@ -20,6 +20,7 @@ public enum FieldName {
     UPDATED("updated"),
     TIME_ORIGINAL_ESTIMATE("timeoriginalestimate"),
     TIME_ESTIMATE("timeestimate"),
+    TIME_SPENT("timespent"),
     CUSTOM_FIELDS("customfields"),
     CUSTOM_FIELD("customfield"),
     CUSTOM_FIELD_NAME("customfieldname"),
@@ -27,7 +28,8 @@ public enum FieldName {
     SPRINT("Sprint"),
     EPIC_LINK("Epic Link"),
     SECONDS("seconds"),
-    PARENT("parent");
+    PARENT("parent"),
+    NUMBER_ISSUES("numberIssues");
 
 
     private String jiraName;

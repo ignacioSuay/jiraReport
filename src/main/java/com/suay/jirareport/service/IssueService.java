@@ -55,9 +55,14 @@ public class IssueService {
         issue.setReporter(getNodeValue(item, FieldName.REPORTER.getJiraName()).trim());
         issue.setTimeEstimate(getNodeValue(item, FieldName.TIME_ESTIMATE.getJiraName()).trim());
         issue.setTimeOriginalEstimate(getNodeValue(item, FieldName.TIME_ORIGINAL_ESTIMATE.getJiraName()).trim());
+        issue.setTimeSpent(getNodeValue(item, FieldName.TIME_SPENT.getJiraName()).trim());
         issue.setParent(getNodeValue(item, FieldName.PARENT.getJiraName()).trim());
-        String estimateInSec = getAttributeValue(item, FieldName.TIME_ORIGINAL_ESTIMATE.getJiraName(), FieldName.SECONDS.getJiraName());
+        String oriEstimateInSec = getAttributeValue(item, FieldName.TIME_ORIGINAL_ESTIMATE.getJiraName(), FieldName.SECONDS.getJiraName());
+        if(!oriEstimateInSec.isEmpty()) issue.setTimeOriginalEstimateInSeconds(Integer.parseInt(oriEstimateInSec));
+        String estimateInSec = getAttributeValue(item, FieldName.TIME_ESTIMATE.getJiraName(), FieldName.SECONDS.getJiraName());
         if(!estimateInSec.isEmpty()) issue.setTimeOriginalEstimateInSeconds(Integer.parseInt(estimateInSec));
+        String spentInSec = getAttributeValue(item, FieldName.TIME_SPENT.getJiraName(), FieldName.SECONDS.getJiraName());
+        if(!spentInSec.isEmpty()) issue.setTimeSpentInSeconds(Integer.parseInt(spentInSec));
 
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss ");

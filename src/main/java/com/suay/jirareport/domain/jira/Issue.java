@@ -37,9 +37,15 @@ public class Issue {
 
     String timeEstimate;
 
+    int timeEstimateInSeconds;
+
     String timeOriginalEstimate;
 
     int timeOriginalEstimateInSeconds;
+
+    String timeSpent;
+
+    int timeSpentInSeconds;
 
     String parent;
 
@@ -189,6 +195,30 @@ public class Issue {
         this.parent = parent;
     }
 
+    public String getTimeSpent() {
+        return timeSpent;
+    }
+
+    public void setTimeSpent(String timeSpent) {
+        this.timeSpent = timeSpent;
+    }
+
+    public int getTimeSpentInSeconds() {
+        return timeSpentInSeconds;
+    }
+
+    public void setTimeSpentInSeconds(int timeSpentInSeconds) {
+        this.timeSpentInSeconds = timeSpentInSeconds;
+    }
+
+    public int getTimeEstimateInSeconds() {
+        return timeEstimateInSeconds;
+    }
+
+    public void setTimeEstimateInSeconds(int timeEstimateInSeconds) {
+        this.timeEstimateInSeconds = timeEstimateInSeconds;
+    }
+
     public String getValueByNode(FieldName node){
         String res = null;
 
@@ -221,6 +251,8 @@ public class Issue {
                 res = timeOriginalEstimate; break;
             case TIME_ESTIMATE:
                 res = getTimeEstimate();break;
+            case TIME_SPENT:
+                res = getTimeSpent();break;
             case SPRINT:
                 res = getCustomFieldValue(FieldName.SPRINT.getJiraName());break;
             case EPIC_LINK:
