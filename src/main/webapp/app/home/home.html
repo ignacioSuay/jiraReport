@@ -1,80 +1,144 @@
-
 <main role="main" ng-cloak id="home">
     <header id="page-top">
-    <div class="header-content">
-        <div class="header-content-inner">
-            <h1><strong>Jira</strong> to Word</h1>
-            <hr>
-            <!--<p>Practice, practice, practice and get ready to pass your exam!</p>-->
-            <p>Generate a word document using your Jira Issues</p>
-            <!--<a href="#contact" class="btn btn-primary btn-xl page-scroll">Contact Me</a>-->
-        </div>
-    </div>
-</header>
-
-<!-- Services Section -->
-<section id="report">
-    <br><br><br><br><br>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h2 class="section-heading">Create a Report</h2>
-                <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+        <div class="header-content">
+            <div class="header-content-inner">
+                <h1><strong>Jira</strong> to Word</h1>
+                <hr>
+                <!--<p>Practice, practice, practice and get ready to pass your exam!</p>-->
+                <p>Generate a word document using your Jira Issues</p>
+                <!--<a href="#contact" class="btn btn-primary btn-xl page-scroll">Contact Me</a>-->
             </div>
         </div>
-
-        <div>
-            <div class="form-group">
-                <label class="control-label" for="uploadBtn">Upload your issues: </label>
-                <button class="btn btn-lg btn-success" class="form-control" id="uploadBtn"> upload</button>
+    </header>
+    <section id="description">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Export issues from Jira to Word</h2>
+                    <!--<h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>-->
+                </div>
             </div>
-            <div class="form-group input-group input-group-lg">
-                <span class="input-group-addon">Title</span>
-                <input type="text" class="form-control" ng-model="title" placeholder="e.g. Sprint 1 Report"/>
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <span class="fa-stack fa-4x">
+                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fa fa-shopping-cart fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="service-heading">Export to Word</h4>
+
+                    <p class="text-muted">Create a word document with your sprint issues</p>
+                </div>
+                <div class="col-md-4">
+                    <span class="fa-stack fa-4x">
+                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fa fa-laptop fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="service-heading">Use a template</h4>
+
+                    <p class="text-muted">Upload a word document template and the issues will be added at the end </p>
+                </div>
+                <div class="col-md-4">
+                    <span class="fa-stack fa-4x">
+                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fa fa-lock fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="service-heading">Customize the document</h4>
+
+                    <p class="text-muted">Once the document is generated you will be able to customize the document</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="report">
+        <br><br><br><br><br>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Create a Report</h2>
+
+                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                </div>
             </div>
 
-            <div class="form-group input-group input-group-lg">
-                <span class="input-group-addon">Author(s)</span>
-                <input type="text" class="form-control" ng-model="authors" placeholder="e.g. John Smith"/>
-            </div>
+            <div>
+                <div class="form-group">
+                    <label class="control-label" for="uploadBtn">Upload your issues: </label>
+                    <button class="btn btn-lg btn-success" class="form-control" id="uploadBtn"> upload</button>
+                </div>
+                <div class="form-group input-group input-group-lg">
+                    <span class="input-group-addon">Title</span>
+                    <input type="text" class="form-control" ng-model="title" placeholder="e.g. Sprint 1 Report"/>
+                </div>
 
-            <br>
-            <hr/>
-            <div class="well">
-            <h3>Select the tables you would like to add:</h3>
-            <button class="btn btn-primary" ng-click="defaultSections()">Default schema report</button>
-            <div ng-repeat="section in sections" class="margin10">
-                <suay-combo-input list-elements="reportTables" ng-model="section.action"/>
-                <div class="margin10">
-                    Columns:
-                    <div ng-repeat="column in section.action.columns" style="display: inline-block">
-                        <input type="checkbox" class="margin10" ng-model="section.columns[column]"><span class="margin10">{{column}}</span>
+                <div class="form-group input-group input-group-lg">
+                    <span class="input-group-addon">Author(s)</span>
+                    <input type="text" class="form-control" ng-model="authors" placeholder="e.g. John Smith"/>
+                </div>
+
+                <br>
+                <hr/>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>Build the document structure:</h3>
+                    </div>
+                    <div class="col-md-3 col-md-offset-3">
+                        <button class="btn btn-primary" ng-click="defaultSections()">Default structure</button>
+                        <button class="btn btn-danger" ng-click="clear()">clear all</button>
                     </div>
                 </div>
-                <div class="margin10" ng-show="section.action.groupBy">
-                    Summarize by:
-                    <div ng-repeat="sumarize in section.action.groupBy" style="display: inline-block">
-                        <input type="checkbox" class="margin10" ng-model="section.groupBy[sumarize]"><span class="margin10">{{sumarize}}</span>
+
+                <div class="well">
+                    <div ng-repeat="section in sections" class="margin10 well">
+                        <h3>Section {{$index +1}}</h3>
+                        <div class="row">
+                            <label class="col-md-2">Section type:</label>
+
+                            <div class="col-md-10">
+                                <suay-combo-input list-elements="reportTables" ng-model="section.action"/>
+                            </div>
+                        </div>
+
+                        <div class="margin10 row">
+                            <label class="col-md-2">Columns:</label>
+
+                            <div class="col-md-10">
+                                <div ng-repeat="column in section.action.columns" style="display: inline-block">
+                                    <input type="checkbox" class="margin10" ng-model="section.columns[column]"><span
+                                    class="margin10">{{column}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="margin10 row" ng-show="section.action.groupBy">
+                            <label class="col-md-2">Summarize by:</label>
+
+                            <div class="col-md-10">
+                                <div ng-repeat="sumarize in section.action.groupBy" style="display: inline-block">
+                                    <input type="checkbox" class="margin10" ng-model="section.groupBy[sumarize]"><span
+                                    class="margin10">{{sumarize}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-danger" ng-click="removeSection($index)">remove section</button>
                     </div>
+                    <button class="btn btn-primary" ng-click="addSection()"><span class="glyphicon glyphicon-plus"/>add
+                        section
+                    </button>
+                    <br/><br/>
+                    <button class="btn btn-success btn-lg" ng-click="sendData()">Send data</button>
                 </div>
-                <button class="btn btn-danger" ng-click="removeSection($index)">remove section</button>
             </div>
-            <button class="btn btn-primary" ng-click="addSection()"><span class="glyphicon glyphicon-plus"/>add section</button>
-                <br/><br/>
-            <button class="btn btn-success btn-lg" ng-click="sendData()">Send data</button>
-            </div>
-
-
         </div>
-    </div>
-    <br><br><br><br><br>
-</section>
+    </section>
 
     <section id="usage">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <h2 class="section-heading">Usage</h2>
+
                     <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
                 </div>
             </div>
@@ -85,7 +149,9 @@
                         <i class="fa fa-shopping-cart fa-stack-1x fa-inverse"></i>
                     </span>
                     <h4 class="service-heading">E-Commerce</h4>
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
+
+                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam
+                        architecto quo inventore harum ex magni, dicta impedit.</p>
                 </div>
                 <div class="col-md-4">
                     <span class="fa-stack fa-4x">
@@ -93,7 +159,9 @@
                         <i class="fa fa-laptop fa-stack-1x fa-inverse"></i>
                     </span>
                     <h4 class="service-heading">Responsive Design</h4>
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
+
+                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam
+                        architecto quo inventore harum ex magni, dicta impedit.</p>
                 </div>
                 <div class="col-md-4">
                     <span class="fa-stack fa-4x">
@@ -101,7 +169,9 @@
                         <i class="fa fa-lock fa-stack-1x fa-inverse"></i>
                     </span>
                     <h4 class="service-heading">Web Security</h4>
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
+
+                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam
+                        architecto quo inventore harum ex magni, dicta impedit.</p>
                 </div>
             </div>
         </div>
@@ -109,10 +179,9 @@
     </section>
 
 
-
     <section class="success" id="author">
         <div class="container wow fadeIn">
-            <div class="row" >
+            <div class="row">
                 <div class="col-lg-12 text-center">
                     <h2 class="bigText"> About the author</h2>
                     <hr class="star-primary">
@@ -120,14 +189,18 @@
             </div>
             <div class="row">
                 <div class="col-md-4 col-md-offset-2">
-                    <p class="big">Ignacio Suay is a software engineer with 8 years of industry experience in building end-to-end web applications with Java, Spring, Hibernate, AngularJS and many other software technologies.
+                    <p class="big">Ignacio Suay is a software engineer with 8 years of industry experience in building
+                        end-to-end web applications with Java, Spring, Hibernate, AngularJS and many other software
+                        technologies.
 
                     </p>
                 </div>
                 <div class="col-md-4">
                     <p class="big">
-                        Currently, he is working with the Worldwide Anti-malarial Resistance Network (WWARN) at the University of Oxford providing the much-needed comprehensive, timely, quality-assured intelligence needed to track the emergence and spread of malaria drug resistance.
-                         </p>
+                        Currently, he is working with the Worldwide Anti-malarial Resistance Network (WWARN) at the
+                        University of Oxford providing the much-needed comprehensive, timely, quality-assured
+                        intelligence needed to track the emergence and spread of malaria drug resistance.
+                    </p>
                 </div>
             </div>
         </div>
