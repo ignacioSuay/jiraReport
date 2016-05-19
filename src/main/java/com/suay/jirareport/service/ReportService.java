@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
 /**
@@ -53,6 +54,9 @@ public class ReportService {
             }else if(SectionName.TASKS_BY_ASSIGNEE == section.getName()){
                 addSection(doc, "Tasks completed by Assignee");
                 createAssigneeTable(issues, doc);
+            }else if(SectionName.STORY_SUMMARY == section.getName()){
+                addSection(doc, "Story Summary");
+                createEpicSummaryTable(issues, doc, section);
             }
         }
         FileOutputStream out = new FileOutputStream("simple.docx");
@@ -171,18 +175,18 @@ public class ReportService {
         Map<String, Integer> epicByTimeSpent = null;
 
         if(section.getGroupsBy().contains(FieldName.TIME_ORIGINAL_ESTIMATE)) {
-            epicByOriginalTimeEstimate = issues.stream().filter(i -> !i.isEpic() && !i.isStoryUnresolved()).collect(Collectors.groupingBy(i -> i.getValueByNode(FieldName.EPIC_LINK),
-                Collectors.summingInt(Issue::getTimeOriginalEstimateInSeconds)));
+            ToIntFunction<Issue> orginalEstimateFunc = (issue) -> issue.getTimeOriginalEstimateInSeconds();
+            epicByOriginalTimeEstimate = collectIssues(issues, FieldName.EPIC_LINK, orginalEstimateFunc);
         }
 
         if(section.getGroupsBy().contains(FieldName.TIME_ESTIMATE)) {
-            epicByTimeEstimate = issues.stream().filter(i -> !i.isEpic() && !i.isStoryUnresolved()).collect(Collectors.groupingBy(i -> i.getValueByNode(FieldName.EPIC_LINK),
-                Collectors.summingInt(Issue::getTimeSpentInSeconds)));
+            ToIntFunction<Issue> timeEstimateFunc = (issue) -> issue.getTimeEstimateInSeconds();
+            epicByTimeEstimate = collectIssues(issues, FieldName.EPIC_LINK, timeEstimateFunc);
         }
 
         if(section.getGroupsBy().contains(FieldName.TIME_SPENT)){
-            epicByTimeSpent = issues.stream().filter(i -> !i.isEpic() && !i.isStoryUnresolved()).collect(Collectors.groupingBy(i -> i.getValueByNode(FieldName.EPIC_LINK),
-                Collectors.summingInt(Issue::getTimeSpentInSeconds)));
+            ToIntFunction<Issue> timeSpentFunc = (issue) -> issue.getTimeSpentInSeconds();
+            epicByTimeSpent = collectIssues(issues, FieldName.EPIC_LINK, timeSpentFunc);
         }
 
 
@@ -222,21 +226,13 @@ public class ReportService {
             }
             row++;
         }
+    }
 
-//        for(String key: epicByTimeEstimate.keySet()){
-//            int col = 0;
-//            for(FieldName column: section.getColumns()){
-//                if(column.equals(FieldName.EPIC_LINK)){
-//                    String epicTitle = getEpicTitle(issues, key);
-//                    table.getRow(row).getCell(col).setText(epicTitle);
-//                }else if(column.equals(FieldName.TIME_ESTIMATE)){
-//                    int timeInSeconds = epicByTimeEstimate.get(key);
-//                    table.getRow(row).getCell(col).setText(secondsToDDHH(timeInSeconds));
-//                }
-//                col++;
-//            }
-//            row++;
-//        }
+    Map<String, Integer> collectIssues(List<Issue> issues, FieldName fieldToGroup, ToIntFunction<Issue> sumFunction){
+        return  issues.stream()
+            .filter(i -> !i.isEpic() && !i.isStoryUnresolved())
+            .collect(Collectors.groupingBy(i -> i.getValueByNode(fieldToGroup),
+            Collectors.summingInt(sumFunction)));
     }
 
     private void addColumnsToTable(XWPFTable table, Section section){
