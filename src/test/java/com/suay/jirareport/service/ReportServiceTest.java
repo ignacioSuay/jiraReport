@@ -71,4 +71,20 @@ public class ReportServiceTest {
 
         reportService.createWordDocument(f, reportDTO, "template.docx");
     }
+
+    @Test
+    public void createWordDocumentSummaryStories() throws Exception {
+        File file = utilTest.loadFileFromResources("last2weeks.xml");
+        FileInputStream f = new FileInputStream(file);
+
+        ReportDTO reportDTO = new ReportDTO("Title Template", "Ignacio Suay");
+        List<Section> sections = new ArrayList<>();
+        Section storySection = new Section(SectionName.STORY_SUMMARY);
+        storySection.setColumns(Arrays.asList(FieldName.TITLE, FieldName.STATUS));
+        storySection.setGroupsBy(Arrays.asList(FieldName.TIME_ORIGINAL_ESTIMATE, FieldName.NUMBER_ISSUES));
+        sections.add(storySection);
+        reportDTO.setSections(sections);
+
+        reportService.createWordDocument(f, reportDTO, "template.docx");
+    }
 }
