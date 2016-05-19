@@ -56,7 +56,7 @@ public class ReportService {
                 createAssigneeTable(issues, doc);
             }else if(SectionName.STORY_SUMMARY == section.getName()){
                 addSection(doc, "Story Summary");
-                createEpicSummaryTable(issues, doc, section);
+                createStorySummaryTable(issues, doc, section);
             }
         }
         FileOutputStream out = new FileOutputStream("simple.docx");
@@ -189,7 +189,6 @@ public class ReportService {
             epicByTimeSpent = collectIssues(issues, FieldName.EPIC_LINK, timeSpentFunc);
         }
 
-
         XWPFTable table = doc.createTable(epics.size()+1, section.getTotalNumColumns());
         table.setStyleID("LightShading-Accent1");
         table.getCTTbl().getTblPr().unsetTblBorders();
@@ -227,6 +226,69 @@ public class ReportService {
             row++;
         }
     }
+
+
+    public void createStorySummaryTable(List<Issue> issues, XWPFDocument doc, Section section){
+
+        Set<Epic> epics = issueService.getDataModel(issues);
+        Map<String, Integer> epicByOriginalTimeEstimate = null;
+        Map<String, Integer> epicByTimeEstimate = null;
+        Map<String, Integer> epicByTimeSpent = null;
+
+        if(section.getGroupsBy().contains(FieldName.TIME_ORIGINAL_ESTIMATE)) {
+            ToIntFunction<Issue> orginalEstimateFunc = (issue) -> issue.getTimeOriginalEstimateInSeconds();
+            epicByOriginalTimeEstimate = collectIssues(issues, FieldName.PARENT, orginalEstimateFunc);
+        }
+
+        if(section.getGroupsBy().contains(FieldName.TIME_ESTIMATE)) {
+            ToIntFunction<Issue> timeEstimateFunc = (issue) -> issue.getTimeEstimateInSeconds();
+            epicByTimeEstimate = collectIssues(issues, FieldName.PARENT, timeEstimateFunc);
+        }
+
+        if(section.getGroupsBy().contains(FieldName.TIME_SPENT)){
+            ToIntFunction<Issue> timeSpentFunc = (issue) -> issue.getTimeSpentInSeconds();
+            epicByTimeSpent = collectIssues(issues, FieldName.PARENT, timeSpentFunc);
+        }
+
+        XWPFTable table = doc.createTable(epics.size()+1, section.getTotalNumColumns());
+        table.setStyleID("LightShading-Accent1");
+        table.getCTTbl().getTblPr().unsetTblBorders();
+
+        addColumnsToTable(table, section);
+
+        int row = 1;
+        for(Epic epic : epics) {
+            int col = 0;
+            if (epic.getEpicIssue() == null) {
+                continue;
+            }
+            String epicKey = epic.getEpicIssue().getKey();
+            for (FieldName column : section.getTotalColumns()) {
+                if (column.equals(FieldName.PARENT)) {
+                    String epicTitle = getEpicTitle(issues, epicKey);
+                    table.getRow(row).getCell(col).setText(epicTitle);
+                } else if (column.equals(FieldName.TIME_ORIGINAL_ESTIMATE)) {
+                    if(epicByOriginalTimeEstimate.get(epicKey) != null)
+                        table.getRow(row).getCell(col).setText(secondsToDDHH(epicByOriginalTimeEstimate.get(epicKey)));
+                    else
+                        table.getRow(row).getCell(col).setText("");
+                } else if (column.equals(FieldName.TIME_ESTIMATE)) {
+                    table.getRow(row).getCell(col).setText(secondsToDDHH(epicByTimeEstimate.get(epicKey)));
+                } else if (column.equals(FieldName.TIME_SPENT)) {
+                    table.getRow(row).getCell(col).setText(secondsToDDHH(epicByTimeSpent.get(epicKey)));
+                } else if (column.equals(FieldName.NUMBER_ISSUES)) {
+                    table.getRow(row).getCell(col).setText(Integer.toString(epic.getSubIsues().size()));
+                }else{
+                    String columnValue = epic.getEpicIssue().getValueByNode(column);
+                    table.getRow(row).getCell(col).setText(columnValue);
+                }
+                col++;
+            }
+            row++;
+        }
+    }
+
+
 
     Map<String, Integer> collectIssues(List<Issue> issues, FieldName fieldToGroup, ToIntFunction<Issue> sumFunction){
         return  issues.stream()
