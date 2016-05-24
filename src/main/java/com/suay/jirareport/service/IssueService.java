@@ -12,6 +12,7 @@ import org.xml.sax.SAXException;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 @Component
 public class IssueService {
 
-    public List<Issue> jiraToIssueDTO(FileInputStream inputStream) throws IOException, SAXException {
+    public List<Issue> jiraToIssueDTO(InputStream inputStream) throws IOException, SAXException {
         List<Issue> issues = new ArrayList<Issue>();
         InputSource inputSource = new InputSource(inputStream);
         DOMParser parser = new DOMParser();

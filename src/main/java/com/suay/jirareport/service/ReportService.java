@@ -11,6 +11,7 @@ import org.xml.sax.SAXException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.ToIntFunction;
@@ -31,7 +32,7 @@ public class ReportService {
     Set<Issue> stories;
 
 
-    public void createWordDocument(FileInputStream file, ReportDTO reportDTO, String template) throws IOException, SAXException {
+    public void createWordDocument(InputStream file, ReportDTO reportDTO, String template) throws IOException, SAXException {
         List<Issue> issues = issueService.jiraToIssueDTO(file);
 
         loadData(issues);
