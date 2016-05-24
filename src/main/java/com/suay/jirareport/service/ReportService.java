@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.ToIntFunction;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -229,59 +230,43 @@ public class ReportService {
 
 
     public void createStorySummaryTable(List<Issue> issues, XWPFDocument doc, Section section){
-
         Set<Epic> epics = issueService.getDataModel(issues);
-        Map<String, Integer> epicByOriginalTimeEstimate = null;
-        Map<String, Integer> epicByTimeEstimate = null;
-        Map<String, Integer> epicByTimeSpent = null;
+        Set<Story> stories = new HashSet<>();
+        epics.stream().forEach(e -> stories.addAll(e.getStories()));
 
-        if(section.getGroupsBy().contains(FieldName.TIME_ORIGINAL_ESTIMATE)) {
-            ToIntFunction<Issue> orginalEstimateFunc = (issue) -> issue.getTimeOriginalEstimateInSeconds();
-            epicByOriginalTimeEstimate = collectIssues(issues, FieldName.PARENT, orginalEstimateFunc);
-        }
-
-        if(section.getGroupsBy().contains(FieldName.TIME_ESTIMATE)) {
-            ToIntFunction<Issue> timeEstimateFunc = (issue) -> issue.getTimeEstimateInSeconds();
-            epicByTimeEstimate = collectIssues(issues, FieldName.PARENT, timeEstimateFunc);
-        }
-
-        if(section.getGroupsBy().contains(FieldName.TIME_SPENT)){
-            ToIntFunction<Issue> timeSpentFunc = (issue) -> issue.getTimeSpentInSeconds();
-            epicByTimeSpent = collectIssues(issues, FieldName.PARENT, timeSpentFunc);
-        }
-
-        XWPFTable table = doc.createTable(epics.size()+1, section.getTotalNumColumns());
+        XWPFTable table = doc.createTable(stories.size()+1, section.getTotalNumColumns());
         table.setStyleID("LightShading-Accent1");
         table.getCTTbl().getTblPr().unsetTblBorders();
 
         addColumnsToTable(table, section);
 
         int row = 1;
-        for(Epic epic : epics) {
+        for(Story story : stories) {
             int col = 0;
-            if (epic.getEpicIssue() == null) {
-                continue;
+            for (FieldName column : section.getColumns()) {
+                String columnValue = story.getStoryIssue().getValueByNode(column);
+                table.getRow(row).getCell(col).setText(columnValue);
+                col++;
             }
-            String epicKey = epic.getEpicIssue().getKey();
-            for (FieldName column : section.getTotalColumns()) {
-                if (column.equals(FieldName.PARENT)) {
-                    String epicTitle = getEpicTitle(issues, epicKey);
-                    table.getRow(row).getCell(col).setText(epicTitle);
-                } else if (column.equals(FieldName.TIME_ORIGINAL_ESTIMATE)) {
-                    if(epicByOriginalTimeEstimate.get(epicKey) != null)
-                        table.getRow(row).getCell(col).setText(secondsToDDHH(epicByOriginalTimeEstimate.get(epicKey)));
-                    else
-                        table.getRow(row).getCell(col).setText("");
-                } else if (column.equals(FieldName.TIME_ESTIMATE)) {
-                    table.getRow(row).getCell(col).setText(secondsToDDHH(epicByTimeEstimate.get(epicKey)));
-                } else if (column.equals(FieldName.TIME_SPENT)) {
-                    table.getRow(row).getCell(col).setText(secondsToDDHH(epicByTimeSpent.get(epicKey)));
-                } else if (column.equals(FieldName.NUMBER_ISSUES)) {
-                    table.getRow(row).getCell(col).setText(Integer.toString(epic.getSubIsues().size()));
-                }else{
-                    String columnValue = epic.getEpicIssue().getValueByNode(column);
-                    table.getRow(row).getCell(col).setText(columnValue);
+            //groupby columns
+            for (FieldName column : section.getGroupsBy()) {
+                ToIntFunction<Issue> sumFunc = null;
+                String columnValue = null;
+                if (column.equals(FieldName.TIME_ORIGINAL_ESTIMATE)) {
+                    sumFunc = (issue) -> issue.getTimeOriginalEstimateInSeconds();
+                }else if(column.equals(FieldName.TIME_ESTIMATE)){
+                    sumFunc = (issue) -> issue.getTimeEstimateInSeconds();
+                }else if(column.equals(FieldName.TIME_SPENT)){
+                    sumFunc = (issue) -> issue.getTimeSpentInSeconds();
+                }else if (column.equals(FieldName.NUMBER_ISSUES)) {
+                    columnValue = Integer.toString(story.getSubTasks().size());
                 }
+
+                if(column.equals(FieldName.TIME_ORIGINAL_ESTIMATE) || column.equals(FieldName.TIME_ESTIMATE) || column.equals(FieldName.TIME_SPENT)) {
+                    int totalTime = story.getSubTasks().stream().collect(Collectors.summingInt(sumFunc));
+                    columnValue = secondsToDDHH(totalTime);
+                }
+                table.getRow(row).getCell(col).setText(columnValue);
                 col++;
             }
             row++;
@@ -289,8 +274,7 @@ public class ReportService {
     }
 
 
-
-    Map<String, Integer> collectIssues(List<Issue> issues, FieldName fieldToGroup, ToIntFunction<Issue> sumFunction){
+    private Map<String, Integer> collectIssues(List<Issue> issues, FieldName fieldToGroup, ToIntFunction<Issue> sumFunction){
         return  issues.stream()
             .filter(i -> !i.isEpic() && !i.isStoryUnresolved())
             .collect(Collectors.groupingBy(i -> i.getValueByNode(fieldToGroup),
