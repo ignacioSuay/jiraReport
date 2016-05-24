@@ -80,7 +80,7 @@ public class ReportServiceTest {
         ReportDTO reportDTO = new ReportDTO("Title Template", "Ignacio Suay");
         List<Section> sections = new ArrayList<>();
         Section storySection = new Section(SectionName.STORY_SUMMARY);
-        storySection.setColumns(Arrays.asList(FieldName.TITLE, FieldName.STATUS));
+        storySection.setColumns(Arrays.asList(FieldName.TITLE, FieldName.STATUS, FieldName.TIME_ORIGINAL_ESTIMATE));
         storySection.setGroupsBy(Arrays.asList(FieldName.TIME_ORIGINAL_ESTIMATE, FieldName.NUMBER_ISSUES));
         sections.add(storySection);
         reportDTO.setSections(sections);
