@@ -5,19 +5,24 @@
         .module('jiraReportApp')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$scope', 'Principal', 'LoginService'];
+    HomeController.$inject = ['$scope', '$http'];
 
-    function HomeController ($scope) {
+    function HomeController ($scope, $http) {
         var vm = this;
         $scope.sections=[{}];
 
+        //"Key", "title", "type", "priority", "status", "resolution", "created", "updated", "assignee", "reporter", "time original estimate", "time estimate", "Sprint"
+        var columns = [{id:"", text: "Key"}, {id:"", text: "title"},{id:"", text: "type"},{id:"", text: "priority"},{id:"", text: "status"},{id:"", text: "resolution"},
+            {id:"", text: "created"},{id:"", text: "updated"},{id:"", text: "assignee"},{id:"", text: "reporter"},{id:"", text: "Sprint"},
+            {id:"", text: "time original estimate"},{id:"", text: "time estimate"},{id:"", text: "Epic Key"},{id:"", text: "Story Key"}];
+
         $scope.reportTables = [
-            {id: '1', name: 'Epic Summary', columns:["Epic Key", "name", "priority", "status", "resolution", "created", "updated", "assignee", "reporter"], groupBy:["time original estimate", "time estimate", "time spent", "number of issues"]},
-            {id: '2', name: 'Story Summay', columns:["Story Key", "name", "priority", "status", "resolution", "created", "updated", "assignee", "reporter", "time original estimate", "time estimate", "time spent"], groupBy:["time original estimate", "time estimate", "time spent", "number of issues"]},
-            {id: '3', name: 'Issues by owner', columns:["Key", "title", "type", "priority", "status", "resolution", "created", "updated", "assignee", "reporter", "time original estimate", "time estimate", "time spent", "Sprint"]},
-            {id: '4', name: 'Issues by Epic', columns:["Key", "title", "type", "priority", "status", "resolution", "created", "updated", "assignee", "reporter", "time original estimate", "time estimate", "Sprint"]},
-            {id: '5', name: 'Issues by Story', columns:["Key", "title", "type", "priority", "status", "resolution", "created", "updated", "assignee", "reporter", "time original estimate", "time estimate", "Sprint"]},
-            {id: '6', name: 'All the issues', columns:["Key", "title", "type", "priority", "status", "resolution", "created", "updated", "assignee", "reporter", "time original estimate", "time estimate", "Sprint"]}
+            {id: '1', name: 'Epic Summary', nameId: "EPIC_SUMMARY", columns:["Epic Key", "name", "priority", "status", "resolution", "created", "updated", "assignee", "reporter"], groupBy:["time original estimate", "time estimate", "time spent", "number of issues"]},
+            {id: '2', name: 'Story Summay', nameId: "STORY_SUMMARY", columns:["Story Key", "name", "priority", "status", "resolution", "created", "updated", "assignee", "reporter", "time original estimate", "time estimate", "time spent"], groupBy:["time original estimate", "time estimate", "time spent", "number of issues"]},
+            {id: '3', name: 'Issues by owner', nameId: "ISSUES_OWNER", columns:["Key", "title", "type", "priority", "status", "resolution", "created", "updated", "assignee", "reporter", "time original estimate", "time estimate", "time spent", "Sprint"]},
+            {id: '4', name: 'Issues by Epic', nameId: "ISSUES_EPIC", columns:["Key", "title", "type", "priority", "status", "resolution", "created", "updated", "assignee", "reporter", "time original estimate", "time estimate", "Sprint"]},
+            {id: '5', name: 'Issues by Story', nameId: "ISSUES_STORY", columns:["Key", "title", "type", "priority", "status", "resolution", "created", "updated", "assignee", "reporter", "time original estimate", "time estimate", "Sprint"]},
+            {id: '6', name: 'All the issues', nameId: "ALL_ISSUES", columns:["Key", "title", "type", "priority", "status", "resolution", "created", "updated", "assignee", "reporter", "time original estimate", "time estimate", "Sprint"]}
         ];
 
         $scope.defaultSections = function(){
@@ -41,12 +46,18 @@
 
 
         $scope.sendData = function(){
-            var reportDTO = {title: $scope.title, author:$scope.authors};
-            reportDTO.sections = [];
-            $scope.sections.forEach(function(sec){
-               reportDTO.sections.push({name: sec.action.name, columns: sec.columns});
+            var reportDTO = {title: $scope.title, authors:$scope.authors};
+            reportDTO.sections = [{name:"EPIC_SUMMARY", columns:["TITLE"]}];
+            //$scope.sections.forEach(function(sec){
+            //   reportDTO.sections.push({name: sec.action.nameId, columns: sec.columns});
+            //});
+
+
+            console.log(reportDTO);
+            //console.log(JSON.stringify(reportDTO));
+            $http.post("/api/repot", reportDTO).success(function(){
+                alert("uee");
             });
-            alert(JSON.stringify(reportDTO));
         };
 
         $scope.clear = function(){
