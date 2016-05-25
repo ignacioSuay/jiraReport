@@ -28,7 +28,7 @@ public class ReportResource {
     ReportService reportService;
 
     @RequestMapping(value = "/report",
-        method = RequestMethod.PUT)
+        method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Timed
     public void createReport(@RequestBody MultipartFile file, @RequestBody ReportDTO reportDTO) {
@@ -39,6 +39,17 @@ public class ReportResource {
         } catch (SAXException e) {
             e.printStackTrace();
         }
+    }
+
+    @RequestMapping(value = "/repot",
+        method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Timed
+    public void createReport(@RequestBody ReportDTO reportDTO) {
+
+            System.out.println("report in");
+//            reportService.createWordDocument(file.getInputStream(), reportDTO, "tem");
+
     }
 
 }
