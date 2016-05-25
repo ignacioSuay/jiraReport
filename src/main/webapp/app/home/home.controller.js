@@ -7,20 +7,13 @@
 
     HomeController.$inject = ['$scope', 'Principal', 'LoginService'];
 
-    function HomeController ($scope, Principal, LoginService) {
+    function HomeController ($scope) {
         var vm = this;
         $scope.sections=[{}];
 
-        vm.account = null;
-        vm.isAuthenticated = null;
-        vm.login = LoginService.open;
-        //$scope.$on('authenticationSuccess', function() {
-        //    getAccount();
-        //});
-
         $scope.reportTables = [
             {id: '1', name: 'Epic Summary', columns:["Epic Key", "name", "priority", "status", "resolution", "created", "updated", "assignee", "reporter"], groupBy:["time original estimate", "time estimate", "time spent", "number of issues"]},
-            {id: '2', name: 'Story Summay', columns:["Epic Key", "name", "priority", "status", "resolution", "created", "updated", "assignee", "reporter"], groupBy:["time original estimate", "time estimate", "time spent", "number of issues"]},
+            {id: '2', name: 'Story Summay', columns:["Story Key", "name", "priority", "status", "resolution", "created", "updated", "assignee", "reporter", "time original estimate", "time estimate", "time spent"], groupBy:["time original estimate", "time estimate", "time spent", "number of issues"]},
             {id: '3', name: 'Issues by owner', columns:["Key", "title", "type", "priority", "status", "resolution", "created", "updated", "assignee", "reporter", "time original estimate", "time estimate", "time spent", "Sprint"]},
             {id: '4', name: 'Issues by Epic', columns:["Key", "title", "type", "priority", "status", "resolution", "created", "updated", "assignee", "reporter", "time original estimate", "time estimate", "Sprint"]},
             {id: '5', name: 'Issues by Story', columns:["Key", "title", "type", "priority", "status", "resolution", "created", "updated", "assignee", "reporter", "time original estimate", "time estimate", "Sprint"]},
@@ -36,17 +29,6 @@
             ];
         };
         $scope.defaultSections();
-
-        //getAccount();
-        //
-        //function getAccount() {
-        //    Principal.identity().then(function(account) {
-        //        vm.account = account;
-        //        vm.isAuthenticated = Principal.isAuthenticated;
-        //    });
-        //}
-
-
 
         $scope.addSection = function(){
             $scope.sections.push({action:$scope.reportTables[0]});
