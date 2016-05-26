@@ -12,9 +12,9 @@
         $scope.sections=[{}];
 
         //"Key", "title", "type", "priority", "status", "resolution", "created", "updated", "assignee", "reporter", "time original estimate", "time estimate", "Sprint"
-        var columns = [{id:"", text: "Key"}, {id:"", text: "title"},{id:"", text: "type"},{id:"", text: "priority"},{id:"", text: "status"},{id:"", text: "resolution"},
-            {id:"", text: "created"},{id:"", text: "updated"},{id:"", text: "assignee"},{id:"", text: "reporter"},{id:"", text: "Sprint"},
-            {id:"", text: "time original estimate"},{id:"", text: "time estimate"},{id:"", text: "Epic Key"},{id:"", text: "Story Key"}];
+        var columns = [{id:"KEY", text: "Key"}, {id:"TITLE", text: "title"},{id:"TYPE", text: "type"},{id:"PRIORITY", text: "priority"},{id:"STATUS", text: "status"},{id:"RESOLUTION", text: "resolution"},
+            {id:"CREATED", text: "created"},{id:"UPDATED", text: "updated"},{id:"ASSIGNEE", text: "assignee"},{id:"REPORTER", text: "reporter"},{id:"SPRINT", text: "Sprint"},
+            {id:"TIME_ORIGINAL_ESTIMATE", text: "time original estimate"},{id:"TIME_ESTIMATE", text: "time estimate"},{id:"KEY", text: "Epic Key"},{id:"KEY", text: "Story Key"}];
 
         $scope.reportTables = [
             {id: '1', name: 'Epic Summary', nameId: "EPIC_SUMMARY", columns:["Epic Key", "name", "priority", "status", "resolution", "created", "updated", "assignee", "reporter"], groupBy:["time original estimate", "time estimate", "time spent", "number of issues"]},
