@@ -106,8 +106,8 @@
 
                             <div class="col-md-10">
                                 <div ng-repeat="column in section.action.columns" style="display: inline-block">
-                                    <input type="checkbox" class="margin10" ng-model="section.columns[column]"><span
-                                    class="margin10">{{column}}</span>
+                                    <input type="checkbox" class="margin10" ng-model="section.columns[column.id]"><span
+                                    class="margin10">{{column.text}}</span>
                                 </div>
                             </div>
                         </div>
@@ -116,8 +116,8 @@
 
                             <div class="col-md-10">
                                 <div ng-repeat="sumarize in section.action.groupBy" style="display: inline-block">
-                                    <input type="checkbox" class="margin10" ng-model="section.groupBy[sumarize]"><span
-                                    class="margin10">{{sumarize}}</span>
+                                    <input type="checkbox" class="margin10" ng-model="section.groupBy[sumarize.id]"><span
+                                    class="margin10">{{sumarize.text}}</span>
                                 </div>
                             </div>
                         </div>
