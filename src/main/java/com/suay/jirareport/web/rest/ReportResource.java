@@ -41,7 +41,7 @@ public class ReportResource {
         }
     }
 
-    @RequestMapping(value = "/repot",
+    @RequestMapping(value = "/report/only",
         method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Timed

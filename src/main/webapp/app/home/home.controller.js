@@ -28,10 +28,10 @@
 
         $scope.defaultSections = function(){
             $scope.sections = [
-                {action:$scope.reportTables[0], columns:{"KEY":true}, groupBy:{"TIME_ORIGINAL_ESTIMATE":true, "NUMBER_ISSUES":true}},
-                {action:$scope.reportTables[1], columns:{"KEY":true, "TITLE":true, "STATUS":true}, groupBy:{"TIME_ORIGINAL_ESTIMATE":true, "NUMBER_ISSUES":true}},
-                {action:$scope.reportTables[2], columns:{"KEY":true, "TITLE":true, "TYPE":true, "PRIORITY":true, "STATUS":true}},
-                {action:$scope.reportTables[3], columns:{"KEY":true, "TITLE":true, "TYPE":true, "PRIORITY":true, "STATUS":true}},
+                {action:$scope.reportTables[0], columns:{"KEY":true}, groupBy:{"TIME_ORIGINAL_ESTIMATE":true, "NUMBER_ISSUES":true}}
+                // {action:$scope.reportTables[1], columns:{"KEY":true, "TITLE":true, "STATUS":true}, groupBy:{"TIME_ORIGINAL_ESTIMATE":true, "NUMBER_ISSUES":true}},
+                // {action:$scope.reportTables[2], columns:{"KEY":true, "TITLE":true, "TYPE":true, "PRIORITY":true, "STATUS":true}},
+                // {action:$scope.reportTables[3], columns:{"KEY":true, "TITLE":true, "TYPE":true, "PRIORITY":true, "STATUS":true}}
             ];
         };
         $scope.defaultSections();
@@ -47,16 +47,19 @@
 
 
         $scope.sendData = function(){
-            var reportDTO = {title: $scope.title, authors:$scope.authors};
-            reportDTO.sections = [{name:"EPIC_SUMMARY", columns:["TITLE"]}];
-            // $scope.sections.forEach(function(sec){
-            //   reportDTO.sections.push({name: sec.action.nameId, columns: sec.columns});
-            // });
+            var reportDTO = {title: $scope.title, authors:$scope.authors, sections:[]};
+            // reportDTO.sections = [{name:"EPIC_SUMMARY", columns:["TITLE"]}];
+            $scope.sections.forEach(function(sec){
+                var colsTrue = sec.columns.filter(function(col){})
+                var cols = Object.keys(sec.columns);
+                console.log(cols);
+              reportDTO.sections.push({name: sec.action.nameId, columns: cols});
+            });
 
 
             console.log(reportDTO);
             //console.log(JSON.stringify(reportDTO));
-            $http.post("/api/repot", reportDTO).success(function(){
+            $http.post("/api/report/only", reportDTO).success(function(){
                 alert("uee");
             });
         };
