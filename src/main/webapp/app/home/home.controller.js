@@ -28,10 +28,10 @@
 
         $scope.defaultSections = function(){
             $scope.sections = [
-                {action:$scope.reportTables[0], columns:{"KEY":true}, groupBy:{"TIME_ORIGINAL_ESTIMATE":true, "NUMBER_ISSUES":true}}
-                // {action:$scope.reportTables[1], columns:{"KEY":true, "TITLE":true, "STATUS":true}, groupBy:{"TIME_ORIGINAL_ESTIMATE":true, "NUMBER_ISSUES":true}},
-                // {action:$scope.reportTables[2], columns:{"KEY":true, "TITLE":true, "TYPE":true, "PRIORITY":true, "STATUS":true}},
-                // {action:$scope.reportTables[3], columns:{"KEY":true, "TITLE":true, "TYPE":true, "PRIORITY":true, "STATUS":true}}
+                {action:$scope.reportTables[0], columns:{"KEY":true}, groupBy:{"TIME_ORIGINAL_ESTIMATE":true, "NUMBER_ISSUES":true},trueColumns:[]},
+                {action:$scope.reportTables[1], columns:{"KEY":true, "TITLE":true, "STATUS":true}, groupBy:{"TIME_ORIGINAL_ESTIMATE":true, "NUMBER_ISSUES":true}},
+                {action:$scope.reportTables[2], columns:{"KEY":true, "TITLE":true, "TYPE":true, "PRIORITY":true, "STATUS":true}},
+                {action:$scope.reportTables[3], columns:{"KEY":true, "TITLE":true, "TYPE":true, "PRIORITY":true, "STATUS":true}}
             ];
         };
         $scope.defaultSections();
@@ -44,16 +44,15 @@
             $scope.sections.splice(index,1);
         };
 
-
-
         $scope.sendData = function(){
             var reportDTO = {title: $scope.title, authors:$scope.authors, sections:[]};
             // reportDTO.sections = [{name:"EPIC_SUMMARY", columns:["TITLE"]}];
             $scope.sections.forEach(function(sec){
-                var colsTrue = sec.columns.filter(function(col){})
-                var cols = Object.keys(sec.columns);
-                console.log(cols);
-              reportDTO.sections.push({name: sec.action.nameId, columns: cols});
+                if(sec.columns)
+                    var colsTrue = getArrayOfTrueValues(sec.columns);
+                if(sec.groupBy)
+                    var groupsTrue = getArrayOfTrueValues(sec.groupBy);
+              reportDTO.sections.push({name: sec.action.nameId, columns: colsTrue, groupsBy:groupsTrue});
             });
 
 
@@ -66,7 +65,18 @@
 
         $scope.clear = function(){
             $scope.sections = [];
-        }
+        };
 
+        //Given an object with multiple properties to true or false
+        // return an array of the properties to true
+        //e.g. {a: true, b:false, c:true} -> [a,c]
+        var getArrayOfTrueValues = function(object){
+            var cols = Object.keys(object);
+            var colsTrue = cols.filter(function(col){
+                if(object[col]){return true;}
+                return false;
+            });
+            return colsTrue;
+        }
     }
 })();
