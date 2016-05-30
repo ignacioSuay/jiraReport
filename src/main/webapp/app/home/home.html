@@ -100,27 +100,33 @@
                                 <suay-combo-input list-elements="reportTables" ng-model="section.action"/>
                             </div>
                         </div>
-
+                        <br/>
                         <div class="margin10 row">
                             <label class="col-md-2">Columns:</label>
 
                             <div class="col-md-10">
-                                <div ng-repeat="column in section.action.columns" style="display: inline-block">
-                                    <input type="checkbox" class="margin10" ng-model="section.columns[column.id]"><span
-                                    class="margin10">{{column.text}}</span>
+                                <div ng-repeat="column in section.action.columns">
+                                    <div class="col-md-3">
+                                        <label><input type="checkbox" class="margin10" ng-model="section.columns[column.id]" class="margin10"><span
+                                        class="margin10">{{column.text}}</span></label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <br/>
                         <div class="margin10 row" ng-show="section.action.groupBy">
                             <label class="col-md-2">Summarize sub-tasks by:</label>
 
                             <div class="col-md-10">
-                                <div ng-repeat="sumarize in section.action.groupBy" style="display: inline-block">
-                                    <input type="checkbox" class="margin10" ng-model="section.groupBy[sumarize.id]"><span
-                                    class="margin10">{{sumarize.text}}</span>
+                                <div ng-repeat="sumarize in section.action.groupBy" >
+                                    <div class="col-md-3">
+                                    <label><input type="checkbox" class="margin10" ng-model="section.groupBy[sumarize.id]"><span
+                                    class="margin10">{{sumarize.text}}</span></label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <br/>
                         <button class="btn btn-danger" ng-click="removeSection($index)">remove section</button>
                     </div>
                     <button class="btn btn-primary" ng-click="addSection()"><span class="glyphicon glyphicon-plus"/>add
