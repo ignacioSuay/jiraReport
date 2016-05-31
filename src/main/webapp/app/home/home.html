@@ -68,6 +68,11 @@
                     <label class="control-label" for="uploadBtn">Upload your issues: </label>
                     <button class="btn btn-lg btn-success" class="form-control" id="uploadBtn"> upload</button>
                 </div>
+                <div>
+                    <h3>Upload your issues file</h3>
+                    <input type="file" id="file" name="file" class="inputfile" />
+                    <uib-progressbar max="max" value="dynamic"><span style="color:white; white-space:nowrap;">{{dynamic}}%</span></uib-progressbar>
+                </div>
                 <div class="form-group input-group input-group-lg">
                     <span class="input-group-addon">Title</span>
                     <input type="text" class="form-control" ng-model="title" placeholder="e.g. Sprint 1 Report"/>
