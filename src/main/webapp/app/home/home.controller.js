@@ -59,9 +59,35 @@
 
             console.log(reportDTO);
             //console.log(JSON.stringify(reportDTO));
-            $http.post("/api/report/only", reportDTO).success(function(){
-                alert("uee");
+            // var file = new FormData();
+            // file.append('file', $scope.myFile);
+            // $http.post("/api/report", file, reportDTO, {
+            //     transformRequest: angular.identity,
+            //     headers: {'Content-Type': undefined}}).success(function(){
+            //     alert("uee");
+            // });
+
+            $http({
+                method: 'POST',
+                url: '/api/report',
+                headers: {'Content-Type': undefined },
+                transformRequest: function (data) {
+                    var formData = new FormData();
+
+                    formData.append("file", data.file);
+                    formData.append('reportDTO', new Blob([angular.toJson(data.reportDTO)], {
+                        type: "application/json"
+                    }));
+
+                    return formData;
+                },
+                data: { file: $scope.myFile, reportDTO: reportDTO }
+
+            }).
+            success(function (data, status, headers, config) {
             });
+
+
         };
 
         $scope.clear = function(){

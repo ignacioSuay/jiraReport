@@ -28,11 +28,31 @@ public class ReportResource {
     ReportService reportService;
 
     @RequestMapping(value = "/report",
-        method = RequestMethod.POST)
+        method = RequestMethod.POST, consumes = {"multipart/form-data"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Timed
-    public void createReport(@RequestBody MultipartFile file, @RequestBody ReportDTO reportDTO) {
+    public @ResponseBody void createReport(@RequestPart("file") MultipartFile file, @RequestPart("reportDTO") ReportDTO reportDTO) {
         try {
+//            if (!file.isEmpty()) {
+//                try {
+//                    BufferedOutputStream stream = new BufferedOutputStream(
+//                        new FileOutputStream(new File(Application.ROOT + "/" + name)));
+//                    FileCopyUtils.copy(file.getInputStream(), stream);
+//                    stream.close();
+//                    redirectAttributes.addFlashAttribute("message",
+//                        "You successfully uploaded " + name + "!");
+//                }
+//                catch (Exception e) {
+//                    redirectAttributes.addFlashAttribute("message",
+//                        "You failed to upload " + name + " => " + e.getMessage());
+//                }
+//            }
+//            else {
+//                redirectAttributes.addFlashAttribute("message",
+//                    "You failed to upload " + name + " because the file was empty");
+//            }
+
+
             reportService.createWordDocument(file.getInputStream(), reportDTO, "tem");
         } catch (IOException e) {
             e.printStackTrace();
