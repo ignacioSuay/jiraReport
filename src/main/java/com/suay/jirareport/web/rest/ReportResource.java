@@ -9,6 +9,7 @@ import com.suay.jirareport.web.rest.dto.LoggerDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -80,18 +81,20 @@ public class ReportResource {
     }
 
     @RequestMapping(value = "/download", method = RequestMethod.GET)
-    public void getFile(
-        @PathVariable("file_name") String fileName,
+    public FileSystemResource getFile(
         HttpServletResponse response) {
         try {
             // get your file as InputStream
             File file = new File("/home/suay/ignacioSuay/jiraReport/simple.docx");
             FileInputStream is = new FileInputStream(file);
-            // copy it to response's OutputStream
-            org.apache.commons.io.IOUtils.copy(is, response.getOutputStream());
-            response.flushBuffer();
+            FileSystemResource fileSystemResource =  new FileSystemResource(file);
+            return fileSystemResource;
+//            // copy it to response's OutputStream
+//            org.apache.commons.io.IOUtils.copy(is, response.getOutputStream());
+//            response.setContentType("application/doc");
+//            response.flushBuffer();
         } catch (IOException ex) {
-            log.info("Error writing file to output stream. Filename was '{}'", fileName, ex);
+            log.info("Error writing file to output stream. Filename was '{}'", ex);
             throw new RuntimeException("IOError writing file to output stream");
         }
 
