@@ -11,16 +11,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.URLConnection;
 
 /**
  * Created by suay on 5/24/16.
@@ -81,18 +80,29 @@ public class ReportResource {
     }
 
     @RequestMapping(value = "/download", method = RequestMethod.GET)
-    public FileSystemResource getFile(
+    public void getFile(
         HttpServletResponse response) {
         try {
             // get your file as InputStream
             File file = new File("/home/suay/ignacioSuay/jiraReport/simple.docx");
-            FileInputStream is = new FileInputStream(file);
-            FileSystemResource fileSystemResource =  new FileSystemResource(file);
-            return fileSystemResource;
-//            // copy it to response's OutputStream
-//            org.apache.commons.io.IOUtils.copy(is, response.getOutputStream());
-//            response.setContentType("application/doc");
-//            response.flushBuffer();
+//            FileInputStream is = new FileInputStream(file);
+            String mimeType= URLConnection.guessContentTypeFromName(file.getName());
+            if(mimeType==null){
+                System.out.println("mimetype is not detectable, will take default");
+                mimeType = "application/msword";
+            }
+            System.out.println("mimetype : "+mimeType);
+
+            response.setContentType(mimeType);
+
+            response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() +"\""));
+            response.setContentLength((int)file.length());
+
+            InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+
+            //Copy bytes from source to destination(outputstream in this example), closes both streams.
+            FileCopyUtils.copy(inputStream, response.getOutputStream());
+
         } catch (IOException ex) {
             log.info("Error writing file to output stream. Filename was '{}'", ex);
             throw new RuntimeException("IOError writing file to output stream");
