@@ -38,7 +38,7 @@ public class ReportResource {
         method = RequestMethod.POST, consumes = {"multipart/form-data"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Timed
-    public void createReport(@RequestPart("file") MultipartFile file, @RequestPart("reportDTO") ReportDTO reportDTO) {
+    public void createReport(@RequestPart("file") MultipartFile file, @RequestPart("reportDTO") ReportDTO reportDTO, HttpServletResponse response) {
         try {
 //            if (!file.isEmpty()) {
 //                try {
@@ -61,6 +61,21 @@ public class ReportResource {
 
 
             reportService.createWordDocument(file.getInputStream(), reportDTO, "tem");
+
+
+            //Download the file
+            File downloadFile = new File("/home/suay/ignacioSuay/jiraReport/simple.docx");
+            String mimeType= "application/msword";
+            response.setContentType(mimeType);
+
+            response.setHeader("Content-Disposition", String.format("inline; filename=\"" + downloadFile.getName() +"\""));
+            response.setContentLength((int)downloadFile.length());
+
+            InputStream inputStream = new BufferedInputStream(new FileInputStream(downloadFile));
+
+            //Copy bytes from source to destination(outputstream in this example), closes both streams.
+            FileCopyUtils.copy(inputStream, response.getOutputStream());
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SAXException e) {
@@ -85,14 +100,7 @@ public class ReportResource {
         try {
             // get your file as InputStream
             File file = new File("/home/suay/ignacioSuay/jiraReport/simple.docx");
-//            FileInputStream is = new FileInputStream(file);
-            String mimeType= URLConnection.guessContentTypeFromName(file.getName());
-            if(mimeType==null){
-                System.out.println("mimetype is not detectable, will take default");
-                mimeType = "application/msword";
-            }
-            System.out.println("mimetype : "+mimeType);
-
+            String mimeType= "application/msword";
             response.setContentType(mimeType);
 
             response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() +"\""));
