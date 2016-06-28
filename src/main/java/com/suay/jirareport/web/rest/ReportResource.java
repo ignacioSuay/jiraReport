@@ -78,7 +78,7 @@ public class ReportResource {
         HttpServletResponse response) {
         try {
             // get your file as InputStream
-            File file = new File("/home/suay/ignacioSuay/jiraReport/files/"+filename);
+            File file = new File("/home/natxo/dev/jiraReport/files/"+filename+".docx");
             String mimeType= "application/msword";
             response.setContentType(mimeType);
 
