@@ -58,15 +58,6 @@
 
 
             console.log(reportDTO);
-            //console.log(JSON.stringify(reportDTO));
-            // var file = new FormData();
-            // file.append('file', $scope.myFile);
-            // $http.post("/api/report", file, reportDTO, {
-            //     transformRequest: angular.identity,
-            //     headers: {'Content-Type': undefined}}).success(function(){
-            //     alert("uee");
-            // });
-
             $http({
                 method: 'POST',
                 url: '/api/report',
@@ -84,10 +75,9 @@
                 data: { file: $scope.myFile, reportDTO: reportDTO }
 
             }).
-            success(function (data, status, headers, config) {
+            then(function (data) {
+                    alert(data);
             });
-
-
         };
 
         $scope.clear = function(){
