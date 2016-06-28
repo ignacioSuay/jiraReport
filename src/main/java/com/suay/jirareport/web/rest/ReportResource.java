@@ -6,11 +6,14 @@ import com.codahale.metrics.annotation.Timed;
 import com.suay.jirareport.domain.jira.ReportDTO;
 import com.suay.jirareport.service.ReportService;
 import com.suay.jirareport.web.rest.dto.LoggerDTO;
+import com.suay.jirareport.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +23,8 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by suay on 5/24/16.
@@ -35,52 +40,26 @@ public class ReportResource {
     ReportService reportService;
 
     @RequestMapping(value = "/report",
-        method = RequestMethod.POST, consumes = {"multipart/form-data"})
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+        method = RequestMethod.POST,
+        consumes = {"multipart/form-data"},
+        produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public void createReport(@RequestPart("file") MultipartFile file, @RequestPart("reportDTO") ReportDTO reportDTO, HttpServletResponse response) {
+    @ResponseBody
+    public ResponseEntity<Void> createReport(@RequestPart("file") MultipartFile file, @RequestPart("reportDTO") ReportDTO reportDTO) {
+
+        String outputFile = null;
         try {
-//            if (!file.isEmpty()) {
-//                try {
-//                    BufferedOutputStream stream = new BufferedOutputStream(
-//                        new FileOutputStream(new File(Application.ROOT + "/" + name)));
-//                    FileCopyUtils.copy(file.getInputStream(), stream);
-//                    stream.close();
-//                    redirectAttributes.addFlashAttribute("message",
-//                        "You successfully uploaded " + name + "!");
-//                }
-//                catch (Exception e) {
-//                    redirectAttributes.addFlashAttribute("message",
-//                        "You failed to upload " + name + " => " + e.getMessage());
-//                }
-//            }
-//            else {
-//                redirectAttributes.addFlashAttribute("message",
-//                    "You failed to upload " + name + " because the file was empty");
-//            }
 
-
-            reportService.createWordDocument(file.getInputStream(), reportDTO, "tem");
-
-
-            //Download the file
-            File downloadFile = new File("/home/suay/ignacioSuay/jiraReport/simple.docx");
-            String mimeType= "application/msword";
-            response.setContentType(mimeType);
-
-            response.setHeader("Content-Disposition", String.format("inline; filename=\"" + downloadFile.getName() +"\""));
-            response.setContentLength((int)downloadFile.length());
-
-            InputStream inputStream = new BufferedInputStream(new FileInputStream(downloadFile));
-
-            //Copy bytes from source to destination(outputstream in this example), closes both streams.
-            FileCopyUtils.copy(inputStream, response.getOutputStream());
+            outputFile = reportService.createWordDocument(file.getInputStream(), reportDTO, "template.docx");
 
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SAXException e) {
             e.printStackTrace();
         }
+        final String finalOutputFile = outputFile;
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("newReport", finalOutputFile)).build();
+
     }
 
     @RequestMapping(value = "/report/only",
@@ -94,12 +73,12 @@ public class ReportResource {
 
     }
 
-    @RequestMapping(value = "/download", method = RequestMethod.GET)
-    public void getFile(
+    @RequestMapping(value = "/download/{filename}", method = RequestMethod.GET)
+    public void getFile(@PathVariable String filename,
         HttpServletResponse response) {
         try {
             // get your file as InputStream
-            File file = new File("/home/suay/ignacioSuay/jiraReport/simple.docx");
+            File file = new File("/home/suay/ignacioSuay/jiraReport/files/"+filename);
             String mimeType= "application/msword";
             response.setContentType(mimeType);
 
