@@ -84,8 +84,6 @@
                 </div>
 
                 <br>
-                <button class="btn btn-primary" ng-click="download()">download</button>
-                <a class="btn btn-primary" href="/api/download">download2</a>
                 <hr/>
                 <div class="row">
                     <div class="col-md-6">
@@ -141,6 +139,7 @@
                     </button>
                     <br/><br/>
                     <button class="btn btn-success btn-lg" ng-click="sendData()">Send data</button>
+                    <a ng-show="docReady" class="btn btn-primary" ng-href="/api/download/{{title}}">download2</a>
                 </div>
             </div>
         </div>
