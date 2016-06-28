@@ -8,10 +8,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.ToIntFunction;
@@ -32,12 +29,14 @@ public class ReportService {
     Set<Issue> stories;
 
 
-    public void createWordDocument(InputStream file, ReportDTO reportDTO, String template) throws IOException, SAXException {
+    public String createWordDocument(InputStream file, ReportDTO reportDTO, String template) throws IOException, SAXException {
         List<Issue> issues = issueService.jiraToIssueDTO(file);
 
         loadData(issues);
-        Resource resource = new ClassPathResource(template);
-        XWPFDocument doc = new XWPFDocument(resource.getInputStream());
+//        Resource resource = new ClassPathResource(template);
+        File fileTemplate = new File("/var/jiraReport/template.docx");
+        InputStream inputStream = new BufferedInputStream(new FileInputStream(fileTemplate));
+        XWPFDocument doc = new XWPFDocument(inputStream);
 
         changeTitle(doc, reportDTO.getTitle());
         changeAuthors(doc, reportDTO.getAuthors());
@@ -61,9 +60,12 @@ public class ReportService {
                 createStorySummaryTable(issues, doc, section);
             }
         }
-        FileOutputStream out = new FileOutputStream("simple.docx");
+
+        String outputFile = "files/"+reportDTO.getTitle() + ".docx";
+        FileOutputStream out = new FileOutputStream(outputFile);
         doc.write(out);
         out.close();
+        return outputFile;
     }
 
 
@@ -112,7 +114,7 @@ public class ReportService {
             if (runs != null) {
                 for (XWPFRun r : runs) {
                     String text = r.getText(0);
-                    if (text != null && text.contains(textToFind)) {
+                    if (text != null && text.contains(textToFind) && textToReplace != null) {
                         text = text.replace(textToFind, textToReplace);
                         r.setText(text, 0);
                     }
