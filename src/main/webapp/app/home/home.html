@@ -65,12 +65,25 @@
 
             <div>
                 <div class="form-group">
-                    <label class="control-label" for="uploadBtn">Upload your issues: </label>
-                    <button class="btn btn-lg btn-success" class="form-control" id="uploadBtn"> upload</button>
+                    <label class="control-label">Upload your issues: </label>
+                    <span class="fileUpload btn btn-default">
+                        <span class="glyphicon glyphicon-upload"></span> Upload file
+                        <input type="file" id="uploadFile" />
+                    </span>
+                    <p id="fileUploadError" class="text-danger hide"></p>
+
+                    <div class="list-group" id="files"></div>
+
+                    <div class="list-group-item">
+                        <div class="progress progress-striped active">
+                            <div class="progress-bar progress-bar-info" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
                 </div>
                 <div>
                     <h3>Upload your issues file</h3>
-                    <input type="file" id="file" name="file" class="inputfile" file-model="myFile"/>
+                    <input type="file" id="file" name="file" class="btn btn-lg btn-success" file-model="myFile"/>
                     <uib-progressbar max="max" value="dynamic"><span style="color:white; white-space:nowrap;">{{dynamic}}%</span></uib-progressbar>
                 </div>
                 <div class="form-group input-group input-group-lg">
