@@ -6,6 +6,19 @@ p.big{
     font-size: 22px;
 }
 
+
+#description{
+//    background-image: -owg(linear-gradient(to bottom, #55acee, #54a7e8));
+//    background-image: -webkit(linear-gradient(to bottom, #55acee, #54a7e8));
+//    background-image: -moz(linear-gradient(to bottom, #55acee, #54a7e8));
+//    background-image: -o(linear-gradient(to bottom, #55acee, #54a7e8));
+//     background-image: linear-gradient(to bottom, #55acee, #54a7e8);
+//    background-color: #F77020;
+//    background-color: #F77020;
+    box-shadow: inset 0px -1px 12px 0px rgba(0,0,0,0.3);
+    background-image: url(../images/back.png);
+
+}
 //HEADER SECTION
 header {
     position: relative;

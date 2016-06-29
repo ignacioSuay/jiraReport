@@ -8074,6 +8074,10 @@ Copyright (c) 2015 Daniel Eden
 p.big {
   font-size: 22px; }
 
+#description {
+  box-shadow: inset 0px -1px 12px 0px rgba(0, 0, 0, 0.3);
+  background-image: url(../images/back.png); }
+
 header {
   position: relative;
   width: 100%;
