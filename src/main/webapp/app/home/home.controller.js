@@ -5,9 +5,9 @@
         .module('jiraReportApp')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$scope', '$http'];
+    HomeController.$inject = ['$scope', '$http', 'Upload'];
 
-    function HomeController ($scope, $http) {
+    function HomeController ($scope, $http, Upload) {
         var vm = this;
         $scope.sections=[{}];
         $scope.dynamic = 0;
@@ -73,7 +73,7 @@
 
                     return formData;
                 },
-                data: { file: $scope.myFile, reportDTO: reportDTO }
+                data: { file: $scope.file, reportDTO: reportDTO }
 
             }).
             then(function (data) {
@@ -99,6 +99,30 @@
 
         $scope.download = function(){
             $http.get("/api/download").success(function(result){alert("ueee")});
+        }
+
+        $scope.uploadFiles = function(file, errFiles) {
+            $scope.f = file;
+            $scope.errFile = errFiles && errFiles[0];
+            if (file) {
+                $scope.file = file;
+                file.upload = Upload.upload({
+                      url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
+                      data: {file: file}
+                });
+
+                file.upload.then(function (response) {
+                    $timeout(function () {
+                        file.result = response.data;
+                    });
+                }, function (response) {
+                    if (response.status > 0)
+                        $scope.errorMsg = response.status + ': ' + response.data;
+                }, function (evt) {
+                    file.progress = Math.min(100, parseInt(100.0 *
+                        evt.loaded / evt.total));
+                });
+            }
         }
     }
 })();
