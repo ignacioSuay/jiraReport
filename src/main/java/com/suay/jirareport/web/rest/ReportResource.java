@@ -35,7 +35,6 @@ public class ReportResource {
 
     private final Logger log = LoggerFactory.getLogger(ReportResource.class);
 
-
     @Inject
     ReportService reportService;
 
@@ -95,6 +94,21 @@ public class ReportResource {
             throw new RuntimeException("IOError writing file to output stream");
         }
 
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value = "/upload")
+    public void upload(@RequestParam("file") MultipartFile file, @RequestParam("username") String username ) throws IOException {
+        log.info("loading file with uuid ");
+
+        byte[] bytes;
+
+        if (!file.isEmpty()) {
+            bytes = file.getBytes();
+            //store file in storage
+        }
+
+//        System.out.println(String.format("receive %s from %s", file.getOriginalFilename(), uid));
     }
 
 

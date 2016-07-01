@@ -107,8 +107,10 @@
             if (file) {
                 $scope.file = file;
                 file.upload = Upload.upload({
-                      url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
-                      data: {file: file}
+                    url: 'api/upload',
+                    fields: {'username': 'zouroto'},
+                    // fields: {'uid': '12345'},
+                    data: {file: file}
                 });
 
                 file.upload.then(function (response) {
