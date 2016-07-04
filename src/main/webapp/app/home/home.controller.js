@@ -12,6 +12,7 @@
         $scope.sections=[{}];
         $scope.dynamic = 0;
         $scope.docReady = false;
+        $scope.uuid = guid();
 
         //"Key", "title", "type", "priority", "status", "resolution", "created", "updated", "assignee", "reporter", "time original estimate", "time estimate", "Sprint"
         var columnOps = [{id:"KEY", text: "Key"}, {id:"TITLE", text: "title"},{id:"TYPE", text: "type"},{id:"PRIORITY", text: "priority"},{id:"STATUS", text: "status"},{id:"RESOLUTION", text: "resolution"},
@@ -95,11 +96,11 @@
                 return false;
             });
             return colsTrue;
-        }
+        };
 
         $scope.download = function(){
             $http.get("/api/download").success(function(result){alert("ueee")});
-        }
+        };
 
         $scope.uploadFiles = function(file, errFiles) {
             $scope.f = file;
@@ -108,9 +109,7 @@
                 $scope.file = file;
                 file.upload = Upload.upload({
                     url: 'api/upload',
-                    fields: {'username': 'zouroto'},
-                    // fields: {'uid': '12345'},
-                    data: {file: file}
+                    data: {file: file, uuid: $scope.uuid}
                 });
 
                 file.upload.then(function (response) {
@@ -125,6 +124,16 @@
                         evt.loaded / evt.total));
                 });
             }
-        }
+        };
+
+        function guid() {
+            function s4() {
+                return Math.floor((1 + Math.random()) * 0x10000)
+                    .toString(16)
+                    .substring(1);
+            }
+            return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                s4() + '-' + s4() + s4() + s4();
+        };
     }
 })();
