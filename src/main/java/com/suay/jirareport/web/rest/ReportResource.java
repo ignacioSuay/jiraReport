@@ -98,7 +98,7 @@ public class ReportResource {
 
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "/upload")
-    public void upload(@RequestParam("file") MultipartFile file, @RequestParam("username") String username ) throws IOException {
+    public void upload(@RequestParam("file") MultipartFile file, @RequestParam("uuid") String uuid ) throws IOException {
         log.info("loading file with uuid ");
 
         byte[] bytes;
