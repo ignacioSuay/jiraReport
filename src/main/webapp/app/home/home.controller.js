@@ -5,9 +5,9 @@
         .module('jiraReportApp')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$scope', '$http', 'Upload'];
+    HomeController.$inject = ['$scope', '$http', '$timeout', 'Upload'];
 
-    function HomeController ($scope, $http, Upload) {
+    function HomeController ($scope, $http, $timeout, Upload) {
         var vm = this;
         $scope.sections=[{}];
         $scope.dynamic = 0;
@@ -67,14 +67,15 @@
                 transformRequest: function (data) {
                     var formData = new FormData();
 
-                    formData.append("file", data.file);
+                    // formData.append("file", data.file);
+                    formData.append('uuid', data.uuid);
                     formData.append('reportDTO', new Blob([angular.toJson(data.reportDTO)], {
                         type: "application/json"
                     }));
 
                     return formData;
                 },
-                data: { file: $scope.file, reportDTO: reportDTO }
+                data: { uuid: $scope.uuid, reportDTO: reportDTO }
 
             }).
             then(function (data) {
