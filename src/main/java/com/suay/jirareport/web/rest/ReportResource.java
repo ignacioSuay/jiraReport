@@ -37,7 +37,10 @@ public class ReportResource {
 
     private final Logger log = LoggerFactory.getLogger(ReportResource.class);
 
-    public final String UPLOAD_FILE = "/var/jiraReport/uploadFiles/";
+    public final static String UPLOAD_FILE = "/var/jiraReport/uploadFiles/";
+
+    public final static String REPORT_PATH = "/var/jiraReport/reports/";
+
 
     @Inject
     ReportService reportService;
@@ -106,7 +109,7 @@ public class ReportResource {
         HttpServletResponse response) {
         try {
             // get your file as InputStream
-            File file = new File("/home/natxo/dev/jiraReport/files/"+filename+".docx");
+            File file = new File(REPORT_PATH + filename+".docx");
             String mimeType= "application/msword";
             response.setContentType(mimeType);
 

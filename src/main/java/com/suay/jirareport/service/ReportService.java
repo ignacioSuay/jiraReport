@@ -1,6 +1,7 @@
 package com.suay.jirareport.service;
 
 import com.suay.jirareport.domain.jira.*;
+import com.suay.jirareport.web.rest.ReportResource;
 import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -61,7 +62,7 @@ public class ReportService {
             }
         }
 
-        String outputFile = "files/"+reportDTO.getTitle() + ".docx";
+        String outputFile = ReportResource.REPORT_PATH + reportDTO.getTitle() + ".docx";
         FileOutputStream out = new FileOutputStream(outputFile);
         doc.write(out);
         out.close();
