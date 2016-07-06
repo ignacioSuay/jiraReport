@@ -66,29 +66,17 @@
             <div>
                 <div class="form-group">
                     <label class="control-label">Upload your issues: </label>
-                    <!--<span class="fileUpload btn btn-default">-->
-                        <!--<span class="glyphicon glyphicon-upload"></span> Upload file-->
-                        <!--<input type="file" id="uploadFile" file-model="myFile" />-->
-                    <!--</span>-->
                     <span class="fileUpload btn btn-default">
                         <span class="glyphicon glyphicon-upload"></span> Upload file
                         <input type="file" id="uploadFile" ngf-select="uploadFiles($file, $invalidFiles)" ngf-max-height="10000" ngf-max-size="10MB" />
                     </span>
-                    <div style="font:smaller">{{f.name}} {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}}
-                      <span class="progress" ng-show="f.progress >= 0">
-                          <div style="width:{{f.progress}}%"
-                               ng-bind="f.progress + '%'"></div>
-                      </span>
-                    </div>
-                    <p id="fileUploadError" class="text-danger hide"></p>
-
-                    <div class="list-group" id="files"></div>
-
-                    <div class="list-group-item">
-                        <div class="progress progress-striped active">
-                            <div class="progress-bar progress-bar-info" style="width: 0%;"></div>
+                    <br/> <br/>
+                    <div class="list-group-item col-md-8">
+                        <div class="progress progress-striped active col-md-8">
+                            <div class="progress-bar progress-bar-primary" style="width: {{f.progress}}%;">{{f.name}} {{f.progress}}%</div>
                         </div>
                     </div>
+
                 </div>
                 </div>
                 <!--<div>-->
