@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLConnection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,6 +37,8 @@ public class ReportResource {
 
     private final Logger log = LoggerFactory.getLogger(ReportResource.class);
 
+    public final String UPLOAD_FILE = "/var/jiraReport/uploadFiles/";
+
     @Inject
     ReportService reportService;
 
@@ -44,12 +48,13 @@ public class ReportResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @ResponseBody
-    public ResponseEntity<Void> createReport(@RequestPart("file") MultipartFile file, @RequestPart("reportDTO") ReportDTO reportDTO) {
+    public ResponseEntity<Void> createReport(@RequestPart("uuid") String uuid, @RequestPart("reportDTO") ReportDTO reportDTO) {
 
         String outputFile = null;
         try {
-
-            outputFile = reportService.createWordDocument(file.getInputStream(), reportDTO, "template.docx");
+            File file = new File(UPLOAD_FILE + uuid);
+            InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+            outputFile = reportService.createWordDocument(inputStream, reportDTO, "template.docx");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -60,6 +65,30 @@ public class ReportResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("newReport", finalOutputFile)).build();
 
     }
+
+
+
+//    @RequestMapping(value = "/report",
+//        method = RequestMethod.POST,
+//        consumes = {"multipart/form-data"},
+//        produces = MediaType.APPLICATION_JSON_VALUE)
+//    @Timed
+//    @ResponseBody
+//    public ResponseEntity<Void> createReport(@RequestPart("file") MultipartFile file, @RequestPart("reportDTO") ReportDTO reportDTO) {
+//
+//        String outputFile = null;
+//        try {
+//            outputFile = reportService.createWordDocument(file.getInputStream(), reportDTO, "template.docx");
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (SAXException e) {
+//            e.printStackTrace();
+//        }
+//        final String finalOutputFile = outputFile;
+//        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("newReport", finalOutputFile)).build();
+//
+//    }
 
     @RequestMapping(value = "/report/only",
         method = RequestMethod.POST)
@@ -100,16 +129,8 @@ public class ReportResource {
     @RequestMapping(value = "/upload")
     public void upload(@RequestParam("file") MultipartFile file, @RequestParam("uuid") String uuid ) throws IOException {
         log.info("loading file with uuid ");
-
-        byte[] bytes;
-
-        if (!file.isEmpty()) {
-            bytes = file.getBytes();
-            //store file in storage
-        }
-
-//        System.out.println(String.format("receive %s from %s", file.getOriginalFilename(), uid));
+        File newFile = new File(UPLOAD_FILE + uuid);
+        file.transferTo(newFile);
     }
-
 
 }
