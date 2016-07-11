@@ -38,13 +38,6 @@ public class ReportServiceTest {
     UtilTest utilTest;
 
 
-    @Test
-    public void testCreateWordDocument() throws Exception {
-        List<Issue> issueList = getListIssues();
-        reportService.createWordDocument(issueList, "templateWwarn.docx");
-    }
-
-
     private List<Issue> getListIssues() throws Exception {
         File file = utilTest.loadFileFromResources("last2weeks.xml");
         FileInputStream f = new FileInputStream(file);
@@ -55,7 +48,7 @@ public class ReportServiceTest {
 
     @Test
     public void createWordDocument() throws Exception {
-        File file = utilTest.loadFileFromResources("last2weeks.xml");
+        File file = utilTest.loadFileFromResources("sprint8.xml");
         FileInputStream f = new FileInputStream(file);
 
         ReportDTO reportDTO = new ReportDTO("Report Template", "Ignacio Suay");
@@ -66,7 +59,9 @@ public class ReportServiceTest {
         sections.add(epicSection);
         sections.add(new Section(SectionName.TASKS_PER_EPIC));
         sections.add(new Section(SectionName.TASKS_BY_ASSIGNEE));
-        sections.add(new Section(SectionName.ALL_ISSUES));
+        Section allIssues = new Section(SectionName.ALL_ISSUES);
+        allIssues.setColumns(Arrays.asList(FieldName.KEY, FieldName.TITLE, FieldName.ASSIGNEE, FieldName.TIME_SPENT));
+        sections.add(allIssues);
         reportDTO.setSections(sections);
 
         reportService.createWordDocument(f, reportDTO, "template.docx");
