@@ -58,7 +58,7 @@ public class ReportServiceTest {
         File file = utilTest.loadFileFromResources("last2weeks.xml");
         FileInputStream f = new FileInputStream(file);
 
-        ReportDTO reportDTO = new ReportDTO("Title Template", "Ignacio Suay");
+        ReportDTO reportDTO = new ReportDTO("Report Template", "Ignacio Suay");
         List<Section> sections = new ArrayList<>();
         Section epicSection = new Section(SectionName.EPIC_SUMMARY);
         epicSection.setColumns(Arrays.asList(FieldName.EPIC_LINK, FieldName.STATUS));
@@ -77,7 +77,7 @@ public class ReportServiceTest {
         File file = utilTest.loadFileFromResources("last2weeks.xml");
         FileInputStream f = new FileInputStream(file);
 
-        ReportDTO reportDTO = new ReportDTO("Title Template", "Ignacio Suay");
+        ReportDTO reportDTO = new ReportDTO("Story Summary", "Ignacio Suay");
         List<Section> sections = new ArrayList<>();
         Section storySection = new Section(SectionName.STORY_SUMMARY);
         storySection.setColumns(Arrays.asList(FieldName.TITLE, FieldName.STATUS, FieldName.TIME_ORIGINAL_ESTIMATE));
