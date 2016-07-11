@@ -62,13 +62,21 @@ public class ReportService {
             }
         }
 
-        String outputFile = ReportResource.REPORT_PATH + reportDTO.getTitle() + ".docx";
+        String outputFilename = getOutputFilename(reportDTO);
+        String outputFile = ReportResource.REPORT_PATH + outputFilename;
         FileOutputStream out = new FileOutputStream(outputFile);
         doc.write(out);
         out.close();
         return outputFile;
     }
 
+    private String getOutputFilename(ReportDTO reportDTO) {
+        if(reportDTO!= null && reportDTO.getTitle()!= null){
+            return reportDTO.getTitle() + ".docx";
+        }
+
+        return "report.docx";
+    }
 
 
     public void createWordDocument(List<Issue> issues, String template) throws IOException {
@@ -129,7 +137,7 @@ public class ReportService {
     public void createTableByFields(List<Issue> issues, List<FieldName> fields, XWPFDocument doc) throws IOException {
 
         XWPFTable table = doc.createTable(issues.size()+1, fields.size());
-        table.setStyleID("LightShading-Accent1");
+        table.setStyleID("LightShading-Accent12");
         table.getCTTbl().getTblPr().unsetTblBorders();
 
         for(int cols = 0; cols < fields.size(); cols++){
@@ -195,7 +203,7 @@ public class ReportService {
         }
 
         XWPFTable table = doc.createTable(epics.size()+1, section.getTotalNumColumns());
-        table.setStyleID("LightShading-Accent1");
+        table.setStyleID("LightShading-Accent12");
         table.getCTTbl().getTblPr().unsetTblBorders();
 
         addColumnsToTable(table, section);
@@ -239,7 +247,7 @@ public class ReportService {
         epics.stream().forEach(e -> stories.addAll(e.getStories()));
 
         XWPFTable table = doc.createTable(stories.size()+1, section.getTotalNumColumns());
-        table.setStyleID("LightShading-Accent1");
+        table.setStyleID("LightShading-Accent12");
         table.getCTTbl().getTblPr().unsetTblBorders();
 
         addColumnsToTable(table, section);
@@ -289,7 +297,7 @@ public class ReportService {
 
         int i = 0;
         for(FieldName column: section.getTotalColumns()){
-            table.getRow(0).getCell(i).setText(column.name());
+            table.getRow(0).getCell(i).setText(column.getColumnName());
             i++;
         }
     }
@@ -304,7 +312,7 @@ public class ReportService {
             addSubSection(doc, assignee + " tasks");
             XWPFTable table = doc.createTable(collect.get(assignee).size()+2, 3);
             table.getCTTbl().getTblPr().unsetTblBorders();
-            table.setStyleID("LightShading-Accent1");
+            table.setStyleID("LightShading-Accent12");
 
             table.getRow(0).getCell(0).setText("Epic");
             table.getRow(0).getCell(1).setText("Task");
@@ -337,7 +345,7 @@ public class ReportService {
             addSubSection(doc, epicTitle + " tasks");
             XWPFTable table = doc.createTable(collect.get(epic).size()+2, 3);
             table.getCTTbl().getTblPr().unsetTblBorders();
-            table.setStyleID("LightShading-Accent1");
+            table.setStyleID("LightShading-Accent12");
 
             table.getRow(0).getCell(0).setText("Epic");
             table.getRow(0).getCell(1).setText("Task");
