@@ -223,6 +223,8 @@ public class Issue {
         String res = null;
 
         switch (node){
+            case KEY:
+                res = getKey();break;
             case TITLE:
                 res = getTitle();break;
             case SUMMARY:
