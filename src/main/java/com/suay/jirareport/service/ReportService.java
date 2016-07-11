@@ -45,8 +45,7 @@ public class ReportService {
         for(Section section: reportDTO.getSections()){
             if(SectionName.ALL_ISSUES == section.getName()){
                 addSection(doc, "List of all issues");
-                List<FieldName> fields = Arrays.asList(FieldName.TITLE, FieldName.ASSIGNEE, FieldName.CREATED, FieldName.SPRINT, FieldName.EPIC_LINK);
-                createTableByFields(issues, fields, doc);
+                createTableByFields(issues, section, doc);
             }else if(SectionName.EPIC_SUMMARY == section.getName()){
                 addSection(doc, "Epic Summary");
                 createEpicSummaryTable(issues, doc, section);
@@ -78,33 +77,6 @@ public class ReportService {
         return "report.docx";
     }
 
-
-    public void createWordDocument(List<Issue> issues, String template) throws IOException {
-        loadData(issues);
-        Resource resource = new ClassPathResource(template);
-        XWPFDocument doc = new XWPFDocument(resource.getInputStream());
-
-        changeTitle(doc, "Sprint 8");
-
-        addSection(doc, "Epic Summary");
-        createSummaryTable(issues,doc);
-
-        addSection(doc, "Tasks completed by Epic");
-        createEpicTables(issues, doc);
-
-        addSection(doc, "Tasks completed by Assignee");
-        createAssigneeTable(issues, doc);
-
-        addSection(doc, "List of all issues");
-        List<FieldName> fields = Arrays.asList(FieldName.TITLE, FieldName.ASSIGNEE, FieldName.CREATED, FieldName.SPRINT, FieldName.EPIC_LINK);
-        createTableByFields(issues, fields, doc);
-
-        FileOutputStream out = new FileOutputStream("simple.docx");
-        doc.write(out);
-        out.close();
-
-    }
-
     private void loadData(List<Issue> issues) {
         epics = issueService.getEpics(issues);
         stories = issueService.getStories(issues);
@@ -134,25 +106,19 @@ public class ReportService {
 
 
 
-    public void createTableByFields(List<Issue> issues, List<FieldName> fields, XWPFDocument doc) throws IOException {
+    public void createTableByFields(List<Issue> issues, Section section, XWPFDocument doc) throws IOException {
 
-        XWPFTable table = doc.createTable(issues.size()+1, fields.size());
+        XWPFTable table = doc.createTable(issues.size()+1, section.getTotalColumns().size());
         table.setStyleID("LightShading-Accent12");
         table.getCTTbl().getTblPr().unsetTblBorders();
 
-        for(int cols = 0; cols < fields.size(); cols++){
-            XWPFParagraph p1 = table.getRow(0).getCell(cols).getParagraphs().get(0);
-            XWPFRun r1 = p1.createRun();
-            r1.setBold(true);
-            r1.setText(fields.get(cols).getJiraName().toUpperCase());
-            r1.setItalic(true);
-        }
+        addColumnsToTable(table, section);
 
         for (int i = 0; i < issues.size(); i++){
             Issue issue = issues.get(i);
             int row = i + 1;
-            for(int cols = 0; cols < fields.size(); cols++){
-                table.getRow(row).getCell(cols).setText(issue.getValueByNode(fields.get(cols)));
+            for(int cols = 0; cols < section.getColumns().size(); cols++){
+                table.getRow(row).getCell(cols).setText(issue.getValueByNode(section.getColumns().get(cols)));
             }
         }
     }
