@@ -51,12 +51,10 @@ public class ReportService {
                 createEpicSummaryTable(issues, doc, section);
             }else if(SectionName.TASKS_PER_EPIC == section.getName()){
                 addSection(doc, "Tasks completed by Epic");
-                //TODO ADD SECTION
                 createEpicTables(issues, doc, section);
             }else if(SectionName.TASKS_BY_ASSIGNEE == section.getName()){
                 addSection(doc, "Tasks completed by Assignee");
-                //TODO ADD SECTION
-                createAssigneeTable(issues, doc);
+                createAssigneeTable(issues, doc, section);
             }else if(SectionName.STORY_SUMMARY == section.getName()){
                 addSection(doc, "Story Summary");
                 createStorySummaryTable(issues, doc, section);
@@ -270,7 +268,7 @@ public class ReportService {
         }
     }
 
-    public void createAssigneeTable(List<Issue> issues, XWPFDocument doc) {
+    public void createAssigneeTable(List<Issue> issues, XWPFDocument doc, Section section) {
         Map<String, List<Issue>> collect = issues.stream()
                 .filter(i -> !i.isEpic() && !i.isStoryUnresolved())
                 .collect(Collectors.groupingBy(i -> i.getValueByNode(FieldName.ASSIGNEE)));
@@ -278,26 +276,36 @@ public class ReportService {
 
         for(String assignee: collect.keySet()){
             addSubSection(doc, assignee + " tasks");
-            XWPFTable table = doc.createTable(collect.get(assignee).size()+2, 3);
+            XWPFTable table = doc.createTable(collect.get(assignee).size()+2, section.getTotalNumColumns());
             table.getCTTbl().getTblPr().unsetTblBorders();
             table.setStyleID("LightShading-Accent12");
 
-            table.getRow(0).getCell(0).setText("Epic");
-            table.getRow(0).getCell(1).setText("Task");
-            table.getRow(0).getCell(2).setText("Estimated Time");
+            addColumnsToTable(table, section);
+
             int row = 1;
             List<Issue> issuesPerAssignee = collect.get(assignee);
             for(Issue issue: issuesPerAssignee){
-                String epicTitle = getEpicTitle(issues, issue.getValueByNode(FieldName.EPIC_LINK));
-                table.getRow(row).getCell(0).setText(epicTitle);
-                table.getRow(row).getCell(1).setText(issue.getTitleName());
-                table.getRow(row).getCell(2).setText(issue.getTimeOriginalEstimate());
+                int col = 0;
+                String columnValue;
+                for (FieldName column : section.getTotalColumns()) {
+                    if(column.equals(FieldName.EPIC_LINK)){
+                        columnValue = getEpicTitle(issues, issue.getValueByNode(FieldName.EPIC_LINK));
+                    }else {
+                        columnValue = issue.getValueByNode(column);
+                    }
+                    table.getRow(row).getCell(col).setText(columnValue);
+                    col++;
+                }
+//                String epicTitle = getEpicTitle(issues, issue.getValueByNode(FieldName.EPIC_LINK));
+//                table.getRow(row).getCell(0).setText(epicTitle);
+//                table.getRow(row).getCell(1).setText(issue.getTitleName());
+//                table.getRow(row).getCell(2).setText(issue.getTimeOriginalEstimate());
                 row++;
             }
-            table.getRow(row).getCell(0).setText("Total");
-            table.getRow(row).getCell(1).setText("");
-            Integer totalTime = issuesPerAssignee.stream().collect(Collectors.summingInt(Issue::getTimeOriginalEstimateInSeconds));
-            table.getRow(row).getCell(2).setText(secondsToDDHH(totalTime));
+//            table.getRow(row).getCell(0).setText("Total");
+//            table.getRow(row).getCell(1).setText("");
+//            Integer totalTime = issuesPerAssignee.stream().collect(Collectors.summingInt(Issue::getTimeOriginalEstimateInSeconds));
+//            table.getRow(row).getCell(2).setText(secondsToDDHH(totalTime));
 
         }
     }
@@ -319,7 +327,7 @@ public class ReportService {
 
             int row = 1;
             List<Issue> issuesPerEpic = collect.get(epic);
-            //FIX THIS SO IT USE SECTION COLUMNS!!!!!
+
             for(Issue issue: issuesPerEpic){
                 table.getRow(row).getCell(0).setText(issue.getKey());
                 table.getRow(row).getCell(1).setText(issue.getTitleName());
