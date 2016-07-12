@@ -51,9 +51,11 @@ public class ReportService {
                 createEpicSummaryTable(issues, doc, section);
             }else if(SectionName.TASKS_PER_EPIC == section.getName()){
                 addSection(doc, "Tasks completed by Epic");
-                createEpicTables(issues, doc);
+                //TODO ADD SECTION
+                createEpicTables(issues, doc, section);
             }else if(SectionName.TASKS_BY_ASSIGNEE == section.getName()){
                 addSection(doc, "Tasks completed by Assignee");
+                //TODO ADD SECTION
                 createAssigneeTable(issues, doc);
             }else if(SectionName.STORY_SUMMARY == section.getName()){
                 addSection(doc, "Story Summary");
@@ -300,7 +302,7 @@ public class ReportService {
         }
     }
 
-    public void createEpicTables(List<Issue> issues, XWPFDocument doc){
+    public void createEpicTables(List<Issue> issues, XWPFDocument doc, Section section){
         Map<String, List<Issue>> collect = issues.stream()
             .filter(i -> !i.isEpic() && !i.isStory())
             .collect(Collectors.groupingBy(i -> i.getValueByNode(FieldName.EPIC_LINK)));
@@ -309,15 +311,15 @@ public class ReportService {
             String epicTitle = getEpicTitle(issues, epic);
 
             addSubSection(doc, epicTitle + " tasks");
-            XWPFTable table = doc.createTable(collect.get(epic).size()+2, 3);
+            XWPFTable table = doc.createTable(collect.get(epic).size()+2, section.getTotalNumColumns());
             table.getCTTbl().getTblPr().unsetTblBorders();
             table.setStyleID("LightShading-Accent12");
 
-            table.getRow(0).getCell(0).setText("Epic");
-            table.getRow(0).getCell(1).setText("Task");
-            table.getRow(0).getCell(2).setText("Estimated Time");
+            addColumnsToTable(table,section);
+
             int row = 1;
             List<Issue> issuesPerEpic = collect.get(epic);
+            //FIX THIS SO IT USE SECTION COLUMNS!!!!!
             for(Issue issue: issuesPerEpic){
                 table.getRow(row).getCell(0).setText(issue.getKey());
                 table.getRow(row).getCell(1).setText(issue.getTitleName());
