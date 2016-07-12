@@ -17,7 +17,6 @@ p.big{
 //    background-color: #F77020;
     box-shadow: inset 0px -1px 12px 0px rgba(0,0,0,0.3);
     background-image: url(../images/back.png);
-
 }
 //HEADER SECTION
 header {
@@ -305,4 +304,10 @@ header .header-content .header-content-inner p {
 }
 .progress {
     margin-bottom: 0;
+}
+
+#usage {
+    OL { counter-reset: item }
+    LI { display: block; font-size: 18px;  line-height: 1.625; color: dimgray}
+    LI:before { content: counters(item, ".") " "; counter-increment: item }
 }

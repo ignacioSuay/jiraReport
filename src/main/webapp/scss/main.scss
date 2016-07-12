@@ -1,7 +1,12 @@
 body {
     background: #fafafa;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "proxima-nova","Helvetica Neue",Helvetica,Arial,sans-serif;
     color: #333;
+}
+
+p{
+    font-size: 18px;
+    line-height: 1.625;
 }
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
