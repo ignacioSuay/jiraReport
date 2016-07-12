@@ -57,13 +57,20 @@ public class ReportServiceTest {
         epicSection.setColumns(Arrays.asList(FieldName.EPIC_LINK, FieldName.STATUS));
         epicSection.setGroupsBy(Arrays.asList(FieldName.TIME_ORIGINAL_ESTIMATE, FieldName.NUMBER_ISSUES));
         sections.add(epicSection);
+        List<FieldName> fieldNames = Arrays.asList(FieldName.KEY, FieldName.TITLE, FieldName.ASSIGNEE, FieldName.TIME_SPENT);
+
         Section tasksPerEpic = new Section(SectionName.TASKS_PER_EPIC);
-        tasksPerEpic.setColumns(Arrays.asList(FieldName.KEY, FieldName.TITLE, FieldName.ASSIGNEE, FieldName.TIME_SPENT));
+        tasksPerEpic.setColumns(fieldNames);
         sections.add(tasksPerEpic);
-        sections.add(new Section(SectionName.TASKS_BY_ASSIGNEE));
+
+        Section tasksPerAssignee = new Section(SectionName.TASKS_BY_ASSIGNEE);
+        tasksPerAssignee.setColumns(fieldNames);
+        sections.add(tasksPerAssignee);
+
         Section allIssues = new Section(SectionName.ALL_ISSUES);
-        allIssues.setColumns(Arrays.asList(FieldName.KEY, FieldName.TITLE, FieldName.ASSIGNEE, FieldName.TIME_SPENT));
+        allIssues.setColumns(fieldNames);
         sections.add(allIssues);
+
         reportDTO.setSections(sections);
 
         reportService.createWordDocument(f, reportDTO, "template.docx");
