@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 
 import java.io.*;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * Created by suay on 1/13/16.
  */
-@Component
+@Service
 public class ReportService {
 
     @Autowired
@@ -39,24 +40,24 @@ public class ReportService {
         InputStream inputStream = new BufferedInputStream(new FileInputStream(fileTemplate));
         XWPFDocument doc = new XWPFDocument(inputStream);
 
-        changeTitle(doc, reportDTO.getTitle());
-        changeAuthors(doc, reportDTO.getAuthors());
+        WordService.changeTitle(doc, reportDTO.getTitle());
+        WordService.changeAuthors(doc, reportDTO.getAuthors());
 
         for(Section section: reportDTO.getSections()){
             if(SectionName.ALL_ISSUES == section.getName()){
-                addSection(doc, "List of all issues");
+                WordService.addSection(doc, "List of all issues");
                 createTableByFields(issues, section, doc);
             }else if(SectionName.EPIC_SUMMARY == section.getName()){
-                addSection(doc, "Epic Summary");
+                WordService.addSection(doc, "Epic Summary");
                 createEpicSummaryTable(issues, doc, section);
             }else if(SectionName.TASKS_PER_EPIC == section.getName()){
-                addSection(doc, "Tasks completed by Epic");
+                WordService.addSection(doc, "Tasks completed by Epic");
                 createEpicTables(issues, doc, section);
             }else if(SectionName.TASKS_BY_ASSIGNEE == section.getName()){
-                addSection(doc, "Tasks completed by Assignee");
+                WordService.addSection(doc, "Tasks completed by Assignee");
                 createAssigneeTable(issues, doc, section);
             }else if(SectionName.STORY_SUMMARY == section.getName()){
-                addSection(doc, "Story Summary");
+                WordService.addSection(doc, "Story Summary");
                 createStorySummaryTable(issues, doc, section);
             }
         }
@@ -82,29 +83,6 @@ public class ReportService {
         stories = issueService.getStories(issues);
     }
 
-    private void changeTitle(XWPFDocument doc, String title) {
-        replaceText(doc, "templateTitle", title);
-    }
-
-    private void changeAuthors(XWPFDocument doc, String authors) {
-        replaceText(doc, "templateAuthors", authors);
-    }
-    private void replaceText(XWPFDocument doc, String textToFind, String textToReplace) {
-        for (XWPFParagraph p : doc.getParagraphs()) {
-            List<XWPFRun> runs = p.getRuns();
-            if (runs != null) {
-                for (XWPFRun r : runs) {
-                    String text = r.getText(0);
-                    if (text != null && text.contains(textToFind) && textToReplace != null) {
-                        text = text.replace(textToFind, textToReplace);
-                        r.setText(text, 0);
-                    }
-                }
-            }
-        }
-    }
-
-
 
     public void createTableByFields(List<Issue> issues, Section section, XWPFDocument doc) throws IOException {
 
@@ -112,7 +90,7 @@ public class ReportService {
         table.setStyleID("LightShading-Accent12");
         table.getCTTbl().getTblPr().unsetTblBorders();
 
-        addColumnsToTable(table, section);
+        WordService.addColumnsToTable(table, section);
 
         for (int i = 0; i < issues.size(); i++){
             Issue issue = issues.get(i);
@@ -123,28 +101,6 @@ public class ReportService {
         }
     }
 
-
-    public void createSummaryTable(List<Issue> issues, XWPFDocument doc){
-
-        Map<String, Integer> collect = issues.stream().filter(i-> !i.isEpic() && !i.isStoryUnresolved()).collect(Collectors.groupingBy(i -> i.getValueByNode(FieldName.EPIC_LINK),
-                Collectors.summingInt(Issue::getTimeOriginalEstimateInSeconds)));
-
-        XWPFTable table = doc.createTable(collect.keySet().size()+1, 2);
-        table.setStyleID("LightShading-Accent1");
-        table.getCTTbl().getTblPr().unsetTblBorders();
-
-        table.getRow(0).getCell(0).setText("Epic title");
-        table.getRow(0).getCell(1).setText("Time");
-
-        int row = 1;
-        for(String key: collect.keySet()){
-            String epicTitle = getEpicTitle(issues, key);
-            table.getRow(row).getCell(0).setText(epicTitle);
-            int timeInSeconds = collect.get(key);
-            table.getRow(row).getCell(1).setText(secondsToDDHH(timeInSeconds));
-            row++;
-        }
-    }
 
     public void createEpicSummaryTable(List<Issue> issues, XWPFDocument doc, Section section){
 
@@ -172,7 +128,7 @@ public class ReportService {
         table.setStyleID("LightShading-Accent12");
         table.getCTTbl().getTblPr().unsetTblBorders();
 
-        addColumnsToTable(table, section);
+        WordService.addColumnsToTable(table, section);
 
         int row = 1;
         for(Epic epic : epics) {
@@ -216,7 +172,7 @@ public class ReportService {
         table.setStyleID("LightShading-Accent12");
         table.getCTTbl().getTblPr().unsetTblBorders();
 
-        addColumnsToTable(table, section);
+        WordService.addColumnsToTable(table, section);
 
         int row = 1;
         for(Story story : stories) {
@@ -259,14 +215,7 @@ public class ReportService {
             Collectors.summingInt(sumFunction)));
     }
 
-    private void addColumnsToTable(XWPFTable table, Section section){
 
-        int i = 0;
-        for(FieldName column: section.getTotalColumns()){
-            table.getRow(0).getCell(i).setText(column.getColumnName());
-            i++;
-        }
-    }
 
     public void createAssigneeTable(List<Issue> issues, XWPFDocument doc, Section section) {
         Map<String, List<Issue>> collect = issues.stream()
@@ -275,12 +224,12 @@ public class ReportService {
 
 
         for(String assignee: collect.keySet()){
-            addSubSection(doc, assignee + " tasks");
+            WordService.addSubSection(doc, assignee + " tasks");
             XWPFTable table = doc.createTable(collect.get(assignee).size()+2, section.getTotalNumColumns());
             table.getCTTbl().getTblPr().unsetTblBorders();
             table.setStyleID("LightShading-Accent12");
 
-            addColumnsToTable(table, section);
+            WordService.addColumnsToTable(table, section);
 
             int row = 1;
             List<Issue> issuesPerAssignee = collect.get(assignee);
@@ -318,12 +267,12 @@ public class ReportService {
         for(String epic: collect.keySet()){
             String epicTitle = getEpicTitle(issues, epic);
 
-            addSubSection(doc, epicTitle + " tasks");
+            WordService.addSubSection(doc, epicTitle + " tasks");
             XWPFTable table = doc.createTable(collect.get(epic).size()+2, section.getTotalNumColumns());
             table.getCTTbl().getTblPr().unsetTblBorders();
             table.setStyleID("LightShading-Accent12");
 
-            addColumnsToTable(table,section);
+            WordService.addColumnsToTable(table,section);
 
             int row = 1;
             List<Issue> issuesPerEpic = collect.get(epic);
@@ -362,21 +311,6 @@ public class ReportService {
         if(hours>0) stringBuilder.append(hours + " hours ");
         return stringBuilder.toString();
 
-    }
-
-    public void addSection(XWPFDocument doc, String title){
-        XWPFParagraph p = doc.createParagraph();
-        p.setStyle("Heading1");
-        XWPFRun r1 = p.createRun();
-        r1.setText(title);
-        r1.addBreak();
-    }
-
-    public void addSubSection(XWPFDocument doc, String title){
-        XWPFParagraph p = doc.createParagraph();
-        p.setStyle("Heading2");
-        XWPFRun r1 = p.createRun();
-        r1.setText(title);
     }
 
 }
