@@ -13,7 +13,10 @@
     <div ng-include="'app/home/description.html'"></div>
     <div ng-include="'app/home/report.html'"></div>
     <div ng-include="'app/home/usage.html'"></div>
+
+    <ng-controller ng-controller="MailController">
+        <div ng-include="'app/mail/mail.section.html'"/>
+    </ng-controller>
+
     <div ng-include="'app/home/author.html'"></div>
-
-
 </main>
