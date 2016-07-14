@@ -58,7 +58,6 @@ public class ReportResource {
             File file = new File(UPLOAD_FILE + uuid);
             InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
             outputFile = reportService.createWordDocument(inputStream, reportDTO, "template.docx");
-
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SAXException e) {
@@ -66,7 +65,6 @@ public class ReportResource {
         }
         final String finalOutputFile = outputFile;
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("newReport", finalOutputFile)).build();
-
     }
 
 

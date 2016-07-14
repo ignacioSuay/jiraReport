@@ -19,7 +19,7 @@
                            ngf-max-height="10000" ngf-max-size="10MB"/>
                 </span>
             <br/> <br/>
-            <div class="list-group-item">
+            <div class="list-group-item" ng-show="f.progress">
                 <div class="progress progress-striped active">
                     <div class="progress-bar progress-bar-primary" style="width: {{f.progress}}%;">{{f.name}}
                         {{f.progress}}%
