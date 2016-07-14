@@ -8308,18 +8308,27 @@ header .header-content .header-content-inner p {
 .progress {
   margin-bottom: 0; }
 
-#usage OL {
-  counter-reset: item; }
-
-#usage LI {
-  display: block;
-  font-size: 18px;
-  line-height: 1.625;
-  color: dimgray; }
-
-#usage LI:before {
-  content: counters(item, ".") " ";
-  counter-increment: item; }
+#usage {
+  background-color: #499BEA;
+  color: white;
+  margin-right: -15px;
+  margin-left: -15px;
+  font-size: large;
+  padding-left: 8px;
+  padding-right: 8px; }
+  #usage p, #usage ul {
+    line-height: 1.5em;
+    font-size: 18px; }
+  #usage OL {
+    counter-reset: item; }
+  #usage LI {
+    display: block;
+    font-size: 18px;
+    line-height: 1.625;
+    color: white; }
+  #usage LI:before {
+    content: counters(item, ".") " ";
+    counter-increment: item; }
 
 /***************************************/
 /***************************************/

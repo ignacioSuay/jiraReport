@@ -307,8 +307,20 @@ header .header-content .header-content-inner p {
 }
 
 #usage {
+    background-color: #499BEA;
+    color: white;
+    margin-right: -15px;
+    margin-left: -15px;
+    font-size: large;
+    padding-left: 8px;
+    padding-right: 8px;
+
+    p, ul{
+        line-height: 1.5em;
+        font-size: 18px;
+    }
     OL { counter-reset: item }
-    LI { display: block; font-size: 18px;  line-height: 1.625; color: dimgray}
+    LI { display: block; font-size: 18px;  line-height: 1.625; color: white}
     LI:before { content: counters(item, ".") " "; counter-increment: item }
 }
 
