@@ -50,10 +50,10 @@ public class ReportService {
             }else if(SectionName.EPIC_SUMMARY == section.getName()){
                 WordService.addSection(doc, "Epic Summary");
                 createEpicSummaryTable(issues, doc, section);
-            }else if(SectionName.TASKS_PER_EPIC == section.getName()){
+            }else if(SectionName.ISSUES_EPIC == section.getName()){
                 WordService.addSection(doc, "Tasks completed by Epic");
                 createEpicTables(issues, doc, section);
-            }else if(SectionName.TASKS_BY_ASSIGNEE == section.getName()){
+            }else if(SectionName.ISSUES_ASSIGNEE == section.getName()){
                 WordService.addSection(doc, "Tasks completed by Assignee");
                 createAssigneeTable(issues, doc, section);
             }else if(SectionName.STORY_SUMMARY == section.getName()){

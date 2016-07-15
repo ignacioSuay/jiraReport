@@ -59,11 +59,11 @@ public class ReportServiceTest {
         sections.add(epicSection);
         List<FieldName> fieldNames = Arrays.asList(FieldName.KEY, FieldName.TITLE, FieldName.ASSIGNEE, FieldName.TIME_SPENT);
 
-        Section tasksPerEpic = new Section(SectionName.TASKS_PER_EPIC);
+        Section tasksPerEpic = new Section(SectionName.ISSUES_EPIC);
         tasksPerEpic.setColumns(fieldNames);
         sections.add(tasksPerEpic);
 
-        Section tasksPerAssignee = new Section(SectionName.TASKS_BY_ASSIGNEE);
+        Section tasksPerAssignee = new Section(SectionName.ISSUES_ASSIGNEE);
         tasksPerAssignee.setColumns(fieldNames);
         sections.add(tasksPerAssignee);
 
