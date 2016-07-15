@@ -67,7 +67,7 @@ public class ReportResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("newReport", finalOutputFile)).build();
     }
 
-    
+
 
     @RequestMapping(value = "/download/{filename}", method = RequestMethod.GET)
     public void getFile(@PathVariable String filename,
