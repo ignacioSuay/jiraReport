@@ -29,7 +29,10 @@ public enum FieldName {
     EPIC_LINK("Epic Link", "Epic Link"),
     SECONDS("seconds", "Seconds"),
     PARENT("parent", "Parent"),
-    NUMBER_ISSUES("numberIssues", "Number issues");
+    NUMBER_ISSUES("numberIssues", "Number issues"),
+    SUM_TIME_ORIGINAL_ESTIMATE("timeoriginalestimate", "Summary time original estimate"),
+    SUM_TIME_ESTIMATE("timeestimate", "Summary time estimate"),
+    SUM_TIME_SPENT("timespent", "Summary time spent");
 
 
     private String jiraName;
