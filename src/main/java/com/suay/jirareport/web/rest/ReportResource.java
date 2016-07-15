@@ -67,40 +67,7 @@ public class ReportResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("newReport", finalOutputFile)).build();
     }
 
-
-
-//    @RequestMapping(value = "/report",
-//        method = RequestMethod.POST,
-//        consumes = {"multipart/form-data"},
-//        produces = MediaType.APPLICATION_JSON_VALUE)
-//    @Timed
-//    @ResponseBody
-//    public ResponseEntity<Void> createReport(@RequestPart("file") MultipartFile file, @RequestPart("reportDTO") ReportDTO reportDTO) {
-//
-//        String outputFile = null;
-//        try {
-//            outputFile = reportService.createWordDocument(file.getInputStream(), reportDTO, "template.docx");
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (SAXException e) {
-//            e.printStackTrace();
-//        }
-//        final String finalOutputFile = outputFile;
-//        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("newReport", finalOutputFile)).build();
-//
-//    }
-
-    @RequestMapping(value = "/report/only",
-        method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Timed
-    public void createReport(@RequestBody ReportDTO reportDTO) {
-
-            System.out.println("report in");
-//            reportService.createWordDocument(file.getInputStream(), reportDTO, "tem");
-
-    }
+    
 
     @RequestMapping(value = "/download/{filename}", method = RequestMethod.GET)
     public void getFile(@PathVariable String filename,
