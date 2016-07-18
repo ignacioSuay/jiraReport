@@ -98,10 +98,7 @@
             });
             return colsTrue;
         };
-
-        $scope.download = function(){
-            $http.get("/api/download").success(function(result){alert("ueee")});
-        };
+        
 
         $scope.uploadFiles = function(file, errFiles) {
             $scope.f = file;
