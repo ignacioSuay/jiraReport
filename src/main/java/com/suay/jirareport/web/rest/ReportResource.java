@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
@@ -57,7 +58,7 @@ public class ReportResource {
         try {
             File file = new File(UPLOAD_FILE + uuid);
             InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
-            outputFile = reportService.createWordDocument(inputStream, reportDTO, "template.docx");
+            outputFile = reportService.createWordDocument(inputStream, reportDTO, uuid);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SAXException e) {
@@ -73,12 +74,13 @@ public class ReportResource {
     public void getFile(@PathVariable String filename,
         HttpServletResponse response) {
         try {
+
             // get your file as InputStream
             File file = new File(REPORT_PATH + filename+".docx");
             String mimeType= "application/msword";
             response.setContentType(mimeType);
 
-            response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() +"\""));
+            response.setHeader("Content-Disposition", String.format("inline; filename=\"jiraReport.docx\""));
             response.setContentLength((int)file.length());
 
             InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
