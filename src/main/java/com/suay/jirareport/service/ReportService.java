@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  */
 @Service
 public class ReportService {
-
+    
     @Autowired
     IssueService issueService;
 
@@ -31,7 +31,7 @@ public class ReportService {
     Set<Issue> stories;
 
 
-    public String createWordDocument(InputStream file, ReportDTO reportDTO, String template) throws IOException, SAXException {
+    public String createWordDocument(InputStream file, ReportDTO reportDTO, String uuid) throws IOException, SAXException {
         List<Issue> issues = issueService.jiraToIssueDTO(file);
 
         loadData(issues);
@@ -62,7 +62,7 @@ public class ReportService {
             }
         }
 
-        String outputFilename = getOutputFilename(reportDTO);
+        String outputFilename = uuid + ".docx";
         String outputFile = ReportResource.REPORT_PATH + outputFilename;
         FileOutputStream out = new FileOutputStream(outputFile);
         doc.write(out);
@@ -75,7 +75,7 @@ public class ReportService {
             return reportDTO.getTitle() + ".docx";
         }
 
-        return "report.docx";
+        return DEFAULT_REPORT_NAME;
     }
 
     private void loadData(List<Issue> issues) {
