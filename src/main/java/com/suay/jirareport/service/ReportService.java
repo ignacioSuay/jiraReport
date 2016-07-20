@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  */
 @Service
 public class ReportService {
-    
+
     @Autowired
     IssueService issueService;
 
@@ -68,14 +68,6 @@ public class ReportService {
         doc.write(out);
         out.close();
         return outputFile;
-    }
-
-    private String getOutputFilename(ReportDTO reportDTO) {
-        if(reportDTO!= null && reportDTO.getTitle()!= null){
-            return reportDTO.getTitle() + ".docx";
-        }
-
-        return DEFAULT_REPORT_NAME;
     }
 
     private void loadData(List<Issue> issues) {
