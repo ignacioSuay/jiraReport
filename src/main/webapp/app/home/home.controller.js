@@ -13,6 +13,7 @@
         $scope.dynamic = 0;
         $scope.docReady = false;
         $scope.uuid = guid();
+        $scope.title = "";
 
         //"Key", "title", "type", "priority", "status", "resolution", "created", "updated", "assignee", "reporter", "time original estimate", "time estimate", "Sprint"
         var columnOps = [{id:"KEY", text: "Key"}, {id:"TITLE", text: "title"},{id:"TYPE", text: "type"},{id:"PRIORITY", text: "priority"},{id:"STATUS", text: "status"},{id:"RESOLUTION", text: "resolution"},
@@ -80,6 +81,8 @@
             }).
             then(function (data) {
                     $scope.docReady = true;
+            },function(response){
+                console.log("error sending data");
             });
         };
 
@@ -98,7 +101,7 @@
             });
             return colsTrue;
         };
-        
+
 
         $scope.uploadFiles = function(file, errFiles) {
             $scope.f = file;
