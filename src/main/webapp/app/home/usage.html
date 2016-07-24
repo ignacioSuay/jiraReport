@@ -6,43 +6,73 @@
 
                 <h3 class="section-subheading text-muted text-center">Step by step how to used them.</h3>
 
-                <ol>
-                    <h3>
-                        <li>Export your issues to xml</li>
-                    </h3>
-                    <ol>
-                        <li>Go to Jira -> Search for issues</li>
-
-                        <li>Search the issues you would like to add to the report
-                            <ol>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <img src="content/images/howto/23-1.png"/>
+                    </div>
+                    <div class="col-sm-10">
+                        Search the issues you would like to add to the report. Go to Jira -> "Search for issues" and filter the issues you would like to add to the report.
+                        <i><a ng-click="searchMore = true" ng-show="!searchMore">Learn more</a>
+                        <a ng-click="searchMore = false" ng-show="searchMore"> Hide </a></i>
+                        <div ng-show="searchMore">
+                            <ul>
                                 <li>(Optional) You can search your issues using the filters, but usually I prefer to
                                     create my own search:
                                 </li>
                                 <li>For creating a customize search, click on Advanced:</li>
-                                <img src="content/images/howto/advanced.png"/>
+                                <img src="content/images/howto/advanced.png" width="90%"/>
                                 <br/><br/>
 
                                 <li> Add your search terms. I will strongly recommend to add the epics and stories to
                                     your search, this way you could summarize your report by stories or epics
-                                    <img src="content/images/howto/searchIssues.png"/>
+                                    <img src="content/images/howto/searchIssues.png" width="90%"/>
                                     <br/><br/>
-                            </ol>
-                        </li>
-                        <li>Export the issues in XML format</li>
-                        <img src="content/images/howto/exportXml.png"/>
-                        <br/><br/>
+                            </ul>
+                        </div>
 
-                        <li>Upload the file into the application</li>
-                        <img src="content/images/howto/upload.png"/>
-                        <br/><br/>
-                        <li>Organize the structure of your word document by adding/removing sections in the "Build the document" section.</li>
+                    </div>
+                </div>
 
-                            <!--There are 5 different types of section</li>-->
-                                <!--<p>-->
-                                    <!-- - Epic Summary: Groups the issues by epic and  shows information related to the epic or aggregated information-->
-                                <!--</p>-->
-                    </ol>
-                </ol>
+                <br/>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <img src="content/images/howto/23-2.png"/>
+                    </div>
+                    <div class="col-sm-10">
+                        Export the issues in XML format. Once you have filtered the issues click on "Export" and then "XML"
+                        <i><a ng-click="exportMore = true" ng-show="!exportMore">Learn more</a>
+                        <a ng-click="exportMore = false" ng-show="exportMore"> Hide </a></i>
+                        <div ng-show="exportMore"><img src="content/images/howto/exportXml.png" width="90%"/></div>
+                    </div>
+                </div>
+
+                <br/>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <img src="content/images/howto/23-3.png"/>
+                    </div>
+                    <div class="col-sm-10">
+                        Upload the XML file into the application
+                        <i><a ng-click="uploadMore = true" ng-show="!uploadMore">Learn more</a>
+                        <a ng-click="uploadMore = false" ng-show="uploadMore"> Hide </a></i>
+                        <div ng-show="uploadMore">
+                            <img src="content/images/howto/upload.png" width="90%"/>
+                        </div>
+                    </div>
+                </div>
+
+                <br/>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <img src="content/images/howto/23-4.png"/>
+                    </div>
+                    <div class="col-sm-10">
+                        Organize the structure of your word document by adding/removing sections in the "Build the document" section.
+                        <!--<a>Learn more</a>-->
+                    </div>
+                </div>
+                <br/>
+
 
             </div>
         </div>
