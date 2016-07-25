@@ -11,25 +11,27 @@
                         <img src="content/images/howto/23-1.png"/>
                     </div>
                     <div class="col-sm-10">
-                        Search the issues you would like to add to the report. Go to Jira -> "Search for issues" and filter the issues you would like to add to the report.
+                        Search the issues you would like to add to the report. Go to Jira -> "Search for issues" and
+                        filter the issues you are interested in reporting.
                         <i><a ng-click="searchMore = true" ng-show="!searchMore">Learn more</a>
-                        <a ng-click="searchMore = false" ng-show="searchMore"> Hide </a></i>
+                            <a ng-click="searchMore = false" ng-show="searchMore"> Hide </a></i>
                         <div ng-show="searchMore">
                             <ul>
-                                <li>(Optional) You can search your issues using the filters, but usually I prefer to
-                                    create my own search:
+                                <li>For filtering the issues you can either use the filters provided by Jira or use your
+                                    own search query.
                                 </li>
                                 <li>For creating a customize search, click on Advanced:</li>
                                 <img src="content/images/howto/advanced.png" width="90%"/>
                                 <br/><br/>
 
-                                <li> Add your search terms. I will strongly recommend to add the epics and stories to
-                                    your search, this way you could summarize your report by stories or epics
+                                <li> Then add your search terms. I will strongly recommend to add the epics and stories
+                                    to
+                                    your search, this way you could summarize your report by stories and epics
                                     <img src="content/images/howto/searchIssues.png" width="90%"/>
                                     <br/><br/>
+                                </li>
                             </ul>
                         </div>
-
                     </div>
                 </div>
 
@@ -39,10 +41,18 @@
                         <img src="content/images/howto/23-2.png"/>
                     </div>
                     <div class="col-sm-10">
-                        Export the issues in XML format. Once you have filtered the issues click on "Export" and then "XML"
+                        Export the issues in XML format. Once you have filtered the issues click on "Export" and then
+                        "XML"
                         <i><a ng-click="exportMore = true" ng-show="!exportMore">Learn more</a>
-                        <a ng-click="exportMore = false" ng-show="exportMore"> Hide </a></i>
-                        <div ng-show="exportMore"><img src="content/images/howto/exportXml.png" width="90%"/></div>
+                            <a ng-click="exportMore = false" ng-show="exportMore"> Hide </a></i>
+                        <div ng-show="exportMore">
+                            <ul>
+                                <li> As you can see in the picture below, on the right corner you have the option to
+                                    export the list of issues to XML.
+                                    <img src="content/images/howto/exportXml.png" width="90%"/>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
 
@@ -52,11 +62,14 @@
                         <img src="content/images/howto/23-3.png"/>
                     </div>
                     <div class="col-sm-10">
-                        Upload the XML file into the application
+                        Upload the XML file into the application.
                         <i><a ng-click="uploadMore = true" ng-show="!uploadMore">Learn more</a>
-                        <a ng-click="uploadMore = false" ng-show="uploadMore"> Hide </a></i>
+                            <a ng-click="uploadMore = false" ng-show="uploadMore"> Hide </a></i>
                         <div ng-show="uploadMore">
-                            <img src="content/images/howto/upload.png" width="90%"/>
+                            <ul>
+                                <li>Using the XML file from the previous step, upload it in the report report section.
+                                    <img src="content/images/howto/upload.png" width="90%"/></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -67,8 +80,32 @@
                         <img src="content/images/howto/23-4.png"/>
                     </div>
                     <div class="col-sm-10">
-                        Organize the structure of your word document by adding/removing sections in the "Build the document" section.
-                        <!--<a>Learn more</a>-->
+                        Organize the structure of your word document by adding/removing sections in the "Build the
+                        document" section.
+                        <i><a ng-click="reportMore = true" ng-show="!reportMore">Learn more</a>
+                            <a ng-click="reportMore = false" ng-show="reportMore"> Hide </a></i>
+                        <div ng-show="reportMore">
+                            <ul>
+                                <li>Add section clicking on the
+                                    <button class="btn btn-primary"><span class="glyphicon glyphicon-plus"/>add
+                                        section
+                                    </button>
+                                    button or remove a section clicking on
+                                    <button class="btn btn-danger">remove section</button>
+                                </li>
+                                <li>The differemt sections that could build in your document are:
+                                    <ul>
+                                        <li>Epic Summary: Creates a table with all your epics. and you can select the
+                                        </li>
+                                        <li>Story Summary:</li>
+                                        <li>Issues by assignee:</li>
+                                        <li>Issues by Epic:</li>
+                                        <li>Issues by Story:</li>
+                                        <li>All the issues:</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <br/>
