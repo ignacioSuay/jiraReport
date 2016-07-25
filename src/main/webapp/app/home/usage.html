@@ -2,15 +2,15 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12 ">
-                <h2 class="section-heading text-center">How to use it</h2>
+                <h2 class="section-heading text-center">How to use this application</h2>
 
-                <h3 class="section-subheading text-muted text-center">Step by step how to used them.</h3>
+                <h3 class="section-subheading text-muted text-center">Follow this steps to get a better result</h3>
 
                 <div class="row">
                     <div class="col-sm-2">
                         <img src="content/images/howto/23-1.png"/>
                     </div>
-                    <div class="col-sm-10">
+                    <div class="col-sm-10 usagePadding">
                         Search the issues you would like to add to the report. Go to Jira -> "Search for issues" and
                         filter the issues you are interested in reporting.
                         <i><a ng-click="searchMore = true" ng-show="!searchMore">Learn more</a>
@@ -20,13 +20,15 @@
                                 <li>For filtering the issues you can either use the filters provided by Jira or use your
                                     own search query.
                                 </li>
-                                <li>For creating a customize search, click on Advanced:</li>
+                                <li>For creating our own search, click on Advanced:</li>
                                 <img src="content/images/howto/advanced.png" width="90%"/>
                                 <br/><br/>
 
                                 <li> Then add your search terms. I will strongly recommend to add the epics and stories
                                     to
-                                    your search, this way you could summarize your report by stories and epics
+                                    your search, this way you could summarize your report by stories and epics.
+                                    <p>In the example below, we use the query <i>"type=Epic or (sprint=7 and status=Done)"</i> to
+                                    search for all issues which are epics or all issues included in the sprint 7 and are done.</p>
                                     <img src="content/images/howto/searchIssues.png" width="90%"/>
                                     <br/><br/>
                                 </li>
@@ -40,7 +42,7 @@
                     <div class="col-sm-2">
                         <img src="content/images/howto/23-2.png"/>
                     </div>
-                    <div class="col-sm-10">
+                    <div class="col-sm-10 usagePadding">
                         Export the issues in XML format. Once you have filtered the issues click on "Export" and then
                         "XML"
                         <i><a ng-click="exportMore = true" ng-show="!exportMore">Learn more</a>
@@ -61,7 +63,7 @@
                     <div class="col-sm-2">
                         <img src="content/images/howto/23-3.png"/>
                     </div>
-                    <div class="col-sm-10">
+                    <div class="col-sm-10 usagePadding">
                         Upload the XML file into the application.
                         <i><a ng-click="uploadMore = true" ng-show="!uploadMore">Learn more</a>
                             <a ng-click="uploadMore = false" ng-show="uploadMore"> Hide </a></i>
@@ -79,7 +81,7 @@
                     <div class="col-sm-2">
                         <img src="content/images/howto/23-4.png"/>
                     </div>
-                    <div class="col-sm-10">
+                    <div class="col-sm-10 usagePadding">
                         Organize the structure of your word document by adding/removing sections in the "Build the
                         document" section.
                         <i><a ng-click="reportMore = true" ng-show="!reportMore">Learn more</a>
@@ -95,13 +97,21 @@
                                 </li>
                                 <li>The differemt sections that could build in your document are:
                                     <ul>
-                                        <li>Epic Summary: Creates a table with all your epics. and you can select the
-                                        </li>
-                                        <li>Story Summary:</li>
-                                        <li>Issues by assignee:</li>
-                                        <li>Issues by Epic:</li>
-                                        <li>Issues by Story:</li>
-                                        <li>All the issues:</li>
+                                        <li>Epic Summary: Creates a table with a summary of all your epics. Select
+                                            columns related to each epic and/or summarize by time estimate or
+                                            spent and/or number of issues related to that epic.
+                                            <p><i>Note: In order to show epic details you will need to add your epics to the list of issues,
+                                            you can do that creating an advanced query like in the 1 step. </i> </p> </li>
+                                        <li>Story Summary: Creates a table with a summary of all your stories.
+                                            Select columns related to each story and/or summarize by time estimate or
+                                            spent and/or number of issues related to that epic.
+                                            <p><i>Note: In order to show epic details you will need to add your stories to the list of issues,
+                                                you can do that creating an advanced query like in the 1 step. </i></p></li>
+                                        <li><p>Issues by assignee: Creates a table per person assigned to an issues.
+                                            Select columns related to an issue.</p></li>
+                                        <li><p>Issues by Epic: Creates a table per epic. Select columns related to an issue.</p></li>
+                                        <li><p>Issues by Story: Creates a table per story. Select columns related to an issue.</p></li>
+                                        <li><p>All the issues: Creates a table with all the issues together.</p></li>
                                     </ul>
                                 </li>
                             </ul>
