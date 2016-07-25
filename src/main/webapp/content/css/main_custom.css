@@ -8318,6 +8318,8 @@ header .header-content .header-content-inner p {
   padding-right: 8px; }
   #usage a, #usage h3 {
     color: lightgrey; }
+  #usage .usagePadding {
+    padding-top: 10px; }
 
 /***************************************/
 /***************************************/
