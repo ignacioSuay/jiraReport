@@ -56,7 +56,7 @@
             </div>
         </div>
 
-        <div class="well">
+        <div>
             <div ng-repeat="section in sections" class="margin10 well">
                 <h3>Section {{$index +1}}</h3>
                 <div class="row">
@@ -97,7 +97,7 @@
                 <br/>
                 <button class="btn btn-danger" ng-click="removeSection($index)">remove section</button>
             </div>
-            <button class="btn btn-primary" ng-click="addSection()"><span class="glyphicon glyphicon-plus"/>add
+            <button class="btn btn-primary pull-right" ng-click="addSection()"><span class="glyphicon glyphicon-plus"/>add
                 section
             </button>
             <br/><br/>
