@@ -8308,7 +8308,7 @@ header .header-content .header-content-inner p {
 .progress {
   margin-bottom: 0; }
 
-#usage {
+#usage, #author {
   background-color: #499BEA;
   color: white;
   margin-right: -15px;
@@ -8316,9 +8316,9 @@ header .header-content .header-content-inner p {
   font-size: large;
   padding-left: 8px;
   padding-right: 8px; }
-  #usage a, #usage h3 {
+  #usage a, #usage h3, #author a, #author h3 {
     color: lightgrey; }
-  #usage .usagePadding {
+  #usage .usagePadding, #author .usagePadding {
     padding-top: 10px; }
 
 /***************************************/
