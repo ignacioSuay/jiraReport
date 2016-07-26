@@ -8,20 +8,15 @@
             </div>
         </div>
     </header>
-    <br/>
-
 
     <div ng-include="'app/home/description.html'"></div>
+
     <is-report></is-report>
-
-
-
-
+    <br/>
 
     <div ng-include="'app/home/usage.html'"></div>
-    <ng-controller ng-controller="MailController">
-        <div ng-include="'app/mail/mail.section.html'"/>
-    </ng-controller>
+
+    <suay-mail></suay-mail>
 
     <div ng-include="'app/home/author.html'"></div>
 </main>
