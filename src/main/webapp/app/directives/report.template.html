@@ -67,6 +67,20 @@
                     </div>
                 </div>
                 <br/>
+                <div class="margin10 row" ng-show="section.action.include">
+                    <label class="col-md-2">Include:</label>
+
+                    <div class="col-md-10">
+                        <div ng-repeat="type in section.action.include">
+                            <div class="col-md-3">
+                                <label><input type="checkbox" class="margin10"
+                                              ng-model="section.include[type.type]" ng-init="section.include[type.type] = true"><span
+                                    class="margin10">{{type.text}}</span></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
                 <div class="margin10 row">
                     <label class="col-md-2">Columns:</label>
 
