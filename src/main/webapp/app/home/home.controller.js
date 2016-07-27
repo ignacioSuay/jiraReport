@@ -21,13 +21,15 @@
             {id:"TIME_ORIGINAL_ESTIMATE", text: "time original estimate"},{id:"TIME_ESTIMATE", text: "time estimate"},{id:"TIME_SPENT", text: "time spent"}, {id:"KEY", text: "Epic Key"},{id:"KEY", text: "Story Key"},
             {id:"NUMBER_ISSUES", text: "number of issues"},{id:"SUM_TIME_ORIGINAL_ESTIMATE", text: "time original estimate"},{id:"SUM_TIME_ESTIMATE", text: "time estimate"},{id:"SUM_TIME_SPENT", text: "time spent"}];
 
+        var types = [{text:"epics", type:"EPIC"},{text:"stories", type:"STORY"},{text:"tasks", type:"TASK"},{text:"bugs", type:"BUG"}];
+
         $scope.reportTables = [
             {id: '1', name: 'Epic Summary', nameId: "EPIC_SUMMARY", columns:[columnOps[14],columnOps[1],columnOps[2],columnOps[3],columnOps[4],columnOps[5],columnOps[6],columnOps[7],columnOps[8],columnOps[9],columnOps[10],columnOps[11],columnOps[12],columnOps[13]], groupBy:[columnOps[17],columnOps[18],columnOps[19], columnOps[16]]},
             {id: '2', name: 'Story Summay', nameId: "STORY_SUMMARY", columns:[columnOps[15],columnOps[1],columnOps[2],columnOps[3],columnOps[4],columnOps[5],columnOps[6],columnOps[7],columnOps[8],columnOps[9],columnOps[10],columnOps[11],columnOps[12],columnOps[13]], groupBy:[columnOps[17],columnOps[18],columnOps[19], columnOps[16]]},
-            {id: '3', name: 'Issues by assignee', nameId: "ISSUES_ASSIGNEE", columns:[columnOps[0],columnOps[1],columnOps[2],columnOps[3],columnOps[4],columnOps[5],columnOps[6],columnOps[7],columnOps[8],columnOps[9],columnOps[10],columnOps[11],columnOps[12],columnOps[13]]},
-            {id: '4', name: 'Issues by Epic', nameId: "ISSUES_EPIC", columns:[columnOps[0],columnOps[1],columnOps[2],columnOps[3],columnOps[4],columnOps[5],columnOps[6],columnOps[7],columnOps[8],columnOps[9],columnOps[10],columnOps[11],columnOps[12],columnOps[13]]},
-            {id: '5', name: 'Issues by Story', nameId: "ISSUES_STORY", columns:[columnOps[0],columnOps[1],columnOps[2],columnOps[3],columnOps[4],columnOps[5],columnOps[6],columnOps[7],columnOps[8],columnOps[9],columnOps[10],columnOps[11],columnOps[12],columnOps[13]]},
-            {id: '6', name: 'All the issues', nameId: "ALL_ISSUES", columns:[columnOps[0],columnOps[1],columnOps[2],columnOps[3],columnOps[4],columnOps[5],columnOps[6],columnOps[7],columnOps[8],columnOps[9],columnOps[10],columnOps[11],columnOps[12],columnOps[13]]}
+            {id: '3', name: 'Issues by assignee', nameId: "ISSUES_ASSIGNEE", columns:[columnOps[0],columnOps[1],columnOps[2],columnOps[3],columnOps[4],columnOps[5],columnOps[6],columnOps[7],columnOps[8],columnOps[9],columnOps[10],columnOps[11],columnOps[12],columnOps[13]], include:types},
+            {id: '4', name: 'Issues by Epic', nameId: "ISSUES_EPIC", columns:[columnOps[0],columnOps[1],columnOps[2],columnOps[3],columnOps[4],columnOps[5],columnOps[6],columnOps[7],columnOps[8],columnOps[9],columnOps[10],columnOps[11],columnOps[12],columnOps[13]], include:types},
+            {id: '5', name: 'Issues by Story', nameId: "ISSUES_STORY", columns:[columnOps[0],columnOps[1],columnOps[2],columnOps[3],columnOps[4],columnOps[5],columnOps[6],columnOps[7],columnOps[8],columnOps[9],columnOps[10],columnOps[11],columnOps[12],columnOps[13]],include:types},
+            {id: '6', name: 'All the issues', nameId: "ALL_ISSUES", columns:[columnOps[0],columnOps[1],columnOps[2],columnOps[3],columnOps[4],columnOps[5],columnOps[6],columnOps[7],columnOps[8],columnOps[9],columnOps[10],columnOps[11],columnOps[12],columnOps[13]],include:types}
         ];
 
         $scope.defaultSections = function(){
@@ -56,7 +58,11 @@
                     var colsTrue = getArrayOfTrueValues(sec.columns);
                 if(sec.groupBy)
                     var groupsTrue = getArrayOfTrueValues(sec.groupBy);
-              reportDTO.sections.push({name: sec.action.nameId, columns: colsTrue, groupsBy:groupsTrue});
+                if(sec.include)
+                    var includeTrue = getArrayOfTrueValues(sec.include);
+
+              reportDTO.sections.push({name: sec.action.nameId, columns: colsTrue, groupsBy:groupsTrue, include: includeTrue});
+                alert(JSON.stringify(reportDTO));
             });
 
 
