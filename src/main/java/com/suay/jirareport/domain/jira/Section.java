@@ -1,9 +1,7 @@
 package com.suay.jirareport.domain.jira;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -16,6 +14,8 @@ public class Section {
     List<FieldName> columns = new ArrayList<>();
 
     List<FieldName> groupsBy = new ArrayList<>();
+
+    List<IssueType> include = new ArrayList<>();
 
     public Section(){}
 
@@ -45,6 +45,14 @@ public class Section {
 
     public void setGroupsBy(List<FieldName> groupsBy) {
         this.groupsBy = groupsBy;
+    }
+
+    public List<IssueType> getInclude() {
+        return include;
+    }
+
+    public void setInclude(List<IssueType> include) {
+        this.include = include;
     }
 
     public int getTotalNumColumns(){
