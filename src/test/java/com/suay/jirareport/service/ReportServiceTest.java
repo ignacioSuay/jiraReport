@@ -69,6 +69,7 @@ public class ReportServiceTest {
 
         Section allIssues = new Section(SectionName.ALL_ISSUES);
         allIssues.setColumns(fieldNames);
+        allIssues.setInclude(new ArrayList<>(Arrays.asList(IssueType.TASK)));
         sections.add(allIssues);
 
         reportDTO.setSections(sections);
