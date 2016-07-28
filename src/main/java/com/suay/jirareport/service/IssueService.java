@@ -130,21 +130,26 @@ public class IssueService {
 
         for(String epicLink : epicIssues.keySet()){
             Optional<Issue> epicIssue = allEpics.stream().filter(e -> e.getKey().equals(epicLink)).findAny();
-            if(epicIssue.isPresent()){
-                Epic epic = new Epic();
+            Epic epic = new Epic();
+            if(epicIssue.isPresent()) {
                 epic.setEpicIssue(epicIssue.get());
-                List<Issue> issuesPerEpic = epicIssues.get(epicLink);
-                epic.setSubIsues(issuesPerEpic);
-                Set<Issue> stories = getStories(issuesPerEpic);
-                for(Issue story : stories){
-                    Story newStory = new Story();
-                    newStory.setEpic(epicIssue.get());
-                    newStory.setStoryIssue(story);
-                    newStory.setSubTasks(issues.stream().filter(i -> "Sub-task".equals(i.getType()) && story.getKey().equals(i.getParent())).collect(Collectors.toList()));
-                    epic.getStories().add(newStory);
-                }
-                epics.add(epic);
+            }else{
+                Issue issue = new Issue();
+                issue.setKey(epicLink);
+                issue.setTitle(epicLink);
+                epic.setEpicIssue(issue);
             }
+            List<Issue> issuesPerEpic = epicIssues.get(epicLink);
+            epic.setSubIsues(issuesPerEpic);
+            Set<Issue> stories = getStories(issuesPerEpic);
+            for(Issue story : stories){
+                Story newStory = new Story();
+                newStory.setEpic(epicIssue.get());
+                newStory.setStoryIssue(story);
+                newStory.setSubTasks(issues.stream().filter(i -> "Sub-task".equals(i.getType()) && story.getKey().equals(i.getParent())).collect(Collectors.toList()));
+                epic.getStories().add(newStory);
+            }
+            epics.add(epic);
         }
         return epics;
     }
