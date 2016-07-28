@@ -76,8 +76,9 @@ public class ReportService {
     }
 
 
-    public void createTableByFields(List<Issue> issues, Section section, XWPFDocument doc) throws IOException {
+    public void createTableByFields(List<Issue> allIssues, Section section, XWPFDocument doc) throws IOException {
 
+        List<Issue> issues = filterIssuesByType(allIssues, section);
         XWPFTable table = doc.createTable(issues.size()+1, section.getTotalColumns().size());
         table.setStyleID("LightShading-Accent12");
         table.getCTTbl().getTblPr().unsetTblBorders();
@@ -214,12 +215,11 @@ public class ReportService {
     }
 
 
+    public void createAssigneeTable(List<Issue> allIssues, XWPFDocument doc, Section section) {
+        List<Issue> issues = filterIssuesByType(allIssues, section);
 
-    public void createAssigneeTable(List<Issue> issues, XWPFDocument doc, Section section) {
         Map<String, List<Issue>> collect = issues.stream()
-                .filter(i -> !i.isEpic() && !i.isStoryUnresolved())
                 .collect(Collectors.groupingBy(i -> i.getValueByNode(FieldName.ASSIGNEE)));
-
 
         for(String assignee: collect.keySet()){
             WordService.addSubSection(doc, assignee + " tasks");
@@ -257,9 +257,10 @@ public class ReportService {
         }
     }
 
-    public void createEpicTables(List<Issue> issues, XWPFDocument doc, Section section){
+    public void createEpicTables(List<Issue> allIssues, XWPFDocument doc, Section section){
+        List<Issue> issues = filterIssuesByType(allIssues, section);
+
         Map<String, List<Issue>> collect = issues.stream()
-            .filter(i -> !i.isEpic() && !i.isStory())
             .collect(Collectors.groupingBy(i -> i.getValueByNode(FieldName.EPIC_LINK)));
 
         for(String epic: collect.keySet()){
@@ -308,7 +309,31 @@ public class ReportService {
         if(day>0) stringBuilder.append(day + " days ");
         if(hours>0) stringBuilder.append(hours + " hours ");
         return stringBuilder.toString();
+    }
 
+
+    private List<Issue> filterIssuesByType(List<Issue> issues, Section section){
+        if(section.getInclude() == null)
+            return issues;
+
+        List<Issue> issueList = new ArrayList<>(issues);
+        if(!section.getInclude().contains(IssueType.EPIC)){
+            issueList = issueList.stream().filter(i -> !i.isEpic()).collect(Collectors.toList());
+        }
+        if(!section.getInclude().contains(IssueType.STORY)){
+            issueList = issueList.stream().filter(i -> !i.isStory()).collect(Collectors.toList());
+        }
+        if(!section.getInclude().contains(IssueType.TASK)){
+            issueList = issueList.stream().filter(i -> !i.isTask()).collect(Collectors.toList());
+        }
+        if(!section.getInclude().contains(IssueType.SUB_TASK)){
+            issueList = issueList.stream().filter(i -> !i.isSubTask()).collect(Collectors.toList());
+        }
+        if(!section.getInclude().contains(IssueType.BUG)){
+            issueList = issueList.stream().filter(i -> !i.isBug()).collect(Collectors.toList());
+        }
+
+        return issueList;
     }
 
 }
