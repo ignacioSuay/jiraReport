@@ -26,7 +26,7 @@ public enum FieldName {
     CUSTOM_FIELD_NAME("customfieldname", "Custom field name"),
     CUSTOM_FIELD_VALUE("customfieldvalue", "Custom field value"),
     SPRINT("Sprint", "Sprint"),
-    EPIC_LINK("Epic Link", "Epic Link"),
+    EPIC_LINK("Epic Link", "Epic"),
     SECONDS("seconds", "Seconds"),
     PARENT("parent", "Parent"),
     NUMBER_ISSUES("numberIssues", "Number issues"),
