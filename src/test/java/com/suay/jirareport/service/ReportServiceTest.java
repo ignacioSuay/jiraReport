@@ -50,31 +50,16 @@ public class ReportServiceTest {
     public void createWordDocument() throws Exception {
         File file = utilTest.loadFileFromResources("sprint8.xml");
         FileInputStream f = new FileInputStream(file);
+        ReportDTO reportDTO = createReportDTO();
+        reportService.createWordDocument(f, reportDTO, "testSprint8");
+    }
 
-        ReportDTO reportDTO = new ReportDTO("Report Template", "Ignacio Suay");
-        List<Section> sections = new ArrayList<>();
-        Section epicSection = new Section(SectionName.EPIC_SUMMARY);
-        epicSection.setColumns(Arrays.asList(FieldName.EPIC_LINK, FieldName.STATUS));
-        epicSection.setGroupsBy(Arrays.asList(FieldName.TIME_ORIGINAL_ESTIMATE, FieldName.NUMBER_ISSUES));
-        sections.add(epicSection);
-        List<FieldName> fieldNames = Arrays.asList(FieldName.KEY, FieldName.TITLE, FieldName.ASSIGNEE, FieldName.TIME_SPENT);
-
-        Section tasksPerEpic = new Section(SectionName.ISSUES_EPIC);
-        tasksPerEpic.setColumns(fieldNames);
-        sections.add(tasksPerEpic);
-
-        Section tasksPerAssignee = new Section(SectionName.ISSUES_ASSIGNEE);
-        tasksPerAssignee.setColumns(fieldNames);
-        sections.add(tasksPerAssignee);
-
-        Section allIssues = new Section(SectionName.ALL_ISSUES);
-        allIssues.setColumns(fieldNames);
-        allIssues.setInclude(new ArrayList<>(Arrays.asList(IssueType.TASK)));
-        sections.add(allIssues);
-
-        reportDTO.setSections(sections);
-
-        reportService.createWordDocument(f, reportDTO, "template.docx");
+    @Test
+    public void testNoEpicsWordDocument() throws Exception {
+        File file = utilTest.loadFileFromResources("onlyTasks.xml");
+        FileInputStream f = new FileInputStream(file);
+        ReportDTO reportDTO = createReportDTO();
+        reportService.createWordDocument(f, reportDTO, "onlyTasks");
     }
 
     @Test
@@ -92,4 +77,37 @@ public class ReportServiceTest {
 
         reportService.createWordDocument(f, reportDTO, "template.docx");
     }
+
+    private ReportDTO createReportDTO(){
+        ReportDTO reportDTO = new ReportDTO("Report Template", "Ignacio Suay");
+        List<Section> sections = new ArrayList<>();
+
+        List<FieldName> fieldNames = Arrays.asList(FieldName.KEY, FieldName.TITLE, FieldName.ASSIGNEE, FieldName.TIME_SPENT);
+        List<IssueType> allTypes= new ArrayList<>(Arrays.asList(IssueType.EPIC, IssueType.STORY, IssueType.BUG, IssueType.SUB_TASK, IssueType.TASK));
+
+        Section epicSection = new Section(SectionName.EPIC_SUMMARY);
+        epicSection.setColumns(Arrays.asList(FieldName.EPIC_LINK, FieldName.STATUS));
+        epicSection.setGroupsBy(Arrays.asList(FieldName.SUM_TIME_ORIGINAL_ESTIMATE, FieldName.NUMBER_ISSUES));
+        sections.add(epicSection);
+
+        Section tasksPerEpic = new Section(SectionName.ISSUES_EPIC);
+        tasksPerEpic.setColumns(fieldNames);
+        tasksPerEpic.setInclude(allTypes);
+        sections.add(tasksPerEpic);
+
+        Section tasksPerAssignee = new Section(SectionName.ISSUES_ASSIGNEE);
+        tasksPerAssignee.setColumns(fieldNames);
+        tasksPerAssignee.setInclude(allTypes);
+        sections.add(tasksPerAssignee);
+
+        Section allIssues = new Section(SectionName.ALL_ISSUES);
+        allIssues.setColumns(fieldNames);
+        allIssues.setInclude(new ArrayList<>(Arrays.asList(IssueType.TASK)));
+        sections.add(allIssues);
+
+        reportDTO.setSections(sections);
+        return reportDTO;
+
+    }
+
 }
