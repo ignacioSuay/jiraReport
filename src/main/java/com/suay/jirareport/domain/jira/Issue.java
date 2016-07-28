@@ -276,6 +276,14 @@ public class Issue {
         return "Epic".equals(type);
     }
 
+    public boolean isBug(){
+        return "Bug".equals(type);
+    }
+
+    public boolean isSubTask(){
+        return "Sub-task".equals(type);
+    }
+
     public boolean isStory(){
         return "Story".equals(type);
     }
