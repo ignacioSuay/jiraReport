@@ -7,5 +7,6 @@ public enum IssueType {
     EPIC,
     STORY,
     BUG,
-    TASK;
+    TASK,
+    SUB_TASK;
 }
