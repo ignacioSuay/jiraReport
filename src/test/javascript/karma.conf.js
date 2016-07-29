@@ -42,7 +42,7 @@ module.exports = function (config) {
 
 
         // list of files / patterns to exclude
-        exclude: ['src/test/javascript/e2e/**'],
+        exclude: ['src/test/javascript/e2e/**', 'src/main/webapp/app/jiraReport.js'],
 
         preprocessors: {
             './**/*.js': ['coverage']
@@ -51,12 +51,12 @@ module.exports = function (config) {
         reporters: ['dots', 'jenkins', 'coverage', 'progress'],
 
         jenkinsReporter: {
-            
+
             outputFile: 'target/test-results/karma/TESTS-results.xml'
         },
 
         coverageReporter: {
-            
+
             dir: 'target/test-results/coverage',
             reporters: [
                 {type: 'lcov', subdir: 'report-lcov'}
