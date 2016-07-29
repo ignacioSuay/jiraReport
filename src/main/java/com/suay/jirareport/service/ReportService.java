@@ -4,9 +4,6 @@ import com.suay.jirareport.domain.jira.*;
 import com.suay.jirareport.web.rest.ReportResource;
 import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 
@@ -14,7 +11,6 @@ import java.io.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.ToIntFunction;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -32,17 +28,31 @@ public class ReportService {
 
 
     public String createWordDocument(InputStream file, ReportDTO reportDTO, String uuid) throws IOException, SAXException {
-        List<Issue> issues = issueService.jiraToIssueDTO(file);
+        List<Issue> issues = loadData(file);
+        XWPFDocument doc = createWordDocument();
+        buildDocument(reportDTO, issues, doc);
+        String outputFilename = writeOutputToFile(uuid, doc);
+        return  outputFilename;
+    }
 
-        loadData(issues);
-//        Resource resource = new ClassPathResource(template);
+    private List<Issue> loadData(InputStream file) throws IOException, SAXException {
+        List<Issue> issues = issueService.jiraToIssueDTO(file);
+        epics = issueService.getEpics(issues);
+        stories = issueService.getStories(issues);
+        return issues;
+    }
+
+    private XWPFDocument createWordDocument() throws IOException {
+        //        Resource resource = new ClassPathResource(template);
         File fileTemplate = new File("/var/jiraReport/template.docx");
         InputStream inputStream = new BufferedInputStream(new FileInputStream(fileTemplate));
-        XWPFDocument doc = new XWPFDocument(inputStream);
+        return new XWPFDocument(inputStream);
 
+    }
+
+    private void buildDocument(ReportDTO reportDTO, List<Issue> issues, XWPFDocument doc){
         WordService.changeTitle(doc, reportDTO.getTitle());
         WordService.changeAuthors(doc, reportDTO.getAuthors());
-
         for(Section section: reportDTO.getSections()){
             if(SectionName.ALL_ISSUES == section.getName()){
                 WordService.addSection(doc, "List of all issues");
@@ -61,7 +71,9 @@ public class ReportService {
                 createStorySummaryTable(issues, doc, section);
             }
         }
+    }
 
+    private String writeOutputToFile(String uuid, XWPFDocument doc ) throws IOException {
         String outputFilename = uuid + ".docx";
         String outputFile = ReportResource.REPORT_PATH + outputFilename;
         FileOutputStream out = new FileOutputStream(outputFile);
@@ -70,13 +82,9 @@ public class ReportService {
         return outputFile;
     }
 
-    private void loadData(List<Issue> issues) {
-        epics = issueService.getEpics(issues);
-        stories = issueService.getStories(issues);
-    }
 
 
-    public void createTableByFields(List<Issue> allIssues, Section section, XWPFDocument doc) throws IOException {
+    public void createTableByFields(List<Issue> allIssues, Section section, XWPFDocument doc) {
 
         List<Issue> issues = filterIssuesByType(allIssues, section);
         XWPFTable table = doc.createTable(issues.size()+1, section.getTotalColumns().size());
@@ -243,17 +251,8 @@ public class ReportService {
                     table.getRow(row).getCell(col).setText(columnValue);
                     col++;
                 }
-//                String epicTitle = getEpicTitle(issues, issue.getValueByNode(FieldName.EPIC_LINK));
-//                table.getRow(row).getCell(0).setText(epicTitle);
-//                table.getRow(row).getCell(1).setText(issue.getTitleName());
-//                table.getRow(row).getCell(2).setText(issue.getTimeOriginalEstimate());
                 row++;
             }
-//            table.getRow(row).getCell(0).setText("Total");
-//            table.getRow(row).getCell(1).setText("");
-//            Integer totalTime = issuesPerAssignee.stream().collect(Collectors.summingInt(Issue::getTimeOriginalEstimateInSeconds));
-//            table.getRow(row).getCell(2).setText(secondsToDDHH(totalTime));
-
         }
     }
 
