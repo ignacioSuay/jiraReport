@@ -14,6 +14,7 @@
         $scope.docReady = false;
         $scope.uuid = guid();
         $scope.title = "";
+        $scope.fileUpload =false;
 
         //"Key", "title", "type", "priority", "status", "resolution", "created", "updated", "assignee", "reporter", "time original estimate", "time estimate", "Sprint"
         var columnOps = [{id:"KEY", text: "Key"}, {id:"TITLE", text: "title"},{id:"TYPE", text: "type"},{id:"PRIORITY", text: "priority"},{id:"STATUS", text: "status"},{id:"RESOLUTION", text: "resolution"},
@@ -123,6 +124,7 @@
                     $timeout(function () {
                         file.result = response.data;
                     });
+                    $scope.fileUpload = true;
                 }, function (response) {
                     if (response.status > 0)
                         $scope.errorMsg = response.status + ': ' + response.data;

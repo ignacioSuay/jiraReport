@@ -12,13 +12,13 @@
 
 
         <div class="form-group">
-            <a href="#usage" du-smooth-scroll du-scrollspy><span class="glyphicon glyphicon-question-sign"></span> </a>
             <label class="control-label"> Export your issues from Jira (in XML) and upload them here:</label>
                 <span class="fileUpload btn btn-default">
                     <span class="glyphicon glyphicon-upload"></span> Upload file
                     <input type="file" id="uploadFile" ngf-select="uploadFiles($file, $invalidFiles)"
                            ngf-max-height="10000" ngf-max-size="10MB"/>
                 </span>
+            <a href="#usage" du-smooth-scroll du-scrollspy><span class="glyphicon glyphicon-question-sign"></span> </a>
             <br/> <br/>
             <div class="list-group-item" ng-show="f.progress">
                 <div class="progress progress-striped active">
@@ -43,9 +43,7 @@
             <span class="input-group-addon">Author(s)</span>
             <input type="text" class="form-control" ng-model="authors" placeholder="e.g. John Smith"/>
         </div>
-
         <br>
-        <hr/>
         <div class="row">
             <div class="col-md-6">
                 <h3>Build the document structure:</h3>
@@ -58,7 +56,7 @@
 
         <div>
             <div ng-repeat="section in sections" class="margin10 well">
-                <h3>Section {{$index +1}}</h3>
+                <h3>Section {{$index +1}}: {{section.action.name}}</h3>
                 <div class="row">
                     <label class="col-md-2">Section type:</label>
 
@@ -115,8 +113,16 @@
                 section
             </button>
             <br/><br/>
-            <button class="btn btn-success btn-lg" ng-click="sendData()">Send data</button>
-            <a ng-show="docReady" class="btn btn-primary" ng-href="/api/download/{{uuid}}">download file</a>
+            <div class="alert alert-danger" role="alert" ng-show="!fileUpload">
+                <p>Please upload your issues (in a XML) to the application!
+                    <a href="#usage" du-smooth-scroll du-scrollspy>
+                        <span class="glyphicon glyphicon-question-sign"></span>
+                    </a>
+                </p>
+
+            </div>
+            <button class="btn btn-success btn-lg" ng-click="sendData()" ng-disabled="docReady || !fileUpload" >Send data</button>
+            <a ng-show="docReady" class="btn btn-primary btn-lg" ng-href="/api/download/{{uuid}}">Download report</a>
         </div>
     </div>
     </div>
