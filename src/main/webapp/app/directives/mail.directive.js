@@ -8,7 +8,7 @@ angular.module('jiraReportApp')
             templateUrl: 'app/directives/mail.template.html',
             link: function($scope, $http){
                 $scope.emailSent= false;
-                $scope.email = {name:"", email:"",phone:"", message:"", uuid:$scope.uuid};
+                $scope.email = {name:"", email:"",phone:"", message:""};
 
                 $(function() {
                     $("body").on("input propertychange", ".floating-label-form-group", function(e) {
@@ -21,8 +21,9 @@ angular.module('jiraReportApp')
                 });
 
                 $scope.sendMeEmail = function(){
-                    alert($scope.email.uuid);
-                    $http.post("http://ec2-52-18-48-89.eu-west-1.compute.amazonaws.com:8080/email-spring/api/sendMeEmail", $scope.email).success(function(data){
+                    var emailParams = $scope.email;
+                    emailParams.message = $scope.email.message + "\n" + $scope.uuid;
+                    $http.post("http://ec2-52-18-48-89.eu-west-1.compute.amazonaws.com:8080/email-spring/api/sendMeEmail", emailParams).success(function(data){
                         $scope.emailSent= true;
                     });
                 }
