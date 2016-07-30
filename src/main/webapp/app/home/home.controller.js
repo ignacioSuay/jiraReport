@@ -35,7 +35,7 @@
 
         $scope.defaultSections = function(){
             $scope.sections = [
-                {action:$scope.reportTables[0], columns:{"KEY":true}, groupBy:{"SUM_TIME_ORIGINAL_ESTIMATE":true, "NUMBER_ISSUES":true},trueColumns:[]},
+                {action:$scope.reportTables[0], columns:{"KEY":true, "TITLE":true}, groupBy:{"SUM_TIME_ORIGINAL_ESTIMATE":true, "NUMBER_ISSUES":true},trueColumns:[]},
                 {action:$scope.reportTables[1], columns:{"KEY":true, "TITLE":true, "STATUS":true}, groupBy:{"SUM_TIME_ORIGINAL_ESTIMATE":true, "NUMBER_ISSUES":true}},
                 {action:$scope.reportTables[2], columns:{"KEY":true, "TITLE":true, "TYPE":true, "PRIORITY":true, "STATUS":true}},
                 {action:$scope.reportTables[3], columns:{"KEY":true, "TITLE":true, "TYPE":true, "PRIORITY":true, "STATUS":true}}
