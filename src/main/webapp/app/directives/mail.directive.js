@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('jiraReportApp')
-    .directive('suayMail', function () {
+    .directive('suayMail', ['$http', function($http) {
         return {
             restrict: 'E',
             scope:false, //use parecent scope
             templateUrl: 'app/directives/mail.template.html',
-            link: function($scope, $http){
+            link: function($scope){
                 $scope.emailSent= false;
                 $scope.email = {name:"", email:"",phone:"", message:""};
 
@@ -21,7 +21,7 @@ angular.module('jiraReportApp')
                 });
 
                 $scope.sendMeEmail = function(){
-                    var emailParams = $scope.email;
+                    var emailParams = JSON.parse(JSON.stringify($scope.email));
                     emailParams.message = $scope.email.message + "\n" + $scope.uuid;
                     $http.post("http://ec2-52-18-48-89.eu-west-1.compute.amazonaws.com:8080/email-spring/api/sendMeEmail", emailParams).success(function(data){
                         $scope.emailSent= true;
@@ -29,4 +29,4 @@ angular.module('jiraReportApp')
                 }
             }
         }
-    });
+    }]);
