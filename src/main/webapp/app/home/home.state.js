@@ -21,6 +21,30 @@
                     controllerAs: 'vm'
                 }
             }
-        });
+        })
+        .state('privacy', {
+            parent: 'app',
+            url: '/privacy',
+            data: {
+                authorities: []
+            },
+            views: {
+                'content@': {
+                    templateUrl: 'app/footer/privacy.html'
+                }
+            }
+        })
+            .state('terms', {
+                parent: 'app',
+                url: '/terms',
+                data: {
+                    authorities: []
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/footer/terms.html'
+                    }
+                }
+            });
     }
 })();
