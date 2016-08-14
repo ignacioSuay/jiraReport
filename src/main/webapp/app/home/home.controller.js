@@ -17,13 +17,13 @@
         $scope.fileUpload =false;
 
         //"Key", "title", "type", "priority", "status", "resolution", "created", "updated", "assignee", "reporter", "time original estimate", "time estimate", "Sprint"
-        var columnOps = [{id:"KEY", text: "Key"}, {id:"TITLE", text: "title"},{id:"TYPE", text: "type"},{id:"PRIORITY", text: "priority"},{id:"STATUS", text: "status"},{id:"RESOLUTION", text: "resolution"},
-            {id:"CREATED", text: "created"},{id:"UPDATED", text: "updated"},{id:"ASSIGNEE", text: "assignee"},{id:"REPORTER", text: "reporter"},{id:"SPRINT", text: "Sprint"},
-            {id:"TIME_ORIGINAL_ESTIMATE", text: "time original estimate"},{id:"TIME_ESTIMATE", text: "time estimate"},{id:"TIME_SPENT", text: "time spent"}, {id:"KEY", text: "Epic Key"},{id:"KEY", text: "Story Key"},
-            {id:"NUMBER_ISSUES", text: "number of issues"},{id:"SUM_TIME_ORIGINAL_ESTIMATE", text: "time original estimate"},{id:"SUM_TIME_ESTIMATE", text: "time estimate"},{id:"SUM_TIME_SPENT", text: "time spent"}];
+        var columnOps = [{id:"KEY", text: "Key"}, {id:"TITLE", text: "title"},{id:"TYPE", text: "type"},{id:"PRIORITY", text: "Priority"},{id:"STATUS", text: "Status"},{id:"RESOLUTION", text: "Resolution"},
+            {id:"CREATED", text: "Created"},{id:"UPDATED", text: "Updated"},{id:"ASSIGNEE", text: "Assignee"},{id:"REPORTER", text: "Reporter"},{id:"SPRINT", text: "Sprint"},
+            {id:"TIME_ORIGINAL_ESTIMATE", text: "Original time estimate"},{id:"TIME_ESTIMATE", text: "Time estimate"},{id:"TIME_SPENT", text: "Time spent"}, {id:"KEY", text: "Epic Key"},{id:"KEY", text: "Story Key"},
+            {id:"NUMBER_ISSUES", text: "Number of issues"},{id:"SUM_TIME_ORIGINAL_ESTIMATE", text: "Original time estimate"},{id:"SUM_TIME_ESTIMATE", text: "Time estimate"},{id:"SUM_TIME_SPENT", text: "Time spent"}];
 
-        var types = [{text:"epics", type:"EPIC"},{text:"stories", type:"STORY"},{text:"tasks", type:"TASK"},{text:"bugs", type:"BUG"}, {text:"Sub-tasks", type:"SUB_TASK"}];
-        var typesNoEpic = [{text:"stories", type:"STORY"},{text:"tasks", type:"TASK"},{text:"bugs", type:"BUG"}, {text:"Sub-tasks", type:"SUB_TASK"}];
+        var types = [{text:"Epics", type:"EPIC"},{text:"Stories", type:"STORY"},{text:"Tasks", type:"TASK"},{text:"Bugs", type:"BUG"}, {text:"Sub-tasks", type:"SUB_TASK"}];
+        var typesNoEpic = [{text:"Stories", type:"STORY"},{text:"Tasks", type:"TASK"},{text:"Bugs", type:"BUG"}, {text:"Sub-tasks", type:"SUB_TASK"}];
 
         $scope.reportTables = [
             {id: '1', name: 'Epic Summary', nameId: "EPIC_SUMMARY", columns:[columnOps[14],columnOps[1],columnOps[2],columnOps[3],columnOps[4],columnOps[5],columnOps[6],columnOps[7],columnOps[8],columnOps[9],columnOps[10],columnOps[11],columnOps[12],columnOps[13]], groupBy:[columnOps[17],columnOps[18],columnOps[19], columnOps[16]]},
