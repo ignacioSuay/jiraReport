@@ -8316,7 +8316,7 @@ header .header-content .header-content-inner p {
   font-size: large;
   padding-left: 8px;
   padding-right: 8px; }
-  #usage a, #author a {
+  #usage a, #usage .text-muted, #author a, #author .text-muted {
     color: lightgrey; }
   #usage .usagePadding, #author .usagePadding {
     padding-top: 10px; }
