@@ -8234,10 +8234,10 @@ header .header-content .header-content-inner p {
       font: 1.5em/1.75 "FontAwesome";
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale; }
-    .social-icons a[href*="twitter"] {
+    .social-icons a[href*="ignaciosuay"] {
       background-color: #55acee; }
-      .social-icons a[href*="twitter"]:before {
-        content: ""; }
+      .social-icons a[href*="ignaciosuay"]:before {
+        content: ""; }
     .social-icons a[href*="google"] {
       background-color: #dd4b39; }
       .social-icons a[href*="google"]:before {
@@ -8316,6 +8316,8 @@ header .header-content .header-content-inner p {
   font-size: large;
   padding-left: 8px;
   padding-right: 8px; }
+  #usage a, #author a {
+    color: lightgrey; }
   #usage .usagePadding, #author .usagePadding {
     padding-top: 10px; }
 

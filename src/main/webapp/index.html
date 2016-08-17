@@ -41,12 +41,12 @@
             </div>
             <div class="col-md-4">
                 <ul class="social-icons">
-                    <li><a href="https://twitter.com/"><span>uni</span></a></li>
+                    <li><a href="http://www.ignaciosuay.com/cv" target="_blank"><span>uni</span></a></li>
                     <!--<li><a href="https://plus.google.com/‎"><span>Google+</span></a></li>-->
                     <!--<li><a href="https://www.facebook.com/"><span>Facebook</span></a></li>-->
-                    <li><a href="https://github.com/ignacioSuay"><span>GitHub</span></a></li>
+                    <li><a href="https://github.com/ignacioSuay" target="_blank"><span>GitHub</span></a></li>
 
-                    <li><a href="https://uk.linkedin.com/in/ignacio-suay-mas-8b086044"><span>LinkedIn</span></a></li>
+                    <li><a href="https://uk.linkedin.com/in/ignacio-suay-mas-8b086044" target="_blank"><span>LinkedIn</span></a></li>
                 </ul>
             </div>
             <div class="col-md-4 footerText">
@@ -115,17 +115,9 @@
     <script src="app/services/auth/auth.service.js"></script>
     <script src="app/services/auth/activate.service.js"></script>
     <script src="app/services/auth/account.service.js"></script>
-    <script src="app/layouts/error/error.state.js"></script>
     <script src="app/layouts/navbar/navbar.controller.js"></script>
     <script src="app/layouts/navbar/active-link.directive.js"></script>
-    <script src="app/blocks/interceptor/notification.interceptor.js"></script>
-    <script src="app/blocks/interceptor/errorhandler.interceptor.js"></script>
-    <script src="app/blocks/interceptor/auth-expired.interceptor.js"></script>
-    <script src="app/blocks/handlers/state.handler.js"></script>
-    <script src="app/blocks/config/localstorage.config.js"></script>
-    <script src="app/blocks/config/http.config.js"></script>
-    <script src="app/blocks/config/compile.config.js"></script>
-    <script src="app/blocks/config/alert.config.js"></script>
+    <script src="app/layouts/error/error.state.js"></script>
     <script src="app/components/util/truncate-words.filter.js"></script>
     <script src="app/components/util/truncate-characters.filter.js"></script>
     <script src="app/components/util/sort.directive.js"></script>
@@ -148,6 +140,37 @@
     <script src="app/components/alert/alert.service.js"></script>
     <script src="app/components/alert/alert.directive.js"></script>
     <script src="app/components/alert/alert-error.directive.js"></script>
+    <script src="app/blocks/interceptor/notification.interceptor.js"></script>
+    <script src="app/blocks/interceptor/errorhandler.interceptor.js"></script>
+    <script src="app/blocks/interceptor/auth-expired.interceptor.js"></script>
+    <script src="app/blocks/handlers/state.handler.js"></script>
+    <script src="app/blocks/config/localstorage.config.js"></script>
+    <script src="app/blocks/config/http.config.js"></script>
+    <script src="app/blocks/config/compile.config.js"></script>
+    <script src="app/blocks/config/alert.config.js"></script>
+    <script src="app/admin/user-management/user-management.state.js"></script>
+    <script src="app/admin/user-management/user-management.controller.js"></script>
+    <script src="app/admin/user-management/user-management-dialog.controller.js"></script>
+    <script src="app/admin/user-management/user-management-detail.controller.js"></script>
+    <script src="app/admin/user-management/user-management-delete-dialog.controller.js"></script>
+    <script src="app/admin/metrics/metrics.state.js"></script>
+    <script src="app/admin/metrics/metrics.service.js"></script>
+    <script src="app/admin/metrics/metrics.modal.controller.js"></script>
+    <script src="app/admin/metrics/metrics.controller.js"></script>
+    <script src="app/admin/logs/logs.state.js"></script>
+    <script src="app/admin/logs/logs.service.js"></script>
+    <script src="app/admin/logs/logs.controller.js"></script>
+    <script src="app/admin/health/health.state.js"></script>
+    <script src="app/admin/health/health.service.js"></script>
+    <script src="app/admin/health/health.modal.controller.js"></script>
+    <script src="app/admin/health/health.controller.js"></script>
+    <script src="app/admin/docs/docs.state.js"></script>
+    <script src="app/admin/audits/audits.state.js"></script>
+    <script src="app/admin/audits/audits.service.js"></script>
+    <script src="app/admin/audits/audits.controller.js"></script>
+    <script src="app/admin/configuration/configuration.state.js"></script>
+    <script src="app/admin/configuration/configuration.service.js"></script>
+    <script src="app/admin/configuration/configuration.controller.js"></script>
     <script src="app/account/social/social.state.js"></script>
     <script src="app/account/social/social.service.js"></script>
     <script src="app/account/social/social-register.controller.js"></script>
@@ -162,29 +185,6 @@
     <script src="app/account/password/password-strength-bar.directive.js"></script>
     <script src="app/account/activate/activate.state.js"></script>
     <script src="app/account/activate/activate.controller.js"></script>
-    <script src="app/admin/user-management/user-management.state.js"></script>
-    <script src="app/admin/user-management/user-management.controller.js"></script>
-    <script src="app/admin/user-management/user-management-dialog.controller.js"></script>
-    <script src="app/admin/user-management/user-management-detail.controller.js"></script>
-    <script src="app/admin/user-management/user-management-delete-dialog.controller.js"></script>
-    <script src="app/admin/metrics/metrics.state.js"></script>
-    <script src="app/admin/metrics/metrics.service.js"></script>
-    <script src="app/admin/metrics/metrics.modal.controller.js"></script>
-    <script src="app/admin/metrics/metrics.controller.js"></script>
-    <script src="app/admin/logs/logs.state.js"></script>
-    <script src="app/admin/logs/logs.service.js"></script>
-    <script src="app/admin/logs/logs.controller.js"></script>
-    <script src="app/admin/docs/docs.state.js"></script>
-    <script src="app/admin/health/health.state.js"></script>
-    <script src="app/admin/health/health.service.js"></script>
-    <script src="app/admin/health/health.modal.controller.js"></script>
-    <script src="app/admin/health/health.controller.js"></script>
-    <script src="app/admin/configuration/configuration.state.js"></script>
-    <script src="app/admin/configuration/configuration.service.js"></script>
-    <script src="app/admin/configuration/configuration.controller.js"></script>
-    <script src="app/admin/audits/audits.state.js"></script>
-    <script src="app/admin/audits/audits.service.js"></script>
-    <script src="app/admin/audits/audits.controller.js"></script>
     <script src="app/libs/wow.min.js"></script>
     <script src="app/home/home.state.js"></script>
     <script src="app/home/home.controller.js"></script>
@@ -193,8 +193,8 @@
     <script src="app/directives/mail.directive.js"></script>
     <script src="app/directives/fileread.directive.js"></script>
     <script src="app/directives/combo-input.directive.js"></script>
-    <script src="app/account/account.state.js"></script>
     <script src="app/admin/admin.state.js"></script>
+    <script src="app/account/account.state.js"></script>
     <script src="app/jiraReport.js"></script>
     <script src="app/app.state.js"></script>
     <script src="app/app.constants.js"></script>
