@@ -22,7 +22,7 @@
             {id:"TIME_ORIGINAL_ESTIMATE", text: "Original time estimate"},{id:"TIME_ESTIMATE", text: "Time estimate"},{id:"TIME_SPENT", text: "Time spent"}, {id:"KEY", text: "Epic Key"},{id:"KEY", text: "Story Key"},
             {id:"NUMBER_ISSUES", text: "Number of issues"},{id:"SUM_TIME_ORIGINAL_ESTIMATE", text: "Original time estimate"},{id:"SUM_TIME_ESTIMATE", text: "Time estimate"},{id:"SUM_TIME_SPENT", text: "Time spent"}];
 
-        var types = [{text:"Epics", type:"EPIC"},{text:"Stories", type:"STORY"},{text:"Tasks", type:"TASK"},{text:"Bugs", type:"BUG"}, {text:"Sub-tasks", type:"SUB_TASK"}];
+        var types = [{text:"Epics", type:"EPIC", default:false},{text:"Stories", type:"STORY", default:true},{text:"Tasks", type:"TASK", default:true},{text:"Bugs", type:"BUG", default:true}, {text:"Sub-tasks", type:"SUB_TASK", default:true}];
         var typesNoEpic = [{text:"Stories", type:"STORY"},{text:"Tasks", type:"TASK"},{text:"Bugs", type:"BUG"}, {text:"Sub-tasks", type:"SUB_TASK"}];
 
         $scope.reportTables = [

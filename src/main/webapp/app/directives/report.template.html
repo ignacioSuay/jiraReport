@@ -72,7 +72,7 @@
                         <div ng-repeat="type in section.action.include">
                             <div class="col-md-3">
                                 <label><input type="checkbox" class="margin10"
-                                              ng-model="section.include[type.type]" ng-init="section.include[type.type] = true"><span
+                                              ng-model="section.include[type.type]" ng-init="section.include[type.type] = type.default"><span
                                     class="margin10">{{type.text}}</span></label>
                             </div>
                         </div>
