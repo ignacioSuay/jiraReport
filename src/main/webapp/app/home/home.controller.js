@@ -23,7 +23,7 @@
             {id:"NUMBER_ISSUES", text: "Number of issues"},{id:"SUM_TIME_ORIGINAL_ESTIMATE", text: "Original time estimate"},{id:"SUM_TIME_ESTIMATE", text: "Time estimate"},{id:"SUM_TIME_SPENT", text: "Time spent"}];
 
         var types = [{text:"Epics", type:"EPIC", default:false},{text:"Stories", type:"STORY", default:true},{text:"Tasks", type:"TASK", default:true},{text:"Bugs", type:"BUG", default:true}, {text:"Sub-tasks", type:"SUB_TASK", default:true}];
-        var typesNoEpic = [{text:"Stories", type:"STORY"},{text:"Tasks", type:"TASK"},{text:"Bugs", type:"BUG"}, {text:"Sub-tasks", type:"SUB_TASK"}];
+        var typesNoEpic = [{text:"Stories", type:"STORY", default:true},{text:"Tasks", type:"TASK", default:true},{text:"Bugs", type:"BUG", default:true}, {text:"Sub-tasks", type:"SUB_TASK", default:true}];
 
         $scope.reportTables = [
             {id: '1', name: 'Epic Summary', nameId: "EPIC_SUMMARY", columns:[columnOps[14],columnOps[1],columnOps[2],columnOps[3],columnOps[4],columnOps[5],columnOps[6],columnOps[7],columnOps[8],columnOps[9],columnOps[10],columnOps[11],columnOps[12],columnOps[13]], groupBy:[columnOps[17],columnOps[18],columnOps[19], columnOps[16]]},

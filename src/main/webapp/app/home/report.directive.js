@@ -5,6 +5,6 @@ angular.module('jiraReportApp')
         return {
             restrict: 'E',
             scope: false, //the directive use the same scope as the parent
-            templateUrl: 'app/directives/report.template.html'
+            templateUrl: 'app/home/report.template.html'
         }
     });
