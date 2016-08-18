@@ -154,6 +154,19 @@ public class IssueService {
             }
             epics.add(epic);
         }
+
+        addEpicsWithoutTasks(allEpics, epicIssues, epics);
         return epics;
+    }
+
+    private void addEpicsWithoutTasks(Set<Issue> allEpics, Map<String, List<Issue>> epicIssues, Set<Epic> epics) {
+        Set<Issue> newEpics = allEpics.stream().filter(e -> !epicIssues.containsKey(e.getKey())).collect(Collectors.toSet());
+
+        for (Issue newEpic : newEpics) {
+            Epic epic = new Epic();
+            epic.setEpicIssue(newEpic);
+            epics.add(epic);
+        }
+
     }
 }
