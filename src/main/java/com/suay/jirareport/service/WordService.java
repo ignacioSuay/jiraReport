@@ -64,4 +64,10 @@ public class WordService {
         XWPFRun r1 = p.createRun();
         r1.setText(title);
     }
+
+    public static void addParagraph(XWPFDocument doc, String text){
+        XWPFParagraph p = doc.createParagraph();
+        XWPFRun r1 = p.createRun();
+        r1.setText(text);
+    }
 }
