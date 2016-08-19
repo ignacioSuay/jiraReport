@@ -14,6 +14,7 @@
         $scope.docReady = false;
         $scope.uuid = guid();
         $scope.title = "";
+        $scope.authors = "";
         $scope.fileUpload =false;
 
         //"Key", "title", "type", "priority", "status", "resolution", "created", "updated", "assignee", "reporter", "time original estimate", "time estimate", "Sprint"
