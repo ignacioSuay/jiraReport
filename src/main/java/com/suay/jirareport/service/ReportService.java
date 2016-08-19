@@ -247,23 +247,8 @@ public class ReportService {
             table.setStyleID("LightShading-Accent12");
 
             WordService.addColumnsToTable(table, section);
-
-            int row = 1;
             List<Issue> issuesPerAssignee = collect.get(assignee);
-            for(Issue issue: issuesPerAssignee){
-                int col = 0;
-                String columnValue;
-                for (FieldName column : section.getTotalColumns()) {
-                    if(column.equals(FieldName.EPIC_LINK)){
-                        columnValue = getEpicTitle(issues, issue.getValueByNode(FieldName.EPIC_LINK));
-                    }else {
-                        columnValue = issue.getValueByNode(column);
-                    }
-                    table.getRow(row).getCell(col).setText(columnValue);
-                    col++;
-                }
-                row++;
-            }
+            buildTable(issuesPerAssignee, section, table);
         }
     }
 
@@ -283,19 +268,27 @@ public class ReportService {
 
             WordService.addColumnsToTable(table,section);
 
-            int row = 1;
-            List<Issue> issuesPerEpic = collect.get(epic);
 
-            for(Issue issue: issuesPerEpic){
-                table.getRow(row).getCell(0).setText(issue.getKey());
-                table.getRow(row).getCell(1).setText(issue.getTitleName());
-                table.getRow(row).getCell(2).setText(issue.getTimeOriginalEstimate());
-                row++;
+            List<Issue> issuesPerEpic = collect.get(epic);
+            buildTable(issuesPerEpic, section, table);
+        }
+    }
+
+    private void buildTable(List<Issue> issues, Section section, XWPFTable table){
+        int row = 1;
+        for(Issue issue: issues){
+            int col = 0;
+            String columnValue;
+            for (FieldName column : section.getTotalColumns()) {
+                if(column.equals(FieldName.EPIC_LINK)){
+                    columnValue = getEpicTitle(issues, issue.getValueByNode(FieldName.EPIC_LINK));
+                }else {
+                    columnValue = issue.getValueByNode(column);
+                }
+                table.getRow(row).getCell(col).setText(columnValue);
+                col++;
             }
-            table.getRow(row).getCell(0).setText("Total");
-            table.getRow(row).getCell(1).setText("");
-            Integer totalTime = issuesPerEpic.stream().collect(Collectors.summingInt(Issue::getTimeOriginalEstimateInSeconds));
-            table.getRow(row).getCell(2).setText(secondsToDDHH(totalTime));
+            row++;
         }
     }
 
