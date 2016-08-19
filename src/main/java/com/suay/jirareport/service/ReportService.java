@@ -110,6 +110,11 @@ public class ReportService {
         Map<String, Integer> epicByTimeEstimate = null;
         Map<String, Integer> epicByTimeSpent = null;
 
+        if(epics.size() < 1){
+            WordService.addParagraph(doc, "There are no epics in the submitted file.");
+            return;
+        }
+
         if(section.getGroupsBy().contains(FieldName.SUM_TIME_ORIGINAL_ESTIMATE)) {
             ToIntFunction<Issue> orginalEstimateFunc = (issue) -> issue.getTimeOriginalEstimateInSeconds();
             epicByOriginalTimeEstimate = collectIssues(issues, FieldName.EPIC_LINK, orginalEstimateFunc);
@@ -174,6 +179,12 @@ public class ReportService {
         Set<Epic> epics = issueService.getDataModel(issues);
         Set<Story> stories = new HashSet<>();
         epics.stream().forEach(e -> stories.addAll(e.getStories()));
+
+        if(stories.size() < 1){
+            WordService.addParagraph(doc, "There are no stories in the submitted file.");
+            return;
+        }
+
 
         XWPFTable table = doc.createTable(stories.size()+1, section.getTotalNumColumns());
         table.setStyleID("LightShading-Accent12");
