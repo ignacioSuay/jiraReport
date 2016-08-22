@@ -246,9 +246,9 @@ public class Issue {
             case REPORTER:
                 res = getReporter();break;
             case CREATED:
-                res = getCreated().toString();break;
+                res = getCreated()!= null ? getCreated().toString() : "" ;break;
             case UPDATED:
-                res = getUpdated().toString();break;
+                res = getUpdated() != null ? getUpdated().toString(): "";break;
             case TIME_ORIGINAL_ESTIMATE:
                 res = timeOriginalEstimate; break;
             case TIME_ESTIMATE:
@@ -293,6 +293,9 @@ public class Issue {
     }
 
     public String getCustomFieldValue(String field){
+        if(customFields == null || customFields.isEmpty())
+            return "";
+
         return customFields.stream()
                 .filter(cf -> field.equals(cf.getName()))
                 .map(CustomField::getValue)
