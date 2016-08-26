@@ -303,7 +303,9 @@ public class ReportService {
                 .orElse(key);
     }
 
-    private String secondsToDDHH(int seconds){
+    private String secondsToDDHH(Integer seconds){
+        if(seconds == null)return "";
+
         long totalHours = TimeUnit.SECONDS.toHours(seconds);
         int day = (int) (totalHours / 8);
         long hours = totalHours % 8;
