@@ -1,0 +1,44 @@
+How to configure a profiler
+============================
+
+based on: http://stackoverflow.com/questions/151238/has-anyone-ever-got-a-remote-jmx-jconsole-to-work
+
+1. In your tomcat folder/bin: create a sentenv.sh file and add +x mode;
+
+2. Choose a free port (eg 15666) and add this configuration to the setenv file will:
+CATALINA_OPTS="$CATALINA_OPTS -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=15666 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=localhost"
+
+* Use CATaLINA_OPTS instead of JAVA_OPTS. If you use JAVA_OPTS you will get a java.net.BindException: Address already in use.
+Setting these properties in JAVA_OPTS tries to start a jmx server when you start tomcat AND when you shutdown tomcat. Hence the port already in use exception. You need to set these properties for CATALINA_OPTS instead of JAVA_OPTS. This will only run when you start tomcat.
+
+3. restart tomcat
+
+4. get  the tomcat pid, usually while restarting use top, to see which java process is running. Otherwise use the command "ps -ef | grep java"
+
+in my case is 23015
+
+5. get the java rmi port:
+sudo netstat -lp | grep <tomcat_pid>     eg. sudo netstat -lp | grep 23015
+
+response:
+tcp6       0      0 [::]:45497              [::]:*                  LISTEN      23497/java
+tcp6       0      0 localhost:8005          [::]:*                  LISTEN      23497/java
+tcp6       0      0 [::]:8009               [::]:*                  LISTEN      23497/java
+tcp6       0      0 [::]:http-alt           [::]:*                  LISTEN      23497/java
+tcp6       0      0 [::]:15666              [::]:*                  LISTEN      23497/java
+
+so my rmi port is 49194
+
+6. Create a ssh tunnel to the rmi port and to your jmx port:
+eg:
+
+ssh -N -v -v -L 45497:127.0.0.1:45497 -L15666:127.0.0.1:15666 ubuntu@ec2-52-18-48-89.eu-west-1.compute.amazonaws.com -i <your aws key.pem>
+
+ssh -N -v -v -L 45497:127.0.0.1:45497 -L15666:127.0.0.1:15666 ubuntu@ec2-52-18-48-89.eu-west-1.compute.amazonaws.com -i awsclau.pem
+
+
+7. Go to visualvm and add a new jmx connection with the following route:
+service:jmx:rmi:///jndi/rmi://localhost:15666/jmxrmi
+
+
+
