@@ -18,7 +18,7 @@ Setting these properties in JAVA_OPTS tries to start a jmx server when you start
 in my case is 23015
 
 5. get the java rmi port:
-sudo netstat -lp | grep <tomcat_pid>     eg. sudo netstat -lp | grep 23015
+sudo netstat -lp | grep <tomcat_pid>     eg. sudo netstat -lp | grep 23015      sudo netstat -lp | grep java
 
 response:
 tcp6       0      0 [::]:45497              [::]:*                  LISTEN      23497/java
@@ -41,4 +41,21 @@ ssh -N -v -v -L 45497:127.0.0.1:45497 -L15666:127.0.0.1:15666 ubuntu@ec2-52-18-4
 service:jmx:rmi:///jndi/rmi://localhost:15666/jmxrmi
 
 
+HEAP size Information
+=====================
+Heap space: The heap stores all of the objects created by your Java program. The heap's contents is monitored by the garbage collector,
+which frees memory from the heap when you stop using an object.
 
+Perm gen space: The permanent generation is special because it holds meta-data describing user classes
+(classes that are not part of the Java language). Examples of such meta-data are objects describing classes and methods
+and they are stored in the Permanent Generation. Applications with large code-base can quickly fill up this segment of
+the heap which will cause java.lang.OutOfMemoryError: PermGen no matter how high your -Xmx and how much memory you have on the machine.
+
+To increment the heap space in tomcat change the xms and xmx in setenv.sh. The flag Xmx specifies the maximum memory
+allocation pool for a Java Virtual Machine (JVM), while Xms specifies the initial memory allocation pool.
+
+You set the maximum Java heap size of your program using the -Xmx option to the Java interpreter
+
+To see your java heap configuration: run as the same user as you are running tomcat, in my case root so:
+sudo su
+jmap -heap <tomcat_pid>
